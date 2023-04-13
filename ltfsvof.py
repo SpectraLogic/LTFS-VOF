@@ -135,12 +135,12 @@ def parse_packs(packs: list) -> list:
     return [parse_pack_entry(p) for p in packs]
 
 
-def debug_handle_block(part1: dict, part2: bytes) -> None:
+def parse_block(part1: dict, part2: bytes) -> Block:
     versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
     return Block(versionid=versionid, data=part2)
 
 
-def debug_handle_packlist(part1: dict, part2: Optional[bytes]):
+def parse_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
     versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
     uploadid = part1['U']  # Key 'U' is the upload ID (if multipart) or none if single PUT
     packs = parse_packs(part1['P'])
@@ -148,16 +148,16 @@ def debug_handle_packlist(part1: dict, part2: Optional[bytes]):
     return packlist
 
 
-def debug_handle_version(part1: dict, part2: Optional[bytes]):
+def parse_version(part1: dict, part2: Optional[bytes]):
     print('version:')
     pprint(part1)
     raise NotImplementedError("can't do versions yet")
 
 
 debug_handlers = {
-    b'bk': debug_handle_block,
-    b'pl': debug_handle_packlist,
-    b'vr': debug_handle_version,
+    b'bk': parse_block,
+    b'pl': parse_packlist,
+    b'vr': parse_version,
 }
 
 
