@@ -14,7 +14,9 @@ import zstd
 from xxhash import xxh64
 
 # from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-# import zstd
+
+# TODO: add support for encrypted values
+# TODO: comments on all functions
 
 
 # Define namedtuple for TLV header fields
@@ -60,7 +62,7 @@ def read_tlv_header(f: typing.BinaryIO) -> TlvHeader:
 
 def read_tlv(f: typing.BinaryIO) -> (TlvHeader, bytes):
     """
-    Read a complete TLV from the file-like IO.
+    Read a complete TLV from the file-like IO, leaving the IO positioned at the start of the next TLV.
     :param f: file-like IO to read from
     :return: TLV header tuple and value bytes
     """
@@ -77,6 +79,13 @@ def read_tlv(f: typing.BinaryIO) -> (TlvHeader, bytes):
 
 
 def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
+    """
+    Decode a value from a file-like IO, returning the primary part as a dict
+    and the secondary part (if present) as raw bytes.
+    :param f: file-like IO to read from
+    :param dlen: length of the value
+    :return: primary value (as dict) and secondary value (bytes or None)
+    """
     unpacker = msgpack.Unpacker(f)
     val = unpacker.unpack()
 
@@ -91,7 +100,7 @@ def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
     secondary = bytes(0)
 
     try:
-        sec_enc = val['s'][0]  # Encoding specifier of secondary part
+        sec_enc = val['s'][0]   # Encoding specifier of secondary part
         sec_len = sec_enc['l']  # Length of secondary part
         f.seek(dlen - sec_len)  # MsgPack may have read the secondary part already, so seek back to it
         secondary = f.read(sec_len)
@@ -109,6 +118,9 @@ def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
 
 
 def parse_versionid(version_str: str) -> VersionID:
+    """
+    Parse a version ID string into a VersionID tuple.
+    """
     # First 26 characters is a ULID specifying the version
     version = ULID.from_str(version_str[:26])
     # Remaining characters (after a ':' separator) are bucket/object name
@@ -118,10 +130,16 @@ def parse_versionid(version_str: str) -> VersionID:
 
 
 def parse_range(range: dict) -> Range:
+    """
+    Convert dict form of range (from decode_value) to Range tuple.
+    """
     return Range(start=range['s'], len=range['l'])
 
 
 def parse_pack_entry(pack_entry: dict) -> PackEntry:
+    """
+    Convert dict form of pack entry (from decode_value) to PackEntry tuple.
+    """
     return PackEntry(
         packid=ULID.from_str(pack_entry['p']),
         sourcerange=parse_range(pack_entry['o']),
@@ -132,15 +150,24 @@ def parse_pack_entry(pack_entry: dict) -> PackEntry:
 
 
 def parse_packs(packs: list) -> list:
+    """
+    Convert list of pack entries to list of PackEntry tuples.
+    """
     return [parse_pack_entry(p) for p in packs]
 
 
 def parse_block(part1: dict, part2: bytes) -> Block:
+    """
+    Parse a block from decode_value into a Block tuple.
+    """
     versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
     return Block(versionid=versionid, data=part2)
 
 
 def parse_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
+    """
+    Parse a pack list from decode_value into a PackList tuple.
+    """
     versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
     uploadid = part1['U']  # Key 'U' is the upload ID (if multipart) or none if single PUT
     packs = parse_packs(part1['P'])
@@ -154,32 +181,21 @@ def parse_version(part1: dict, part2: Optional[bytes]):
     raise NotImplementedError("can't do versions yet")
 
 
-debug_handlers = {
-    b'bk': parse_block,
-    b'pl': parse_packlist,
-    b'vr': parse_version,
-}
+def ltfsvof_reader(f: typing.BinaryIO):
+    handlers = {b'bk': parse_block,
+                b'pl': parse_packlist,
+                b'vr': parse_version}
 
-
-def tlv_reader(f: typing.BinaryIO):
     while True:
         try:
             header, data = read_tlv(f)
-            if header.tag not in debug_handlers:
+            if header.tag not in handlers:
                 raise RuntimeError(f'unknown tag {header.tag}; no handler registered')
             part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-            entry = debug_handlers[header.tag](part1, part2)
+            entry = handlers[header.tag](part1, part2)
             yield entry
         except EOFError:
             break
-
-
-def read_tlv_file(f: typing.BinaryIO, handlers) -> None:
-    header, data = read_tlv(f)
-    if header.tag not in handlers:
-        raise RuntimeError(f'unknown tag {header.tag}; no handler registered')
-    part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-    handlers[header.tag](part1, part2)
 
 
 class TlvTests(unittest.TestCase):
@@ -233,7 +249,7 @@ class ValueTests(unittest.TestCase):
 class BlockTests(unittest.TestCase):
     def test_read_block(self):
         with open('sample_data/7YGGZJ4YR0R4C0ZACA24BAB17Q.blk', 'rb') as f:
-            for entry in tlv_reader(f):
+            for entry in ltfsvof_reader(f):
                 pprint(entry)
 
 
