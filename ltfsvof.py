@@ -26,7 +26,12 @@ Block = namedtuple('Block', 'versionid data')
 Range = namedtuple('Range', 'start len')
 PackEntry = namedtuple('PackEntry', 'packid sourcerange packrange blocklens sourcelens')
 PackList = namedtuple('PackList', 'versionid uploadid packs')
-
+ACL = namedtuple('ACL', 'idtype id permissions')
+CryptData = namedtuple('CryptData', 'type datakey extra')
+Clone = namedtuple('Clone', 'pool data flags blocklen len')
+Version = namedtuple('Version', 'versionid owner acls len etag deletemarker nullversion '
+                                'crypt clones metadata usermetadata legalhold data')
+VersionDelete = namedtuple('VersionDelete', 'versionid deleteid')
 
 def read_tlv_header(f: typing.BinaryIO) -> TlvHeader:
     """
@@ -90,7 +95,8 @@ def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
     val = unpacker.unpack()
 
     if 'z' in val:
-        raise 'encrypted values not supported'  # TODO: decrypt
+        # TODO: take apart z to obtain key properties, consult KMS for key, decrypt
+        raise NotImplementedError('encrypted values not supported')
 
     # Decompress encoded value if compressed
     if val.get('c') == 1:
@@ -100,7 +106,7 @@ def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
     secondary = bytes(0)
 
     try:
-        sec_enc = val['s'][0]   # Encoding specifier of secondary part
+        sec_enc = val['s'][0]  # Encoding specifier of secondary part
         sec_len = sec_enc['l']  # Length of secondary part
         f.seek(dlen - sec_len)  # MsgPack may have read the secondary part already, so seek back to it
         secondary = f.read(sec_len)
@@ -117,7 +123,7 @@ def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
     return primary, secondary
 
 
-def parse_versionid(version_str: str) -> VersionID:
+def str_to_versionid(version_str: str) -> VersionID:
     """
     Parse a version ID string into a VersionID tuple.
     """
@@ -129,62 +135,146 @@ def parse_versionid(version_str: str) -> VersionID:
     return VersionID(bucket=bucket, object=object, version=version)
 
 
-def parse_range(range: dict) -> Range:
+def dict_to_versionid(version_dict: dict) -> VersionID:
+    """
+    Convert dict form of version ID (from decode_value) to VersionID tuple.
+    """
+    return VersionID(
+        bucket=version_dict['b'],
+        object=version_dict['o'],
+        version=ULID.from_str(version_dict['v']),
+    )
+
+
+def dict_to_range(range: dict) -> Range:
     """
     Convert dict form of range (from decode_value) to Range tuple.
     """
     return Range(start=range['s'], len=range['l'])
 
 
-def parse_pack_entry(pack_entry: dict) -> PackEntry:
+def dict_to_packentry(pack_entry: dict) -> PackEntry:
     """
     Convert dict form of pack entry (from decode_value) to PackEntry tuple.
     """
     return PackEntry(
         packid=ULID.from_str(pack_entry['p']),
-        sourcerange=parse_range(pack_entry['o']),
-        packrange=parse_range(pack_entry['t']),
+        sourcerange=dict_to_range(pack_entry['o']),
+        packrange=dict_to_range(pack_entry['t']),
         blocklens=pack_entry['E'],
         sourcelens=pack_entry['N'],
     )
 
 
-def parse_packs(packs: list) -> list:
+def dict_to_acl(acl_dict: dict) -> ACL:
     """
-    Convert list of pack entries to list of PackEntry tuples.
+    Convert dict form of ACL (from decode_value) to ACL tuple.
     """
-    return [parse_pack_entry(p) for p in packs]
+    return ACL(
+        idtype=acl_dict['t'],  # 0: user, 1: group
+        id=acl_dict['i'],  # user/group ID
+        permissions=acl_dict['p'],  # 1: read, 2: write, 4: read acl, 8: write acl
+    )
 
 
-def parse_block(part1: dict, part2: bytes) -> Block:
+def dict_to_cryptdata(cryptdata_dict: dict) -> CryptData:
+    """
+    Convert dict form of cryptdata (from decode_value) to CryptData tuple.
+    """
+    return CryptData(
+        type=cryptdata_dict['x'],  # 0: none, 1: customer managed key, 2: S3 managed key
+        datakey=cryptdata_dict['k'],  # encrypted data key or MD5 of customer key
+        extra=cryptdata_dict['e'],  # extra string data
+    )
+
+def dict_to_clone(clone_dict: dict) -> Clone:
+    """
+    Convert dict form of clone (from decode_value) to Clone tuple.
+    """
+    # TODO: take apart MessagePack-encoded data field
+    return Clone(
+        pool=clone_dict['p'],
+        data=clone_dict['l'],
+        flags=clone_dict['f'],
+        blocklen=clone_dict['B'],
+        len=clone_dict['s'],
+    )
+
+
+def handle_block(part1: dict, part2: bytes) -> Block:
     """
     Parse a block from decode_value into a Block tuple.
     """
-    versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
-    return Block(versionid=versionid, data=part2)
+    return Block(versionid=str_to_versionid(part1['I']), data=part2)
 
 
-def parse_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
+def handle_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
     """
     Parse a pack list from decode_value into a PackList tuple.
     """
-    versionid = parse_versionid(part1['I'])  # Key 'I' is the version ID
-    uploadid = part1['U']  # Key 'U' is the upload ID (if multipart) or none if single PUT
-    packs = parse_packs(part1['P'])
-    packlist = PackList(versionid=versionid, uploadid=uploadid, packs=packs)
-    return packlist
+    return PackList(versionid=str_to_versionid(part1['I']),
+                    uploadid=part1['U'],
+                    packs=[dict_to_packentry(p) for p in part1['P']])
 
 
-def parse_version(part1: dict, part2: Optional[bytes]):
-    print('version:')
-    pprint(part1)
-    raise NotImplementedError("can't do versions yet")
+def handle_version(part1: dict, part2: Optional[bytes]):
+    """
+    Parse a version from decode_value into a Version tuple.
+    """
+    return Version(
+        versionid=dict_to_versionid(part1),
+        owner=part1['w'],
+        acls=[dict_to_acl(a) for a in part1['A']],
+        len=part1['l'],
+        etag=part1['e'],
+        deletemarker=part1['d'],
+        nullversion=part1['N'],
+        crypt=dict_to_cryptdata(part1['C']),
+        clones=[dict_to_clone(c) for c in part1['p']],
+        metadata=part1['s'],
+        usermetadata=part1['m'],
+        legalhold=part1['h'],
+        data=part1['D'])
+
+
+def handle_version_delete(part1: dict, part2: Optional[bytes]):
+    """
+    Parse a version delete from decode_value into a VersionDelete tuple.
+    """
+    return VersionDelete(
+        versionid=dict_to_versionid(part1),
+        deleteid=part1['???'],
+    )
+
+
+def data_pack_reader(f: typing.BinaryIO):
+    """
+    Scan a data pack file, yielding each entry as a Block or PackList tuple.
+    :param f: TLV-encoded data pack file
+    """
+    handlers = {b'bk': handle_block, b'pl': handle_packlist}
+
+    while True:
+        try:
+            header, data = read_tlv(f)
+            if header.tag not in handlers:
+                raise RuntimeError(f'unknown tag {header.tag}; no handler registered')
+            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
+            entry = handlers[header.tag](part1, part2)
+            yield entry
+        except EOFError:
+            break
 
 
 def ltfsvof_reader(f: typing.BinaryIO):
-    handlers = {b'bk': parse_block,
-                b'pl': parse_packlist,
-                b'vr': parse_version}
+    """
+    Scan any LTFS-VOF file, yielding each entry as tuple of the appropriate type.
+    :param f: file-like stream with TLV-encoded blocks or versions
+    """
+    handlers = {b'bk': handle_block,
+                b'pl': handle_packlist,
+                b'vr': handle_version,
+                b'vd': handle_version_delete}
 
     while True:
         try:
@@ -209,7 +299,7 @@ class TlvTests(unittest.TestCase):
             self.assertEqual(header.dlen, 14)
             self.assertEqual(header.hashtype, 8)
             self.assertEqual(header.version, 0)
-            self.assertEqual(header.tag, 0x4321)
+            self.assertEqual(header.tag, b'C!')
 
     def test_read_tlv(self):
         with io.BytesIO(self.tlv_data) as f:
@@ -219,13 +309,13 @@ class TlvTests(unittest.TestCase):
     def test_3tlv(self):
         with open('sample_data/3simple.tlv', 'rb') as f:
             header, data = read_tlv(f)
-            self.assertEqual(header.tag, 0x626B)
+            self.assertEqual(header.tag, b'bk')
             self.assertEqual(data, b'data 1')
             header, data = read_tlv(f)
-            self.assertEqual(header.tag, 0x626B)
+            self.assertEqual(header.tag, b'bk')
             self.assertEqual(data, b'data 2')
             header, data = read_tlv(f)
-            self.assertEqual(header.tag, 0x626B)
+            self.assertEqual(header.tag, b'bk')
             self.assertEqual(data, b'data 3')
 
 
@@ -249,7 +339,7 @@ class ValueTests(unittest.TestCase):
 class BlockTests(unittest.TestCase):
     def test_read_block(self):
         with open('sample_data/7YGGZJ4YR0R4C0ZACA24BAB17Q.blk', 'rb') as f:
-            for entry in ltfsvof_reader(f):
+            for entry in data_pack_reader(f):
                 pprint(entry)
 
 
