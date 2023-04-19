@@ -17,7 +17,6 @@ from xxhash import xxh64
 
 # TODO: add support for encrypted values
 # TODO: version delete structure
-# TODO: decode version clone (dataref)
 
 TlvHeader = namedtuple('TlvHeader', 'magic dlen dhash version tag hashtype hhash')
 VersionID = namedtuple('VersionID', 'bucket object version')
@@ -28,9 +27,21 @@ PackList = namedtuple('PackList', 'versionid uploadid packs')
 ACL = namedtuple('ACL', 'idtype id permissions')
 CryptData = namedtuple('CryptData', 'type datakey extra')
 Clone = namedtuple('Clone', 'pool data flags blocklen len')
+PackReference = namedtuple('PackReference', 'pack packrange')
 Version = namedtuple('Version', 'versionid owner acls len etag deletemarker nullversion '
                                 'crypt clones metadata usermetadata legalhold data')
 VersionDelete = namedtuple('VersionDelete', 'versionid deleteid')
+
+# TODO: would be nice to have this kind of API:
+# packlist = Packlist.from_stream(f)
+
+class Packs(list):
+    """
+    List type defined so that can easily tell the difference between a pack reference and a list of PackEntry.
+    """
+    def __repr__(self):
+        return f'Packs({super().__repr__()})'
+
 
 def read_tlv_header(f: typing.BinaryIO) -> TlvHeader:
     """
@@ -193,11 +204,26 @@ def dict_to_clone(clone_dict: dict) -> Clone:
     """
     Convert dict form of clone (from decode_value) to Clone tuple.
     """
-    # TODO: take apart MessagePack-encoded data field
+    # attempt messagepack decode of data field
+    data = clone_dict['l']
+    try:
+        # see if this is a pack list
+        ref = msgpack.unpackb(data)
+        if 'p' in ref:
+            data = Packs([dict_to_packentry(p) for p in ref['p']])
+        elif 'R' in ref:
+            data = PackReference(
+                pack=ref['R']['k'],
+                packrange=dict_to_range(ref['R']['r']),
+            )
+    except msgpack.FormatError:
+        # must not be msgpack, so leave data field as-is
+        pass
+
     return Clone(
         pool=clone_dict['p'],
-        data=clone_dict['l'],
-        flags=clone_dict['f'],
+        data=data,
+        flags=clone_dict.get('f', 0),
         blocklen=clone_dict['B'],
         len=clone_dict['s'],
     )
@@ -216,7 +242,7 @@ def handle_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
     """
     return PackList(versionid=str_to_versionid(part1['I']),
                     uploadid=part1.get('U'),
-                    packs=[dict_to_packentry(p) for p in part1.get('P', [])])
+                    packs=Packs([dict_to_packentry(p) for p in part1.get('P', [])]))
 
 
 def handle_version(part1: dict, part2: Optional[bytes]):
@@ -276,7 +302,7 @@ def ltfsvof_reader(f: typing.BinaryIO):
     """
     handlers = {b'bk': handle_block,
                 b'ol': handle_packlist,
-                b'vr': handle_version,
+                b'vm': handle_version,
                 b'vd': handle_version_delete}
 
     while True:
@@ -375,9 +401,25 @@ class BlockTests(unittest.TestCase):
 
 class VersionTests(unittest.TestCase):
     def test_read_version(self):
-        with open('sample_data/minimal_version.ver', 'rb') as f:
+        with open('sample_data/7YF1JH4PP45BYWK21Y7H0YHFYN.ver', 'rb') as f:
             for entry in ltfsvof_reader(f):
-                pprint(entry)
+                # pprint(entry)
+
+                if isinstance(entry, Version):
+                    v: Version = entry
+                    if isinstance(v.clones[0].data, Packs):
+                        print('version has embedded packlist')
+                        pprint(v.clones[0].data)
+                    elif isinstance(v.clones[0].data, PackReference):
+                        pr: PackReference = v.clones[0].data
+                        print(f'need to load packlist from {pr.pack}')
+                        with open(f'sample_data/{pr.pack}.blk', 'rb') as f2:
+                            f2.seek(pr.packrange.start)
+                            header, data = read_tlv(f2)
+                            self.assertEqual(header.tag, b'ol')
+                            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
+                            packlist = handle_packlist(part1, part2)
+                            pprint(packlist.packs)
 
 
 if __name__ == '__main__':
