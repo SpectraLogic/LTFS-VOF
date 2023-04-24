@@ -1,279 +1,334 @@
+from __future__ import annotations
+
 import base64
 import io
-from pprint import pprint
-from ulid import ULID
-
 import msgpack
 import typing
 import unittest
-from collections import namedtuple
+import zstd
+from pprint import pprint
+from ulid import ULID
 from struct import unpack
 from typing import Optional
-
-import zstd
 from xxhash import xxh64
 
-# from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 # TODO: add support for encrypted values
 # TODO: version delete structure
 
-TlvHeader = namedtuple('TlvHeader', 'magic dlen dhash version tag hashtype hhash')
-VersionID = namedtuple('VersionID', 'bucket object version')
-Block = namedtuple('Block', 'versionid data')
-Range = namedtuple('Range', 'start len')
-PackEntry = namedtuple('PackEntry', 'packid sourcerange packrange blocklens sourcelens')
-PackList = namedtuple('PackList', 'versionid uploadid packs')
-ACL = namedtuple('ACL', 'idtype id permissions')
-CryptData = namedtuple('CryptData', 'type datakey extra')
-Clone = namedtuple('Clone', 'pool data flags blocklen len')
-PackReference = namedtuple('PackReference', 'pack packrange')
-Version = namedtuple('Version', 'versionid owner acls len etag deletemarker nullversion '
-                                'crypt clones metadata usermetadata legalhold data')
-VersionDelete = namedtuple('VersionDelete', 'versionid deleteid')
+class TlvHeader:
+    def __init__(self, f: typing.BinaryIO):
+        buf = f.read(32)
 
-# TODO: would be nice to have this kind of API:
-# packlist = Packlist.from_stream(f)
+        if len(buf) == 0:
+            raise EOFError
+
+        if len(buf) < 32:
+            raise RuntimeError(f'TLV header too short; need 32 bytes, got {len(buf)}')
+
+        self.magic, self.dlen, self.dhash, self.version, \
+            self.tag, self.hashtype, self.hhash = unpack("!8sQQB2sBxxH", buf)
+
+        if self.magic != b'\x89TLV\r\n\x1a\n':
+            raise 'invalid TLV header magic'
+
+        if self.version != 0:
+            raise f'unknown version {self.version}; can only handle TLV version 0'
+
+        if self.hashtype != 8:
+            raise f'invalid hash type {self.hashtype}; can only handle 8 (xxhash64)'
+
+        if self.hhash != (xxh64(buf[0:30]).intdigest() % 2 ** 16):
+            raise 'TLV header hash mismatch'
+
+    def __repr__(self):
+        return f'TlvHeader(tag {self.tag}, dlen {self.dlen})'
+
+
+class TlvSimple:
+    """
+    Simple form of TLV that consumes a TLV from a stream, validates its integrity, but
+    does not do any decoding on the value.
+    """
+
+    def __init__(self, f: typing.BinaryIO):
+        """
+        Creates a TLV from input stream f, leaving the stream positioned at the start of the next TLV.
+        :param f: any file-like stream.
+        """
+        self.header = TlvHeader(f)
+        self.data = f.read(self.header.dlen)
+
+        if len(self.data) < self.header.dlen:
+            raise f'short data read: expected {self.header.dlen} bytes, got {len(self.data)}'
+
+        if self.header.dhash != xxh64(self.data).intdigest():
+            raise "TLV data hash mismatch"
+
+    def __repr__(self):
+        return f'TLV (tag {self.header.tag}, dlen {len(self.data)})'
+
+
+class TLV:
+    """
+    TLV reader that reads a TLV from a stream, validates its integrity, and decodes the value.
+    """
+
+    def __init__(self, f: typing.BinaryIO):
+        """
+        Creates a TLV from input stream f, leaving the stream positioned at the start of the next TLV.
+        :param f: any file-like stream.
+        """
+        self.header = TlvHeader(f)
+        data = f.read(self.header.dlen)
+
+        if len(data) < self.header.dlen:
+            raise f'short data read: expected {self.header.dlen} bytes, got {len(data)}'
+
+        if self.header.dhash != xxh64(data).intdigest():
+            raise "TLV data hash mismatch"
+
+        self.__decode_value(data)
+
+    def __decode_value(self, data: bytes):
+        """
+        Decode a value from self.data, setting the primary part as self.value
+        and the secondary part (if present) as self.secondary. self.value
+        will be a dict and self.secondary will be bytes or None.
+        """
+        # Use streaming unpacker because extra data may be present
+        unpacker = msgpack.Unpacker(io.BytesIO(data), use_list=False)
+        val: dict = unpacker.unpack()
+
+        if 'z' in val:
+            # TODO: take apart z to obtain key properties, consult KMS for key, decrypt
+            raise NotImplementedError('encrypted values not supported')
+
+        # Decompress encoded value if compressed
+        if val.get('c') == 1:
+            val['e'] = zstd.decompress(val['e'])
+
+        self.value: dict = msgpack.unpackb(val['e'], use_list=False)
+        self.secondary: bytes = bytes(0)
+
+        try:
+            sec_enc = val['s'][0]  # Encoding specifier of secondary part
+            sec_len = sec_enc['l']  # Length of secondary part
+            self.secondary = data[len(data) - sec_len:]
+
+            # If secondary encoding specifies compression, or that key is missing and primary encoding specifies
+            # compression, then decompress the secondary value.
+            if sec_enc.get('c', val.get('c')) == 1:
+                self.secondary = zstd.decompress(self.secondary)
+        except IndexError:
+            pass  # no secondary part
+        except KeyError:
+            pass  # no secondary part
+
+    def __repr__(self):
+        return f'TLV (tag {self.header.tag})'
+
+
+class VersionID:
+    """
+    VersionID represents a LTFS-VOF composite version identifier.
+    """
+
+    def __init__(self, bucket: str, object: str, version: str):
+        self.bucket: str = bucket
+        self.object: str = object
+        self.version: str = version
+
+    def __repr__(self):
+        return f'VersionID({self.bucket}, {self.object}, {self.version})'
+
+    @classmethod
+    def from_str(cls, v_str: str) -> VersionID:
+        """
+        Parse a version string into a VersionID.
+        """
+        # First 26 characters is a ULID specifying the version
+        version = ULID.from_str(v_str[:26])
+        # Remaining characters (after a ':' separator) are bucket/object name
+        bucket, object = v_str[27:].split('/', maxsplit=1)
+        # Together these form the complete version identifier
+        return cls(bucket=bucket, object=object, version=version)
+
+    @classmethod
+    def from_dict(cls, v_dict: dict) -> VersionID:
+        """
+        Convert dict form of version to VersionID.
+        """
+        return cls(v_dict['b'], v_dict['o'], ULID.from_str(v_dict['v']))
+
+
+class Block:
+    """
+    Block represents a single block of object data.
+    """
+
+    def __init__(self, tlv: TLV):
+        self.versionid: VersionID = VersionID.from_str(tlv.value['I'])
+        self.data: bytes = tlv.secondary
+
+    def __repr__(self):
+        return f'Block({self.versionid}, {len(self.data)} bytes)'
+
+
+class Range:
+    """
+    Range simply stores a start offset and length.
+    """
+
+    def __init__(self, r_dict: dict):
+        self.start: int = r_dict.get('s', 0)
+        self.len: int = r_dict.get('l', 0)
+
+    def __repr__(self):
+        return f'Range(start {self.start}, len {self.len})'
+
+
+class PackEntry:
+    def __init__(self, pe_dict: dict):
+        self.packid: ULID = ULID.from_str(pe_dict['p'])
+        self.sourcerange: Range = Range(pe_dict['o'])
+        self.packrange: Range = Range(pe_dict['t'])
+        self.blocklens: list[int] = pe_dict.get('E', [])
+        self.sourcelens: list[int] = pe_dict.get('N', [])
+
+    def __repr__(self):
+        return f'PackEntry({self.packid}, src {self.sourcerange}, pack {self.packrange})'
+
 
 class Packs(list):
     """
-    List type defined so that can easily tell the difference between a pack reference and a list of PackEntry.
+    List type defined so that can easily tell the difference between a pack reference and a list[PackEntry].
     """
+
     def __repr__(self):
         return f'Packs({super().__repr__()})'
 
 
-def read_tlv_header(f: typing.BinaryIO) -> TlvHeader:
+class PackList:
     """
-    Read, validate, and decode one TLV header from a file-like IO, leaving
-    the IO positioned at the start of the value.
-    :param f: file-like IO to read from
-    :return: decoded TLV header tuple
+    PackList is a stored map of one version's list of packs storing that version's data.
     """
-    header_raw = f.read(32)
 
-    if len(header_raw) == 0:
-        raise EOFError
+    def __init__(self, tlv: TLV):
+        self.versionid: VersionID = VersionID.from_str(tlv.value['I'])
+        self.uploadid: str = tlv.value.get('U', '')
+        self.packs: Packs = Packs([PackEntry(pe_dict) for pe_dict in tlv.value.get('P', [])])
 
-    if len(header_raw) < 32:
-        raise RuntimeError(f'TLV header too short; need 32 bytes, got {len(header_raw)}')
-
-    h = TlvHeader._make(unpack("!8sQQB2sBxxH", header_raw))
-
-    if h.magic != b'\x89TLV\r\n\x1a\n':
-        raise 'invalid TLV header magic'
-
-    if h.version != 0:
-        raise f'unknown version {h.version}; can only handle TLV version 0'
-
-    if h.hashtype != 8:
-        raise f'invalid hash type {h.hashtype}; can only handle 8 (xxhash64)'
-
-    if h.hhash != (xxh64(header_raw[0:30]).intdigest() % 2 ** 16):
-        raise 'TLV header hash mismatch'
-
-    return h
+    def __repr__(self):
+        return f'PackList({self.versionid}, {len(self.packs)} PackEntry)'
 
 
-def read_tlv(f: typing.BinaryIO) -> (TlvHeader, bytes):
+class ACL:
     """
-    Read a complete TLV from the file-like IO, leaving the IO positioned at the start of the next TLV.
-    :param f: file-like IO to read from
-    :return: TLV header tuple and value bytes
+    ACL represents a single ACL entry.
     """
-    header = read_tlv_header(f)
-    data = f.read(header.dlen)
 
-    if len(data) < header.dlen:
-        raise f'short data read: expected {header.dlen} bytes, got {len(data)}'
+    def __init__(self, acl_dict: dict):
+        self.idtype: int = acl_dict['t']  # 0: user, 1: group
+        self.id: str = acl_dict['i']  # user/group ID
+        self.permissions: int = acl_dict['p']  # 1: read, 2: write, 4: read acl, 8: write acl
 
-    if header.dhash != xxh64(data).intdigest():
-        raise "TLV data hash mismatch"
-
-    return header, data
+    def __repr__(self):
+        return f'ACL({self.idtype}, {self.id}, {self.permissions})'
 
 
-def decode_value(f: typing.BinaryIO, dlen: int) -> (dict, Optional[bytes]):
+class CryptData:
     """
-    Decode a value from a file-like IO, returning the primary part as a dict
-    and the secondary part (if present) as raw bytes.
-    :param f: file-like IO to read from
-    :param dlen: length of the value
-    :return: primary value (as dict) and secondary value (bytes or None)
+    CryptData represents the encryption metadata for an object.
     """
-    unpacker = msgpack.Unpacker(f)
-    val = unpacker.unpack()
 
-    if 'z' in val:
-        # TODO: take apart z to obtain key properties, consult KMS for key, decrypt
-        raise NotImplementedError('encrypted values not supported')
+    def __init__(self, cd_dict: dict):
+        self.type: int = cd_dict['x']  # 0: none, 1: customer managed key, 2: S3 managed key
+        self.datakey: bytes = cd_dict['k']  # encrypted data key or MD5 of customer key
+        self.extra: bytes = cd_dict['e']  # extra string data
 
-    # Decompress encoded value if compressed
-    if val.get('c') == 1:
-        val['e'] = zstd.decompress(val['e'])
-
-    primary = msgpack.unpackb(val['e'])
-    secondary = bytes(0)
-
-    try:
-        sec_enc = val['s'][0]  # Encoding specifier of secondary part
-        sec_len = sec_enc['l']  # Length of secondary part
-        f.seek(dlen - sec_len)  # MsgPack may have read the secondary part already, so seek back to it
-        secondary = f.read(sec_len)
-
-        # If secondary encoding specifies compression, or that key is missing and primary encoding specifies
-        # compression, then decompress the secondary value.
-        if sec_enc.get('c', val.get('c')) == 1:
-            secondary = zstd.decompress(secondary)
-    except IndexError:
-        pass  # no secondary part
-    except KeyError:
-        pass  # no secondary part
-
-    return primary, secondary
+    def __repr__(self):
+        return f'CryptData({self.type}, {self.datakey}, {self.extra})'
 
 
-def str_to_versionid(version_str: str) -> VersionID:
+class PackReference:
     """
-    Parse a version ID string into a VersionID tuple.
+    PackReference represents a reference to a pack.
     """
-    # First 26 characters is a ULID specifying the version
-    version = ULID.from_str(version_str[:26])
-    # Remaining characters (after a ':' separator) are bucket/object name
-    bucket, object = version_str[27:].split('/', maxsplit=1)
-    # Together these form the complete version identifier
-    return VersionID(bucket=bucket, object=object, version=version)
+
+    def __init__(self, pr_dict: dict):
+        self.pack: str = pr_dict['k']
+        self.packrange: Range = Range(pr_dict['r'])
+
+    def __repr__(self):
+        return f'PackReference({self.pack}, {self.packrange})'
 
 
-def dict_to_versionid(version_dict: dict) -> VersionID:
+class Clone:
     """
-    Convert dict form of version ID to VersionID tuple.
+    Clone represents a single clone of an object.
     """
-    return VersionID(
-        bucket=version_dict['b'],
-        object=version_dict['o'],
-        version=ULID.from_str(version_dict['v']),
-    )
+
+    def __init__(self, clone_dict: dict):
+        data = clone_dict['l']
+        try:
+            # see if this is a pack list
+            ref = msgpack.unpackb(data)
+            if 'p' in ref:
+                data = Packs([PackEntry(p) for p in ref['p']])
+            elif 'R' in ref:
+                data = PackReference(ref['R'])
+        except msgpack.FormatError:
+            # must not be msgpack, so leave data field as-is
+            pass
+
+        self.pool: str = clone_dict['p']
+        self.data: Packs | PackReference | bytes = data
+        self.flags: int = clone_dict.get('f', 0)
+        self.blocklen: int = clone_dict['B']
+        self.len: int = clone_dict['s']
+
+    def __repr__(self):
+        return f'Clone({self.pool}, {self.data}, {self.flags}, {self.blocklen}, {self.len})'
 
 
-def dict_to_range(range: dict) -> Range:
+class Version:
     """
-    Convert dict form of range (from decode_value) to Range tuple.
+    Version represents a single version of an object.
     """
-    return Range(start=range.get('s', 0), len=range.get('l', 0))
+
+    def __init__(self, tlv: TLV):
+        val = tlv.value
+        self.versionid: VersionID = VersionID.from_dict(val)
+        self.owner: str = val.get('w', '')
+        self.acls: list[ACL] = [ACL(a) for a in val.get('A', [])]
+        self.len: int = val.get('l', 0)
+        self.etag: str = val.get('e', '')
+        self.deletemarker: bool = val.get('d', False)
+        self.nullversion: bool = val.get('N', False)
+        self.crypt: Optional[CryptData] = CryptData(val['c']) if 'c' in val else None
+        self.clones: list[Clone] = [Clone(c) for c in val.get('p', [])]
+        self.metadata: dict[str, str] = val.get('s', {})
+        self.usermetadata: dict[str, str] = val.get('m', {})
+        self.legalhold: bool = val.get('h', False)
+        self.data: bytes = val.get('D', b'')
+
+    def __repr__(self):
+        return f'Version(id {self.versionid})'
 
 
-def dict_to_packentry(pack_entry: dict) -> PackEntry:
+class VersionDelete:
     """
-    Convert dict form of pack entry (from decode_value) to PackEntry tuple.
+    VersionDelete represents the deletion of a single verison.
     """
-    return PackEntry(
-        packid=ULID.from_str(pack_entry['p']),
-        sourcerange=dict_to_range(pack_entry['o']),
-        packrange=dict_to_range(pack_entry['t']),
-        blocklens=pack_entry.get('E', []),
-        sourcelens=pack_entry.get('N', []),
-    )
 
+    def __init__(self, tlv: TLV):
+        # TODO: update for version delete structure once tags are known
+        self.versionid: VersionID = VersionID.from_dict(tlv.value)
+        self.deleteid: VersionID = VersionID.from_str(tlv.value['???'])
 
-def dict_to_acl(acl_dict: dict) -> ACL:
-    """
-    Convert dict form of ACL (from decode_value) to ACL tuple.
-    """
-    return ACL(
-        idtype=acl_dict['t'],  # 0: user, 1: group
-        id=acl_dict['i'],  # user/group ID
-        permissions=acl_dict['p'],  # 1: read, 2: write, 4: read acl, 8: write acl
-    )
-
-
-def dict_to_cryptdata(cryptdata_dict: dict) -> Optional[CryptData]:
-    """
-    Convert dict form of cryptdata (from decode_value) to CryptData tuple.
-    """
-    if cryptdata_dict is None:
-        return None
-
-    return CryptData(
-        type=cryptdata_dict['x'],  # 0: none, 1: customer managed key, 2: S3 managed key
-        datakey=cryptdata_dict['k'],  # encrypted data key or MD5 of customer key
-        extra=cryptdata_dict['e'],  # extra string data
-    )
-
-def dict_to_clone(clone_dict: dict) -> Clone:
-    """
-    Convert dict form of clone (from decode_value) to Clone tuple.
-    """
-    # attempt messagepack decode of data field
-    data = clone_dict['l']
-    try:
-        # see if this is a pack list
-        ref = msgpack.unpackb(data)
-        if 'p' in ref:
-            data = Packs([dict_to_packentry(p) for p in ref['p']])
-        elif 'R' in ref:
-            data = PackReference(
-                pack=ref['R']['k'],
-                packrange=dict_to_range(ref['R']['r']),
-            )
-    except msgpack.FormatError:
-        # must not be msgpack, so leave data field as-is
-        pass
-
-    return Clone(
-        pool=clone_dict['p'],
-        data=data,
-        flags=clone_dict.get('f', 0),
-        blocklen=clone_dict['B'],
-        len=clone_dict['s'],
-    )
-
-
-def handle_block(part1: dict, part2: bytes) -> Block:
-    """
-    Parse a block from decode_value into a Block tuple.
-    """
-    return Block(versionid=str_to_versionid(part1['I']), data=part2)
-
-
-def handle_packlist(part1: dict, part2: Optional[bytes]) -> PackList:
-    """
-    Parse a pack list from decode_value into a PackList tuple.
-    """
-    return PackList(versionid=str_to_versionid(part1['I']),
-                    uploadid=part1.get('U'),
-                    packs=Packs([dict_to_packentry(p) for p in part1.get('P', [])]))
-
-
-def handle_version(part1: dict, part2: Optional[bytes]):
-    """
-    Parse a version from decode_value into a Version tuple.
-    """
-    return Version(
-        versionid=dict_to_versionid(part1),
-        owner=part1.get('w'),
-        acls=[dict_to_acl(a) for a in part1.get('A', [])],
-        len=part1.get('l'),
-        etag=part1.get('e'),
-        deletemarker=part1.get('d', False),
-        nullversion=part1.get('N', False),
-        crypt=dict_to_cryptdata(part1.get('C')),
-        clones=[dict_to_clone(c) for c in part1.get('p', [])],
-        metadata=part1.get('s', {}),
-        usermetadata=part1.get('m', {}),
-        legalhold=part1.get('h', False),
-        data=part1.get('D'))
-
-
-def handle_version_delete(part1: dict, part2: Optional[bytes]):
-    """
-    Parse a version delete from decode_value into a VersionDelete tuple.
-    """
-    # TODO: update for version delete structure once tags are known
-    return VersionDelete(
-        versionid=dict_to_versionid(part1),
-        deleteid=part1['???'],
-    )
+    def __repr__(self):
+        return f'VersionDelete(id {self.versionid}, deleteid {self.deleteid})'
 
 
 def data_pack_reader(f: typing.BinaryIO):
@@ -281,16 +336,15 @@ def data_pack_reader(f: typing.BinaryIO):
     Scan a data pack file, yielding each entry as a Block or PackList tuple.
     :param f: TLV-encoded data pack file
     """
-    handlers = {b'bk': handle_block, b'ol': handle_packlist}
+    handlers = {b'bk': Block, b'ol': PackList}
 
     while True:
         try:
-            header, data = read_tlv(f)
-            if header.tag not in handlers:
-                raise RuntimeError(f'unknown tag {header.tag}; no handler registered')
-            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-            entry = handlers[header.tag](part1, part2)
-            yield entry
+            tlv = TLV(f)
+            if tlv.header.tag not in handlers:
+                raise RuntimeError(f'unknown tag {tlv.header.tag}; no handler registered')
+
+            yield handlers[tlv.header.tag](tlv)
         except EOFError:
             break
 
@@ -300,19 +354,15 @@ def ltfsvof_reader(f: typing.BinaryIO):
     Scan any LTFS-VOF file, yielding each entry as tuple of the appropriate type.
     :param f: file-like stream with TLV-encoded blocks or versions
     """
-    handlers = {b'bk': handle_block,
-                b'ol': handle_packlist,
-                b'vm': handle_version,
-                b'vd': handle_version_delete}
+    handlers = {b'bk': Block, b'ol': PackList, b'vm': Version, b'vd': VersionDelete}
 
     while True:
         try:
-            header, data = read_tlv(f)
-            if header.tag not in handlers:
-                raise RuntimeError(f'unknown tag {header.tag}; no handler registered')
-            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-            entry = handlers[header.tag](part1, part2)
-            yield entry
+            tlv = TLV(f)
+            if tlv.header.tag not in handlers:
+                raise RuntimeError(f'unknown tag {tlv.header.tag}; no handler registered')
+
+            yield handlers[tlv.header.tag](tlv)
         except EOFError:
             break
 
@@ -323,7 +373,7 @@ class TlvTests(unittest.TestCase):
 
     def test_read_tlv_header(self):
         with io.BytesIO(self.tlv_data) as f:
-            header = read_tlv_header(f)
+            header = TlvHeader(f)
             self.assertEqual(header.magic, b'\x89TLV\x0d\x0a\x1a\x0a')
             self.assertEqual(header.dlen, 14)
             self.assertEqual(header.hashtype, 8)
@@ -332,37 +382,35 @@ class TlvTests(unittest.TestCase):
 
     def test_read_tlv(self):
         with io.BytesIO(self.tlv_data) as f:
-            header, data = read_tlv(f)
-            self.assertEqual(data, b'data data data')
+            tlv = TlvSimple(f)
+            self.assertEqual(tlv.data, b'data data data')
 
     def test_3tlv(self):
         with open('sample_data/3simple.tlv', 'rb') as f:
-            header, data = read_tlv(f)
-            self.assertEqual(header.tag, b'bk')
-            self.assertEqual(data, b'data 1')
-            header, data = read_tlv(f)
-            self.assertEqual(header.tag, b'bk')
-            self.assertEqual(data, b'data 2')
-            header, data = read_tlv(f)
-            self.assertEqual(header.tag, b'bk')
-            self.assertEqual(data, b'data 3')
+            tlv = TlvSimple(f)
+            self.assertEqual(tlv.header.tag, b'bk')
+            self.assertEqual(tlv.data, b'data 1')
+            tlv = TlvSimple(f)
+            self.assertEqual(tlv.header.tag, b'bk')
+            self.assertEqual(tlv.data, b'data 2')
+            tlv = TlvSimple(f)
+            self.assertEqual(tlv.header.tag, b'bk')
+            self.assertEqual(tlv.data, b'data 3')
 
 
 class ValueTests(unittest.TestCase):
     def test_value_decode(self):
         with open('sample_data/3values.tlv', 'rb') as f:
             for i in range(3):
-                header, data = read_tlv(f)
-                part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-                self.assertEqual(part1, bytes(f'value {i + 1} header', 'utf-8'))
-                self.assertEqual(part2, bytes(f'value {i + 1} data', 'utf-8'))
+                tlv = TLV(f)
+                self.assertEqual(tlv.value, bytes(f'value {i + 1} header', 'utf-8'))
+                self.assertEqual(tlv.secondary, bytes(f'value {i + 1} data', 'utf-8'))
 
     def test_compressed_value_decode(self):
         with open('sample_data/compressed_value.tlv', 'rb') as f:
-            header, data = read_tlv(f)
-            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-            self.assertEqual(part1, b'header header header header header header header header')
-            self.assertEqual(part2, b'data data data data data data data data data data data')
+            tlv = TLV(f)
+            self.assertEqual(tlv.value, b'header header header header header header header header')
+            self.assertEqual(tlv.secondary, b'data data data data data data data data data data data')
 
 
 class BlockTests(unittest.TestCase):
@@ -370,6 +418,7 @@ class BlockTests(unittest.TestCase):
         blocks = []
         packlist = None
 
+        # Sample file contains 3 simple blocks and a packlist
         with open('sample_data/3blocks.blk', 'rb') as f:
             for entry in data_pack_reader(f):
                 pprint(entry)
@@ -388,15 +437,22 @@ class BlockTests(unittest.TestCase):
 
         # Furthermore, we can read individual blocks based on the packlist
         with open('sample_data/3blocks.blk', 'rb') as f:
-            # Seek past the first two blocks
-            f.seek(packlist.packs[0].blocklens[0] + packlist.packs[0].blocklens[1])
-            # Now read the third block
-            header, data = read_tlv(f)
-            self.assertEqual(header.tag, b'bk')
-            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-            block3 = handle_block(part1, part2)
-            self.assertEqual(block3.data, b'block 3 data')
+            packentry = packlist.packs[0]
 
+            # Block 1 will be at the start of the pack range
+            f.seek(packentry.sourcerange.start)
+            block1 = Block(TLV(f))
+            self.assertEqual(block1.data, b'block 1 data')
+
+            # Block 2 will be start of pack range plus the first blocklen
+            f.seek(packentry.sourcerange.start + packentry.blocklens[0])
+            block2 = Block(TLV(f))
+            self.assertEqual(block2.data, b'block 2 data')
+
+            # Block 3 will be start of pack range plus the first two blocklens
+            f.seek(packentry.sourcerange.start + packentry.blocklens[0] + packentry.blocklens[1])
+            block3 = Block(TLV(f))
+            self.assertEqual(block3.data, b'block 3 data')
 
 
 class VersionTests(unittest.TestCase):
@@ -415,10 +471,7 @@ class VersionTests(unittest.TestCase):
                         print(f'need to load packlist from {pr.pack}')
                         with open(f'sample_data/{pr.pack}.blk', 'rb') as f2:
                             f2.seek(pr.packrange.start)
-                            header, data = read_tlv(f2)
-                            self.assertEqual(header.tag, b'ol')
-                            part1, part2 = decode_value(io.BytesIO(data), header.dlen)
-                            packlist = handle_packlist(part1, part2)
+                            packlist = PackList(TLV(f2))
                             pprint(packlist.packs)
 
 
