@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-39 199 928 552" width="928" height="552">
+  <defs>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="black">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <g id="Value_Encoding" stroke="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke-dasharray="none">
+    <title>Value Encoding</title>
+    <g id="Value_Encoding_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_40">
+        <path d="M -32.5 250 L 270 250 C 272.76142 250 275 252.23858 275 255 L 275 445 C 275 447.7614 272.76142 450 270 450 L -32.5 450 C -35.261424 450 -37.5 447.7614 -37.5 445 L -37.5 255 C -37.5 252.23858 -35.261424 250 -32.5 250 Z" fill="#ffffc0"/>
+        <path d="M -32.5 250 L 270 250 C 272.76142 250 275 252.23858 275 255 L 275 445 C 275 447.7614 272.76142 450 270 450 L -32.5 450 C -35.261424 450 -37.5 447.7614 -37.5 445 L -37.5 255 C -37.5 252.23858 -35.261424 250 -32.5 250 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(-32.5 251)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Encoded Value</tspan>
+        </text>
+      </g>
+      <g id="Graphic_2">
+        <text transform="translate(675 517.5)" fill="black">
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="13">Note: if primary part has a Crypt Info </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="32">and secondary part does not, the </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="51">secondary parts are assumed to be </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="70">encrypted in the same manner as the </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="89">primary part.</tspan>
+        </text>
+      </g>
+      <g id="Graphic_7">
+        <text transform="translate(-32.5 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Key</tspan>
+        </text>
+      </g>
+      <g id="Graphic_8">
+        <text transform="translate(5 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Value</tspan>
+        </text>
+      </g>
+      <g id="Graphic_9">
+        <text transform="translate(92.5 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Description</tspan>
+        </text>
+      </g>
+      <g id="Graphic_10">
+        <text transform="translate(-32.5 303)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">v</tspan>
+        </text>
+      </g>
+      <g id="Graphic_11">
+        <text transform="translate(5 303)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_12">
+        <text transform="translate(92.5 300)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Version</tspan>
+        </text>
+      </g>
+      <g id="Graphic_13">
+        <text transform="translate(-32.5 328)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">c</tspan>
+        </text>
+      </g>
+      <g id="Graphic_14">
+        <text transform="translate(5 328)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_15">
+        <text transform="translate(92.5 325)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Compression type</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <text transform="translate(-32.5 353)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">cl</tspan>
+        </text>
+      </g>
+      <g id="Graphic_17">
+        <text transform="translate(5 353)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_18">
+        <text transform="translate(92.5 350)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Pre-compressed length</tspan>
+        </text>
+      </g>
+      <g id="Graphic_19">
+        <text transform="translate(-32.5 378)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">z</tspan>
+        </text>
+      </g>
+      <g id="Graphic_20">
+        <text transform="translate(5 378)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">struct</tspan>
+        </text>
+      </g>
+      <g id="Graphic_21">
+        <text transform="translate(92.5 375)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt info</tspan>
+        </text>
+      </g>
+      <g id="Graphic_39">
+        <path d="M 342.5 250 L 545 250 C 547.7614 250 550 252.23858 550 255 L 550 370 C 550 372.76142 547.7614 375 545 375 L 342.5 375 C 339.73858 375 337.5 372.76142 337.5 370 L 337.5 255 C 337.5 252.23858 339.73858 250 342.5 250 Z" fill="#d8ddfe"/>
+        <path d="M 342.5 250 L 545 250 C 547.7614 250 550 252.23858 550 255 L 550 370 C 550 372.76142 547.7614 375 545 375 L 342.5 375 C 339.73858 375 337.5 372.76142 337.5 370 L 337.5 255 C 337.5 252.23858 339.73858 250 342.5 250 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(342.5 251)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt Info</tspan>
+        </text>
+      </g>
+      <g id="Graphic_22">
+        <text transform="translate(342.5 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Key</tspan>
+        </text>
+      </g>
+      <g id="Graphic_23">
+        <text transform="translate(380 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Value</tspan>
+        </text>
+      </g>
+      <g id="Graphic_24">
+        <text transform="translate(455 275)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Notes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_25">
+        <text transform="translate(342.5 303)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_26">
+        <text transform="translate(380 303)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_27">
+        <text transform="translate(455 300)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Algorithm</tspan>
+        </text>
+      </g>
+      <g id="Graphic_28">
+        <text transform="translate(342.5 328)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">n</tspan>
+        </text>
+      </g>
+      <g id="Graphic_29">
+        <text transform="translate(380 328)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">bytes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_30">
+        <text transform="translate(455 325)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Nonce</tspan>
+        </text>
+      </g>
+      <g id="Graphic_31">
+        <text transform="translate(342.5 353)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">d</tspan>
+        </text>
+      </g>
+      <g id="Graphic_32">
+        <text transform="translate(380 353)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">bytes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_33">
+        <text transform="translate(455 350)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt data</tspan>
+        </text>
+      </g>
+      <g id="Line_37">
+        <path d="M 175.01672 386.88827 L 300 387.5 L 300 262.5 L 324.6 262.5" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_41">
+        <text transform="translate(-32.5 403)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">e</tspan>
+        </text>
+      </g>
+      <g id="Graphic_42">
+        <text transform="translate(5 403)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">bytes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_43">
+        <text transform="translate(92.5 400)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Encoded structure</tspan>
+        </text>
+      </g>
+      <g id="Graphic_44">
+        <text transform="translate(-32.5 428)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">s</tspan>
+        </text>
+      </g>
+      <g id="Graphic_45">
+        <text transform="translate(5 428)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">[]struct</tspan>
+        </text>
+      </g>
+      <g id="Graphic_46">
+        <text transform="translate(92.5 425)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Secondary encoding(s)</tspan>
+        </text>
+      </g>
+      <g id="Graphic_47">
+        <path d="M 342.5 500 L 645 500 C 647.7614 500 650 502.2386 650 505 L 650 670 C 650 672.7614 647.7614 675 645 675 L 342.5 675 C 339.73858 675 337.5 672.7614 337.5 670 L 337.5 505 C 337.5 502.2386 339.73858 500 342.5 500 Z" fill="#ffe5d1"/>
+        <path d="M 342.5 500 L 645 500 C 647.7614 500 650 502.2386 650 505 L 650 670 C 650 672.7614 647.7614 675 645 675 L 342.5 675 C 339.73858 675 337.5 672.7614 337.5 670 L 337.5 505 C 337.5 502.2386 339.73858 500 342.5 500 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(342.5 501)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Secondary Encoding</tspan>
+        </text>
+      </g>
+      <g id="Graphic_48">
+        <text transform="translate(342.5 525)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Key</tspan>
+        </text>
+      </g>
+      <g id="Graphic_49">
+        <text transform="translate(380 525)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Value</tspan>
+        </text>
+      </g>
+      <g id="Graphic_50">
+        <text transform="translate(455 525)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Description</tspan>
+        </text>
+      </g>
+      <g id="Graphic_51">
+        <text transform="translate(342.5 553)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">v</tspan>
+        </text>
+      </g>
+      <g id="Graphic_52">
+        <text transform="translate(380 553)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_53">
+        <text transform="translate(455 550)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Version</tspan>
+        </text>
+      </g>
+      <g id="Graphic_54">
+        <text transform="translate(342.5 578)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">c</tspan>
+        </text>
+      </g>
+      <g id="Graphic_55">
+        <text transform="translate(380 578)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_56">
+        <text transform="translate(455 575)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Compression type</tspan>
+        </text>
+      </g>
+      <g id="Graphic_57">
+        <text transform="translate(342.5 603)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">cl</tspan>
+        </text>
+      </g>
+      <g id="Graphic_58">
+        <text transform="translate(380 603)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_59">
+        <text transform="translate(455 600)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Pre-compressed length</tspan>
+        </text>
+      </g>
+      <g id="Graphic_60">
+        <text transform="translate(342.5 628)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">z</tspan>
+        </text>
+      </g>
+      <g id="Graphic_61">
+        <text transform="translate(380 628)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">struct</tspan>
+        </text>
+      </g>
+      <g id="Graphic_62">
+        <text transform="translate(455 625)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt info</tspan>
+        </text>
+      </g>
+      <g id="Graphic_66">
+        <text transform="translate(342.5 653)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">l</tspan>
+        </text>
+      </g>
+      <g id="Graphic_67">
+        <text transform="translate(380 653)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_68">
+        <text transform="translate(455 650)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Length of secondary part</tspan>
+        </text>
+      </g>
+      <g id="Graphic_69">
+        <path d="M 679.9833 625 L 882.4833 625 C 885.2447 625 887.4833 627.2386 887.4833 630 L 887.4833 745 C 887.4833 747.7614 885.2447 750 882.4833 750 L 679.9833 750 C 677.22185 750 674.9833 747.7614 674.9833 745 L 674.9833 630 C 674.9833 627.2386 677.22185 625 679.9833 625 Z" fill="#d8ddfe"/>
+        <path d="M 679.9833 625 L 882.4833 625 C 885.2447 625 887.4833 627.2386 887.4833 630 L 887.4833 745 C 887.4833 747.7614 885.2447 750 882.4833 750 L 679.9833 750 C 677.22185 750 674.9833 747.7614 674.9833 745 L 674.9833 630 C 674.9833 627.2386 677.22185 625 679.9833 625 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(679.9833 626)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt Info</tspan>
+        </text>
+      </g>
+      <g id="Graphic_70">
+        <text transform="translate(679.9833 650)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Key</tspan>
+        </text>
+      </g>
+      <g id="Graphic_71">
+        <text transform="translate(717.4833 650)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Value</tspan>
+        </text>
+      </g>
+      <g id="Graphic_72">
+        <text transform="translate(792.4833 650)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Notes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_73">
+        <text transform="translate(679.9833 678)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">a</tspan>
+        </text>
+      </g>
+      <g id="Graphic_74">
+        <text transform="translate(717.4833 678)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">int</tspan>
+        </text>
+      </g>
+      <g id="Graphic_75">
+        <text transform="translate(792.4833 675)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Algorithm</tspan>
+        </text>
+      </g>
+      <g id="Graphic_76">
+        <text transform="translate(679.9833 703)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">n</tspan>
+        </text>
+      </g>
+      <g id="Graphic_77">
+        <text transform="translate(717.4833 703)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">bytes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_78">
+        <text transform="translate(792.4833 700)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Nonce</tspan>
+        </text>
+      </g>
+      <g id="Graphic_79">
+        <text transform="translate(679.9833 728)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">d</tspan>
+        </text>
+      </g>
+      <g id="Graphic_80">
+        <text transform="translate(717.4833 728)" fill="black">
+          <tspan font-family="Fira Code" font-size="16" fill="black" x="0" y="15">bytes</tspan>
+        </text>
+      </g>
+      <g id="Graphic_81">
+        <text transform="translate(792.4833 725)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Crypt data</tspan>
+        </text>
+      </g>
+      <g id="Line_82">
+        <line x1="537.5" y1="636.8883" x2="662.0834" y2="637.4426" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_83">
+        <path d="M 262.51672 437.5 L 300 437.5 L 300 512.5 L 324.6 512.5" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_84">
+        <text transform="translate(337.5 680)" fill="black">
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="13">This is an array of secondary parts, but in practice </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="32">encoded values will always have either zero or one </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="12" fill="black" x="0" y="51">secondary part definitions.</tspan>
+        </text>
+      </g>
+      <g id="Graphic_85">
+        <path d="M 342.5 387.5 L 545 387.5 C 547.7614 387.5 550 389.73858 550 392.5 L 550 482.5 C 550 485.2614 547.7614 487.5 545 487.5 L 342.5 487.5 C 339.73858 487.5 337.5 485.2614 337.5 482.5 L 337.5 392.5 C 337.5 389.73858 339.73858 387.5 342.5 387.5 Z" fill="#c0ffc0"/>
+        <path d="M 342.5 387.5 L 545 387.5 C 547.7614 387.5 550 389.73858 550 392.5 L 550 482.5 C 550 485.2614 547.7614 487.5 545 487.5 L 342.5 487.5 C 339.73858 487.5 337.5 485.2614 337.5 482.5 L 337.5 392.5 C 337.5 389.73858 339.73858 387.5 342.5 387.5 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(342.5 388.5)" fill="black">
+          <tspan font-family="Fira Sans" font-style="italic" font-size="16" fill="black" x="0" y="17">Primary part (encrypted, </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="16" fill="black" x="0" y="42">compressed, MsgPack-</tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="16" fill="black" x="0" y="67">encoded application </tspan>
+          <tspan font-family="Fira Sans" font-style="italic" font-size="16" fill="black" x="0" y="92">structure)</tspan>
+        </text>
+      </g>
+      <g id="Line_86">
+        <path d="M 237.51672 411.88827 L 300 412.5 L 300 400 L 324.6 400" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_87">
+        <path d="M -32.5 200 L 270 200 C 272.76142 200 275 202.23858 275 205 L 275 245 C 275 247.76142 272.76142 250 270 250 L -32.5 250 C -35.261424 250 -37.5 247.76142 -37.5 245 L -37.5 205 C -37.5 202.23858 -35.261424 200 -32.5 200 Z" fill="#c0ffff"/>
+        <path d="M -32.5 200 L 270 200 C 272.76142 200 275 202.23858 275 205 L 275 245 C 275 247.76142 272.76142 250 270 250 L -32.5 250 C -35.261424 250 -37.5 247.76142 -37.5 245 L -37.5 205 C -37.5 202.23858 -35.261424 200 -32.5 200 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(-32.5 212.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="110.41" y="17">TLV Header</tspan>
+        </text>
+      </g>
+      <g id="Graphic_91">
+        <path d="M -32.5 450 L 270 450 C 272.76142 450 275 452.2386 275 455 L 275 670 C 275 672.7614 272.76142 675 270 675 L -32.5 675 C -35.261424 675 -37.5 672.7614 -37.5 670 L -37.5 455 C -37.5 452.2386 -35.261424 450 -32.5 450 Z" fill="#c0ffc0"/>
+        <path d="M -32.5 450 L 270 450 C 272.76142 450 275 452.2386 275 455 L 275 670 C 275 672.7614 272.76142 675 270 675 L -32.5 675 C -35.261424 675 -37.5 672.7614 -37.5 670 L -37.5 455 C -37.5 452.2386 -35.261424 450 -32.5 450 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(-32.5 550)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="90.698" y="17">Secondary Bytes</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

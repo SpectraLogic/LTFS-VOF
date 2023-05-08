@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="99 73 689 550" width="689" height="550">
+  <defs>
+    <linearGradient x1="0" x2="1" id="Gradient" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0fe" stop-opacity=".21702275"/>
+      <stop offset="1" stop-color="#00fc00" stop-opacity=".1518736"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient" xl:href="#Gradient" gradientTransform="translate(250 150) rotate(90) scale(100)"/>
+    <linearGradient x1="0" x2="1" id="Gradient_2" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0fe" stop-opacity=".21702275"/>
+      <stop offset="1" stop-color="#fbe95b" stop-opacity=".1518736"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient_2" xl:href="#Gradient_2" gradientTransform="translate(568.75 150) rotate(90) scale(225)"/>
+    <linearGradient x1="0" x2="1" id="Gradient_3" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a69fff" stop-opacity=".4931973"/>
+      <stop offset="1" stop-color="#ffffc1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="Obj_Gradient_3" xl:href="#Gradient_3" gradientTransform="translate(125 75) rotate(45) scale(141.42136)"/>
+    <linearGradient id="Obj_Gradient_4" xl:href="#Gradient_3" gradientTransform="translate(275 75) rotate(45) scale(141.42136)"/>
+    <linearGradient id="Obj_Gradient_5" xl:href="#Gradient_3" gradientTransform="translate(425 75) rotate(45) scale(141.42136)"/>
+    <linearGradient id="Obj_Gradient_6" xl:href="#Gradient_3" gradientTransform="translate(575 75) rotate(45) scale(141.42136)"/>
+    <linearGradient id="Obj_Gradient_7" xl:href="#Gradient_3" gradientTransform="translate(696.875 103.125) rotate(45) scale(61.87184)"/>
+    <linearGradient id="Obj_Gradient_8" xl:href="#Gradient_3" gradientTransform="translate(207.8125 242.1875) rotate(45) scale(92.80777)"/>
+    <linearGradient id="Obj_Gradient_9" xl:href="#Gradient_3" gradientTransform="translate(289.0625 242.1875) rotate(45) scale(92.80777)"/>
+    <linearGradient id="Obj_Gradient_10" xl:href="#Gradient_3" gradientTransform="translate(452.7778 359.72222) rotate(45) scale(113.92276)"/>
+    <linearGradient id="Obj_Gradient_11" xl:href="#Gradient_3" gradientTransform="translate(563.8889 359.72222) rotate(45) scale(113.92276)"/>
+    <linearGradient id="Obj_Gradient_12" xl:href="#Gradient_3" gradientTransform="translate(654.1667 380.55556) rotate(45) scale(54.997194)"/>
+  </defs>
+  <g id="Pack_list" stroke="none" fill-opacity="1" stroke-opacity="1" fill="none" stroke-dasharray="none">
+    <title>Pack list</title>
+    <g id="Pack_list_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2">
+        <path d="M 105 100 L 732.5 100 C 735.2614 100 737.5 102.23858 737.5 105 L 737.5 145 C 737.5 147.76142 735.2614 150 732.5 150 L 105 150 C 102.23858 150 100 147.76142 100 145 L 100 105 C 100 102.23858 102.23858 100 105 100 Z" fill="#00fdff" fill-opacity=".176183"/>
+        <path d="M 105 100 L 732.5 100 C 735.2614 100 737.5 102.23858 737.5 105 L 737.5 145 C 737.5 147.76142 735.2614 150 732.5 150 L 105 150 C 102.23858 150 100 147.76142 100 145 L 100 105 C 100 102.23858 102.23858 100 105 100 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_3">
+        <line x1="100" y1="112.5" x2="100" y2="187.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_4">
+        <text transform="translate(105 161.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">0</tspan>
+        </text>
+      </g>
+      <g id="Line_5">
+        <line x1="250" y1="100" x2="250" y2="187.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_6">
+        <text transform="translate(255 161.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">10MB</tspan>
+        </text>
+      </g>
+      <g id="Line_7">
+        <line x1="400" y1="100" x2="400" y2="187.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_8">
+        <text transform="translate(405 161.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">20MB</tspan>
+        </text>
+      </g>
+      <g id="Line_9">
+        <line x1="550" y1="100" x2="550" y2="187.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_10">
+        <text transform="translate(555 161.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">30MB</tspan>
+        </text>
+      </g>
+      <g id="Line_11">
+        <line x1="700" y1="100" x2="700" y2="187.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_12">
+        <text transform="translate(705 161.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">40MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_13">
+        <path d="M 105 250 L 545 250 C 547.7614 250 550 252.23858 550 255 L 550 295 C 550 297.76142 547.7614 300 545 300 L 105 300 C 102.23858 300 100 297.76142 100 295 L 100 255 C 100 252.23858 102.23858 250 105 250 Z" fill="#dcffda"/>
+        <path d="M 105 250 L 545 250 C 547.7614 250 550 252.23858 550 255 L 550 295 C 550 297.76142 547.7614 300 545 300 L 105 300 C 102.23858 300 100 297.76142 100 295 L 100 255 C 100 252.23858 102.23858 250 105 250 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(111 262.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Pack A</tspan>
+        </text>
+      </g>
+      <g id="Graphic_14">
+        <path d="M 280 375 L 720 375 C 722.7614 375 725 377.23858 725 380 L 725 420 C 725 422.7614 722.7614 425 720 425 L 280 425 C 277.23858 425 275 422.7614 275 420 L 275 380 C 275 377.23858 277.23858 375 280 375 Z" fill="#fff6e8"/>
+        <path d="M 280 375 L 720 375 C 722.7614 375 725 377.23858 725 380 L 725 420 C 725 422.7614 722.7614 425 720 425 L 280 425 C 277.23858 425 275 422.7614 275 420 L 275 380 C 275 377.23858 277.23858 375 280 375 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <text transform="translate(286 387.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Pack B</tspan>
+        </text>
+      </g>
+      <g id="Graphic_18">
+        <path d="M 100 150 L 400 150 L 362.5 250 L 200 250 Z" fill="url(#Obj_Gradient)"/>
+      </g>
+      <g id="Graphic_20">
+        <path d="M 400 150 L 737.5 150 L 687.5 375 L 437.5 375 Z" fill="url(#Obj_Gradient_2)"/>
+      </g>
+      <g id="Line_22">
+        <line x1="200" y1="250" x2="200" y2="337.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_21">
+        <text transform="translate(205 311.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">8MB</tspan>
+        </text>
+      </g>
+      <g id="Line_24">
+        <line x1="362.5" y1="250" x2="362.5" y2="337.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_23">
+        <text transform="translate(367.5 311.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">22MB</tspan>
+        </text>
+      </g>
+      <g id="Line_25">
+        <line x1="437.5" y1="375" x2="437.5" y2="462.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_26">
+        <text transform="translate(442.5 436.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">12MB</tspan>
+        </text>
+      </g>
+      <g id="Line_27">
+        <line x1="687.5" y1="375" x2="687.5" y2="462.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_28">
+        <text transform="translate(692.5 436.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">23MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_29">
+        <text transform="translate(100 488.5)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Version is stored as 5 blocks across 2 packs. Pack list entries:</tspan>
+        </text>
+      </g>
+      <g id="Graphic_30">
+        <rect x="100" y="100" width="150" height="50" fill="url(#Obj_Gradient_3)"/>
+        <text transform="translate(105 103)" fill="black">
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="43.323" y="15">Block </tspan>
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" y="15">B1</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="53.235" y="37">10MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_31">
+        <text transform="translate(105 74)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Version V1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_32">
+        <rect x="250" y="100" width="150" height="50" fill="url(#Obj_Gradient_4)"/>
+        <text transform="translate(255 103)" fill="black">
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="42.952" y="15">Block </tspan>
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" y="15">B2</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="53.235" y="37">10MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_33">
+        <rect x="400" y="100" width="150" height="50" fill="url(#Obj_Gradient_5)"/>
+        <text transform="translate(405 103)" fill="black">
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="42.931" y="15">Block </tspan>
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" y="15">B3</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="53.235" y="37">10MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_34">
+        <rect x="550" y="100" width="150" height="50" fill="url(#Obj_Gradient_6)"/>
+        <text transform="translate(555 103)" fill="black">
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="42.616" y="15">Block </tspan>
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" y="15">B4</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="53.235" y="37">10MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_35">
+        <rect x="700" y="100" width="37.5" height="50" fill="url(#Obj_Gradient_7)"/>
+        <text transform="translate(705 103)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="5.679" y="15">B5</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x=".457" y="37">2MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_36">
+        <rect x="200" y="250" width="81.25" height="50" fill="url(#Obj_Gradient_8)"/>
+        <text transform="translate(205 253)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="28.058" y="15">B1</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="20.834" y="37">7 MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_37">
+        <rect x="281.25" y="250" width="81.25" height="50" fill="url(#Obj_Gradient_9)"/>
+        <text transform="translate(286.25 253)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="27.687" y="15">B2</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="22.689" y="37">7MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_38">
+        <rect x="437.5" y="375" width="111.11111" height="50" fill="url(#Obj_Gradient_10)"/>
+        <text transform="translate(442.5 378)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="42.596557" y="15">B3</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="37.220557" y="37">5MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_39">
+        <rect x="548.6111" y="375" width="111.11111" height="50" fill="url(#Obj_Gradient_11)"/>
+        <text transform="translate(553.6111 378)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="42.281557" y="15">B4</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="37.220557" y="37">5MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_40">
+        <rect x="659.7222" y="375" width="27.777778" height="50" fill="url(#Obj_Gradient_12)"/>
+        <text transform="translate(660.7521 378)" fill="black">
+          <tspan font-family="Fira Sans" font-weight="bold" font-size="14" fill="black" x="4.788" y="15">B5</tspan>
+          <tspan font-family="Fira Sans" font-size="14" fill="black" x="378364e-18" y="37">1MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_42">
+        <text transform="translate(100 523)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">Pack</tspan>
+        </text>
+      </g>
+      <g id="Graphic_41">
+        <text transform="translate(100 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">Pack A</tspan>
+        </text>
+      </g>
+      <g id="Graphic_43">
+        <text transform="translate(162.5 523)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">SourceRange</tspan>
+        </text>
+      </g>
+      <g id="Graphic_44">
+        <text transform="translate(275 523)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">PackRange</tspan>
+        </text>
+      </g>
+      <g id="Graphic_45">
+        <text transform="translate(162.5 551)" fill="black">
+          <tspan font-family="Fira Sans" font-size="12" fill="black" x="0" y="13">Start</tspan>
+        </text>
+      </g>
+      <g id="Graphic_47">
+        <text transform="translate(212.5 551)" fill="black">
+          <tspan font-family="Fira Sans" font-size="12" fill="black" x="0" y="13">Len</tspan>
+        </text>
+      </g>
+      <g id="Graphic_48">
+        <text transform="translate(275 551)" fill="black">
+          <tspan font-family="Fira Sans" font-size="12" fill="black" x="0" y="13">Start</tspan>
+        </text>
+      </g>
+      <g id="Graphic_49">
+        <text transform="translate(325 551)" fill="black">
+          <tspan font-family="Fira Sans" font-size="12" fill="black" x="0" y="13">Len</tspan>
+        </text>
+      </g>
+      <g id="Graphic_50">
+        <text transform="translate(375 523)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">BlockLens</tspan>
+        </text>
+      </g>
+      <g id="Graphic_51">
+        <text transform="translate(462.5 523)" fill="black">
+          <tspan font-family="Fira Sans" font-size="16" fill="black" x="0" y="17">SourceLens</tspan>
+        </text>
+      </g>
+      <g id="Graphic_52">
+        <text transform="translate(162.5 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">0</tspan>
+        </text>
+      </g>
+      <g id="Graphic_53">
+        <text transform="translate(212.5 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">20MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_54">
+        <text transform="translate(275 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">8MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_55">
+        <text transform="translate(325 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">14MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_56">
+        <text transform="translate(375 577)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">[7MB]</tspan>
+        </text>
+      </g>
+      <g id="Graphic_57">
+        <text transform="translate(100 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">Pack B</tspan>
+        </text>
+      </g>
+      <g id="Graphic_58">
+        <text transform="translate(162.5 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">20MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_59">
+        <text transform="translate(212.5 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">22MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_60">
+        <text transform="translate(275 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">12MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_61">
+        <text transform="translate(325 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">13MB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_62">
+        <text transform="translate(375 602)" fill="black">
+          <tspan font-family="Fira Code" font-size="14" fill="black" x="0" y="13">[5MB, 5MB]</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
