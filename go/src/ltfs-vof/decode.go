@@ -6,6 +6,7 @@ import (
 	tlvcore "github.com/spectralogic/go-core/tlv"
 	"log"
 	"os"
+	"strings"
 )
 
 type TagType int
@@ -271,7 +272,10 @@ func (pr *PackReference) GetPhysicalStart() int64 {
 // for use by the simulator
 
 type Block struct {
-	*VersionID `codec:"I" json:"versionid,omitempty"` // ID of pack containing this offset to next offset
+	VersionInfo string `codec:"I" json:"versionid,omitempty"` // ID of pack containing this offset to next offset
+	Bucket string 
+	Version string 
+	Object string 
 	data       []byte
 	pack       *PackEntry
 }
@@ -312,6 +316,20 @@ func ReadBlock(file *os.File, length uint64) *Block {
 	b.data = make([]byte, len(secondaryData.Bytes()))
 	copy(b.data, secondaryData.Bytes())
 	secondaryData.Release()
+	// strip components out of versionInfo   download #: version ID: bucket/key
+	segments := strings.Split(b.VersionInfo,":")
+	if len(segments) != 3 {
+		log.Fatal("Invalid Version Info String From Block: ",b.VersionInfo)
+	}
+	b.Version = segments[1]
+	// now split the bucket/key
+	segments = strings.SplitN(segments[2], "/", 2)
+        if len(segments) != 2 {
+                log.Fatal("Could not split bucket key", segments[2])
+        }
+	b.Bucket = segments[0]
+	b.Object = segments[1]
+
 	return &b
 }
 

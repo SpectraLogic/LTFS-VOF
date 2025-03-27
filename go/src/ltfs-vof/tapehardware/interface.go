@@ -1,8 +1,8 @@
+// interface each tape library combination needs to adhere to
 package tapehardware
 
 import ()
 
-// interfaces for tape library, tape drive and tape cartridge
 type TapeLibrary interface {
 	Audit() ([]TapeDrive, []TapeCartridge)
 	Load(TapeCartridge, TapeDrive) bool
@@ -11,6 +11,7 @@ type TapeLibrary interface {
 type TapeDrive interface {
 	MountLTFS() (map[string]string, map[string]string, bool)
 	Unmount() 
+	GetCart() (TapeCartridge, bool)
 	Name() string
 }
 type TapeCartridge interface {

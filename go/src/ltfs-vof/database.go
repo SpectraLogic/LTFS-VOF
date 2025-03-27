@@ -9,87 +9,130 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"slices"
 )
+type Database struct {
+	versionCache string
+	dbManager *DBManager
+	library TapeLibrary
+}
+func NewDatabase(versionCache string, dbManager *DBManager, library TapeLibrary) *Database {
+	return &Database {
+		versionCache: versionCache,
+		dbManager: dbManager,
+		library: library,
+	}
+}
 
-func getVersionFiles(library TapeLibrary, dbManager *DBManager) {
-	os.RemoveAll(DEFAULT_VERSION_CACHE)
-	os.Mkdir(DEFAULT_VERSION_CACHE, 0755)
+func (db *Database) GetVersionFiles() {
+	os.RemoveAll(db.versionCache)
+	os.Mkdir(db.versionCache, 0755)
 
 	// audit the library
-	drives, tapes := library.Audit()
+	drives, carts := db.library.Audit()
 
 	// get resource allocation for tape drives
 	driveReserve := NewResource(len(drives))
 
 	// create a channel for goroutines to post to when completed
-	tapeCompleteChannel := make(chan bool, len(tapes))
+	completeChannel := make(chan bool) 
 
-	for _, tape := range tapes {
-		logEvent("Look for Version Files From Tape ", tape.Name())
+	// process all tapes that are currently in drives
+	count := 0
+	for number, drive := range drives {
+
+		// continue if no cart in drive
+		cart, exists := drive.GetCart()
+		if !exists {
+			continue
+		}
+		// cart in drive process it
+		count++
+		go db.readVersionFiles(drive, number, cart,completeChannel,nil) 
+		// remove cartridge from total carts list
+		carts = slices.DeleteFunc(carts, func(nextCart TapeCartridge) bool {
+        		return nextCart == cart 
+    		})
+	}
+	// wait for all carts in drive to be processed
+	for i := 0; i < count;i++ {
+		<-completeChannel
+	}
+
+	// process carts that are not in drives
+	count = 0
+	for _, cart := range carts {
+		logEvent("Look for Version Files From Tape ", cart.Name())
+
 		// get a drive to mount the tape
 		driveNumber := driveReserve.Reserve()
 		drive := drives[driveNumber]
-		// mount tape into drive as a go routine such that multiple tape drives can read tapes concurrently
-		go func(drive TapeDrive, driveNumber int, tape TapeCartridge) {
-			logEvent("Loading Tape ", tape.Name(), " into Drive ", drive.Name())
-			status := library.Load(tape, drive)
-			// if unable to mount tape
-			if !status {
-				log.Fatal("Failed to mount tape")
-			}
-			// load the tape for LTFS
-			logEvent("Mounting Tape with LTFS", tape.Name(), " into Drive ", drive.Name())
-			versionFiles, blockFiles, status := drive.MountLTFS()
-			if !status {
-				log.Fatal("Failed to mount tape")
-			}
-			for key, path := range versionFiles {
 
-				// write the version file to the version cache directory
-				logEvent("Found Version File", key, " Path: ", path)
-				sourceFile, err := os.Open(path)
-				if err != nil {
-					log.Fatal("unable to open version file: ", path)
-				}
-				defer sourceFile.Close()
-				// create the version cache file which is the base name of the version file
-				cacheFileName := DEFAULT_VERSION_CACHE + "/" + key
-				logEvent("Cache File Name: ", key)
-				cacheFile, err := os.Create(cacheFileName)
-				if err != nil {
-					log.Fatal("unable to create version cache file", cacheFile)
-				}
-				defer cacheFile.Close()
-				// copy the version file to the version cache file
-				logEvent("Copy Version File", sourceFile, " File: ", cacheFile)
-				_, err = io.Copy(cacheFile, sourceFile)
-				if err != nil {
-					log.Fatal("unable to copy version file to version cache file", err)
-				}
-			}
-			// put all blockfiles into database
-			for key, path := range blockFiles {
-				// put each .blk file into tape table
-				logEvent("Found Block File Tape: ", tape.Name(), " Key: ", key, "  Path: ", path)
-				dbManager.AddTapeToPack(key, tape.Name())
-			}
-			// unmount and unload the drive
-			logEvent("dismounting and unloading tape", tape.Name(), " from Drive ", drive.Name())
-			drive.Unmount()
-			library.Unload(drive)
+		// load the cart into the drive
+		status := db.library.Load(cart,drive)
+		if !status {
+			log.Fatal("Failed to load tape")
+		}
 
-			// free up the resource and post to the complete channel
-			driveReserve.Release(driveNumber)
-			tapeCompleteChannel <- true
-		}(drive, driveNumber, tape)
+		// use go routine to keep all drives busy
+		count += 1
+		go db.readVersionFiles(drive, driveNumber, cart,completeChannel,driveReserve)
 	}
-	// wait for all tapes to be processed and stop the resource manager
-	for i := 0; i < len(tapes); i++ {
-		<-tapeCompleteChannel
+	// wait for all carts not in drive to be processed
+	for i := 0; i < count;i++ {
+		<-completeChannel
 	}
 	driveReserve.Stop()
 }
-func createDatabase(dbManager *DBManager) {
+func (db *Database) readVersionFiles(drive TapeDrive, driveNumber int, tape TapeCartridge, completeChannel chan bool,driveReserve *Resource) {
+	// mount LTFS on the tape
+	logEvent("Mounting Tape with LTFS", tape.Name(), " into Drive ", drive.Name())
+	versionFiles, blockFiles, status := drive.MountLTFS()
+	if !status {
+		log.Fatal("Failed to mount tape")
+	}
+	for key, path := range versionFiles {
+
+		// write the version file to the version cache directory
+		logEvent("Found Version File", key, " Path: ", path)
+		sourceFile, err := os.Open(path)
+		if err != nil {
+			log.Fatal("unable to open version file: ", path)
+		}
+		defer sourceFile.Close()
+		// create the version cache file which is the base name of the version file
+		cacheFileName := DEFAULT_VERSION_CACHE + "/" + key
+		logEvent("Cache File Name: ", key)
+		cacheFile, err := os.Create(cacheFileName)
+		if err != nil {
+			log.Fatal("unable to create version cache file", cacheFile)
+		}
+		defer cacheFile.Close()
+		// copy the version file to the version cache file
+		logEvent("Copy Version File", sourceFile, " File: ", cacheFile)
+		_, err = io.Copy(cacheFile, sourceFile)
+		if err != nil {
+			log.Fatal("unable to copy version file to version cache file", err)
+		}
+	}
+	// put all blockfiles into database
+	for key, path := range blockFiles {
+		// put each .blk file into tape table
+		logEvent("Found Block File Tape: ", tape.Name(), " Key: ", key, "  Path: ", path)
+		db.dbManager.AddTapeToPack(key, tape.Name())
+	}
+	// unmount and unload the drive
+	logEvent("dismounting and unloading tape", tape.Name(), " from Drive ", drive.Name())
+	drive.Unmount()
+	db.library.Unload(drive)
+
+	// free up the resource and post to the complete channel
+	if driveReserve != nil {
+		driveReserve.Release(driveNumber)
+	}
+	completeChannel <- true
+}
+func (db *Database) CreateDatabase() {
 	// sort the version files from oldest to newest based on the their ULIDS
 	versionFileUlids := sortVersionFiles()
 
@@ -120,12 +163,12 @@ func createDatabase(dbManager *DBManager) {
 				v := ReadVersionRecord(file, tlv.DataLength())
 				logEvent("Reading Version Record, Object Name ", v.VersionID.Object, " File Name: ", versionFileName)
 				// insert the version into the database
-				dbManager.AddVersion(v)
+				db.dbManager.AddVersion(v)
 			case DELETEVERSION:
 				logEvent("Reading Delete Version Record, version file: ", versionFileName)
 				delete := ReadVersionRecord(file, tlv.DataLength())
 				// insert the version into the database
-				dbManager.DeleteVersion(delete.GetVersion())
+				db.dbManager.DeleteVersion(delete.GetVersion())
 			// ignore duplicate meta files
 			case METAFILE:
 				logEvent("Ignoring already processed metafile in version file: ", versionFileName)

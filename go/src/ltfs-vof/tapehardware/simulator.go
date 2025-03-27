@@ -1,9 +1,10 @@
+// used to do a quick test on code by useing realpacks
 package tapehardware
 
 import (
-	"fmt"
 	"log"
 	"os"
+	"fmt"
 )
 
 type TapeLibrarySimulator struct {
@@ -19,25 +20,23 @@ type TapeDriveSimulator struct {
 }
 type TapeCartridgeSimulator struct {
 	name         string
-	CapacityLeft int
 }
 
-const numDrives int = 1
-const numTapes int = 1
-const tapeCapacity int = 100000
-const tapeDirectory string = "tapehardware/tapes"
+const NumDrives int = 1
+const NumTapes int = 2
+const TapeDirectory string = "tapehardware/"
 
 func NewTapeLibrarySimulator() *TapeLibrarySimulator {
 
 	var simulator TapeLibrarySimulator
 
 	// create drives based on number of drives
-	for i := 0; i < numDrives; i++ {
-		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, tapeDirectory))
+	for i := 0; i < NumDrives; i++ {
+		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, TapeDirectory))
 	}
 	// create tapes based on number
-	for i := 0; i < numTapes; i++ {
-		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(i, tapeCapacity))
+	for i := 0; i < NumTapes; i++ {
+		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(i))
 	}
 	return &simulator
 }
@@ -68,31 +67,38 @@ func NewTapeDriveSimulator(i int, tapeDirectory string) *TapeDriveSimulator {
 		name: fmt.Sprintf("Drive-%d", i),
 		busy: false,
 	}
-	currentDir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	drive.tapeDirectory = currentDir + "/" + tapeDirectory
 	return &drive
 }
 func (td *TapeDriveSimulator) Name() string {
 	return td.name
+}
+func (td *TapeDriveSimulator) GetCart() (TapeCartridge, bool){
+	if !td.busy  {
+		return nil,false
+	}
+	return td.tape, true
 }
 
 func (td *TapeDriveSimulator) MountLTFS() ( map[string]string, map[string]string, bool) {
 	if !td.busy {
 		log.Fatal("drive not busy")
 	}
-	// need to work on this if we are going to use it
-	return nil, nil, true
+	// get current directory
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// tape directory is current directory + tape
+	tapeDirectory := currentDir + "/" + TapeDirectory + td.tape.Name()
+	versionFiles, blockFiles := FindVersionAndBlockFiles(tapeDirectory)
+	return versionFiles,blockFiles, true
 }
 func (td *TapeDriveSimulator) Unmount() {
 }
-func NewTapeCartridgeSimulator(i, capacity int) *TapeCartridgeSimulator {
-	var tape TapeCartridgeSimulator
-	tape.name = fmt.Sprintf("tape%d", i)
-	tape.CapacityLeft = capacity
-	return &tape
+func NewTapeCartridgeSimulator(i int) *TapeCartridgeSimulator {
+	var cart TapeCartridgeSimulator
+	cart.name = fmt.Sprintf("tape%d", i)
+	return &cart
 }
 func (c *TapeCartridgeSimulator) Name() string {
 	return c.name

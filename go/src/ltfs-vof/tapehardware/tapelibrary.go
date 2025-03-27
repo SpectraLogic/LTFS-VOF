@@ -2,37 +2,26 @@ package tapehardware
 
 import (
 	"os/exec"
-	"fmt"
 	"log"
 	"github.com/kbj/mtx"
 	"path/filepath"
 	"os"
 	"strings"
+	"fmt"
 )
-type DriveInfo struct {
-	slot int
-	device string
-	mountpoint string
+// tape drive device info read from json file
+type TapeDriveDevice struct {
+        Slot int `json:"slot"`
+        Device string `json:"Device"`
+ 	MountPoint string `json:"MountPoint"`
 }
+
 type RealTapeLibrary struct{
 	mtx    *mtx.Changer
 	drives []TapeDrive
 	cartridges []TapeCartridge
 }
-func NewRealTapeLibrary() *RealTapeLibrary {
-
-	// slot to /dev/st* mapping, there is probably a way to do this automatically
-	// by using Spectra specific command to get serial number of each drive and then 
-	// using ltfs -o devicelist to map each drive to its /dev driver
-	// this is hardcoded for the library that Brian provided me
-
-	libraryDevice := "/dev/sch0"
-	driveDevice := map[int]*DriveInfo{
-		0: {0,"/dev/sg6","/ltfs0"},
-		1: {1,"/dev/sg5","/ltfs1"},
-		2: {2,"/dev/sg4","/ltfs2"},
-		3: {3,"/dev/sg3","/ltfs3"},
-	}
+func NewRealTapeLibrary(libraryDevice string, tapeDevices map[int]*TapeDriveDevice) *RealTapeLibrary {
 
 	// create the drives
 	var rtl RealTapeLibrary
@@ -45,29 +34,24 @@ func NewRealTapeLibrary() *RealTapeLibrary {
 	if err != nil {
 		log.Fatal("Unable to get drive info: ",err)
 	}
-	// print out drives
+	// see if drives have cartridges in them
 	for d, drive := range drives {
 		var thisDrive *RealTapeDrive
-		// dismount all cartridges in drives
-		if (drive.Type == mtx.DataTransferSlot) && drive.Vol != nil {
-			// get a home cell for this cartridge
+		// if it then create a cartridge, assign it a home cell and put it on the cartridge list
+		var cartridge *RealTapeCartridge
+		if drive.Type == mtx.DataTransferSlot && drive.Vol != nil {
 			slot := rtl.findFreeSlot()
-			cartridge := NewRealTapeCartridge(slot, mtx.DataTransferSlot, drive.Vol.Serial)
-
-			// add cartridge to drive and unmount and  unload it 
-			thisDrive = NewRealTapeDrive(d,drive.Num,cartridge, driveDevice[d])
-			rtl.Print()
-			thisDrive.Unmount()
-			rtl.Unload(thisDrive)
-		} else {
-			thisDrive = NewRealTapeDrive(d,drive.Num,nil, driveDevice[d])
+			rtl.cartridges = append (rtl.cartridges, NewRealTapeCartridge(slot, mtx.DataTransferSlot, drive.Vol.Serial))
 		}
+
+		// create the drive, unmount it and then put it on list
+		thisDrive = NewRealTapeDrive(d,drive.Num,cartridge, tapeDevices[d])
+		thisDrive.Unmount()
 		rtl.drives = append (rtl.drives, thisDrive)
 	}
 
 	// find cartridges in slots
 	slots, err := rtl.mtx.Slots()
-	rtl.Print()
 	if err != nil {
 		log.Fatal("Unable to get cartridge info: ",err)
 	}
@@ -117,10 +101,11 @@ func (rtl *RealTapeLibrary) Unload(drive1 TapeDrive) bool {
 	drive := drive1.(*RealTapeDrive)
 
 	// get slot from cartridge in drive
-	cart := drive.GetCart()
-	if cart == nil {
+	cart1,exists := drive.GetCart()
+	if !exists {
 		log.Fatal("Unloading a drive without a cartidge")
 	}
+	cart := cart1.(*RealTapeCartridge)
 	// get cartridge and drive slot
 	cartSlot := cart.GetSlot()
 	driveSlot := drive.GetSlot()
@@ -149,44 +134,61 @@ func (rtl *RealTapeLibrary) findFreeSlot() int {
 type RealTapeDrive struct {
 	id int
 	slot int
-	driveInfo *DriveInfo
+	driveInfo *TapeDriveDevice
 	cartridge *RealTapeCartridge
+	cartridgeExists bool
 }
 
-func NewRealTapeDrive (id, slot int, cartridge *RealTapeCartridge, info *DriveInfo) *RealTapeDrive{
-	return &RealTapeDrive {
-		id: id,
-		slot: slot,
-		driveInfo: info,
-		cartridge: cartridge,
+func NewRealTapeDrive (id, slot int, cartridge *RealTapeCartridge, info *TapeDriveDevice) *RealTapeDrive{
+	var rtd RealTapeDrive 
+	rtd.id = id
+	rtd.slot = slot
+	rtd.driveInfo = info
+	if cartridge != nil {
+		rtd.cartridgeExists = true
+		rtd.cartridge =  cartridge
+	} else {
+		rtd.cartridgeExists = false
 	}
+
+	return &rtd
 }
 func (rtd RealTapeDrive) Print() {
-	fmt.Println("id: ",rtd.id,"  slot: ",rtd.slot,"  device: ",rtd.driveInfo.device,"  cart: ",rtd.cartridge)
+	fmt.Println("id: ",rtd.id,"  slot: ",rtd.slot,"  device: ",rtd.driveInfo.Device,"  cart: ",rtd.cartridge)
 }
 func (rtd *RealTapeDrive) GetSlot() int {
 	return rtd.slot
 }
-func (rtd *RealTapeDrive) GetCart()*RealTapeCartridge {
-	return rtd.cartridge
+func (rtd *RealTapeDrive) GetCart() (TapeCartridge, bool) {
+	if rtd.cartridge == nil {
+		return nil, false
+	}
+	return rtd.cartridge, rtd.cartridgeExists
 }
 func (rtd *RealTapeDrive) SetCart(cart *RealTapeCartridge) {
+	rtd.cartridgeExists = true
 	rtd.cartridge = cart
 }
+func (rtd *RealTapeDrive) ClearCart() {
+	rtd.cartridgeExists = false
+}
+	
 // returns the mountpoint, and a map of 
 func (rtd RealTapeDrive) MountLTFS() (map[string]string, map[string]string,bool) {
-	devname := fmt.Sprintf("devname=%s",rtd.driveInfo.device)
-	_, err := exec.Command("ltfs", "-o",devname,rtd.driveInfo.mountpoint).Output()
+	// unmount drive prior to doing mount, if it isn't mounted unmount will fail but no big deal 
+	rtd.Unmount()
+	devname := fmt.Sprintf("devname=%s",rtd.driveInfo.Device)
+	
+	_, err := exec.Command("ltfs", "-o",devname,rtd.driveInfo.MountPoint).Output()
 	if err != nil {
 		return nil, nil, false
 	}
-	vfiles, bfiles :=  FindVersionAndBlockFiles(rtd.driveInfo.mountpoint ) 
-
+	vfiles, bfiles :=  FindVersionAndBlockFiles(rtd.driveInfo.MountPoint) 
 	return vfiles, bfiles, true
 }
 // umounts the mount point
 func (rtd RealTapeDrive) Unmount() {
-	exec.Command("umount", rtd.driveInfo.mountpoint).Output()
+	exec.Command("umount", rtd.driveInfo.MountPoint).Output()
 }
 func (rtd RealTapeDrive) Name() string {
 	return fmt.Sprintf("Drive%d",rtd.id)
@@ -234,15 +236,12 @@ func (c *Changer) Do(args ...string) ([]byte, error) {
 	var err error
 	switch len(args) {
 	case 1:
-	fmt.Printf("%s %s %s %s\n","mtx", "-f",c.device ,args[0])		
 	returnValue, err = exec.Command("mtx", "-f",c.device ,args[0]).Output()		
 	case 2:
-	fmt.Printf("%s %s %s %s %s\n","mtx", "-f",c.device ,args[0],args[1])		
 	returnValue, err = exec.Command("mtx", "-f",c.device,args[0],args[1]).Output()		
 	case 3:
-	fmt.Printf("%s %s %s %s %s %s\n","mtx", "-f",c.device ,args[0],args[1],args[2])		
 	returnValue, err = exec.Command("mtx", "-f",c.device,args[0],args[1],args[2]).Output()		
-case 5:
+	default:
 	log.Fatal("Invalid number of args")
 }
 return returnValue, err

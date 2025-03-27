@@ -6,7 +6,6 @@ import (
 	. "ltfs-vof/tapehardware"
 	_ "modernc.org/sqlite"
 	"os"
-	//	"time"
 )
 
 // THERE ARE THREE PLACES DATA CAN BE LOCATED
@@ -16,18 +15,19 @@ import (
 
 // Restore all versions, deletemarkers, essentially make s3 repository look like
 // original
-func RestoreAll(library TapeLibrary, dbManager *DBManager) {
+func (db *Database) RestoreAll() {
 	// For version records that have the "DATA: stored as part of the version record they
 	// need to be scannned now so if they are the only version of an object they can be
 	// processed
-	versionRecordsWithData := dbManager.getVersionsInRecord()
+	versionRecordsWithData := db.dbManager.getVersionsInRecord()
 	logEvent("Processing ", len(versionRecordsWithData), " version records that contain data")
 	for _, versionID := range versionRecordsWithData {
-		dbManager.processVersion(versionID)
+		logEvent("Writing in Record Data for VersionID: ",versionID)
+		db.dbManager.processVersion(versionID)
 	}
 
 	// audit the library
-	drives, tapes := library.Audit()
+	drives, tapes := db.library.Audit()
 	logEvent("Audited Tape Library #cartridges: ", len(tapes), "  #drives: ", len(drives))
 
 	// get resource allocation for tape drives
@@ -39,7 +39,7 @@ func RestoreAll(library TapeLibrary, dbManager *DBManager) {
 
 	// get an ordered list of tapes from oldest to newest
 	// also get a list of the pack order on each tape from oldest to newest
-	tapeCartridgeOrder, packsOrder := dbManager.GetTapePackOrder()
+	tapeCartridgeOrder, packsOrder := db.dbManager.GetTapePackOrder()
 	logEvent("Cartridge Order: ", tapeCartridgeOrder)
 	logEvent("Pack Order: ", packsOrder)
 	for _, nextTape := range tapeCartridgeOrder {
@@ -62,7 +62,7 @@ func RestoreAll(library TapeLibrary, dbManager *DBManager) {
 
 			// load tape into drive
 			logEvent("Loading and Mounting tape: ", tape.Name(), " toDrive: ", drive.Name())
-			status := library.Load(tape, drive)
+			status := db.library.Load(tape, drive)
 			// if unable to load tape
 			if !status {
 				log.Fatal("Failed to load tape")
@@ -99,9 +99,9 @@ func RestoreAll(library TapeLibrary, dbManager *DBManager) {
 						block := ReadBlock(file, tlv.DataLength())
 						// see if there is a version record associated with this block
 						// if  there  is then cache the block and
-						if dbManager.doesVersionRecordExist(block.GetVersion()) {
+						if db.dbManager.doesVersionRecordExist(block.GetVersion()) {
 							// cache the block and send version to s3 if version is complete
-							dbManager.WriteBlock(pack, offset, currentFileLocation(file), block)
+							db.dbManager.WriteBlock(pack, offset, currentFileLocation(file), block)
 							logEvent("Read & Wrote Block Pack:", pack, " offset: ", offset)
 						} else {
 							logEvent("Block not associated with a version record")
@@ -113,7 +113,7 @@ func RestoreAll(library TapeLibrary, dbManager *DBManager) {
 							log.Fatal("unable to read packlist")
 						}
 						logEvent("Processing Pack List", pack, " offset: ", offset)
-						dbManager.ProcessPackList(pack, offset, packs)
+						db.dbManager.ProcessPackList(pack, offset, packs)
 					default:
 						log.Fatal("TLV not of Version or Version Delete type")
 					}
@@ -122,7 +122,7 @@ func RestoreAll(library TapeLibrary, dbManager *DBManager) {
 			// unload and dismount the tape
 			logEvent("Dismounting and Unloading tape: ", tape.Name(), " toDrive: ", drive.Name())
 			drive.Unmount()
-			library.Unload(drive)
+			db.library.Unload(drive)
 			// release the drive and notify the channel
 			driveReserve.Release(driveNumber)
 			tapeCompleteChannel <- true

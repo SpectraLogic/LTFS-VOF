@@ -316,10 +316,11 @@ func (dbm *DBManager) processVersion(versionID string) {
 			if dbm.s3Enabled {
 				// if single block just execute a single PUT
 				if len(blockids) == 1 {
-					Put(bucket, key, dbm.region, blockids[0])
+					Put(bucket, key, dbm.region, dbm.cacheDir, blockids[0])
+
 				} else {
 					// if multiple blocks do a multiple part upload where each block is a part
-					PutMultipart(bucket, key, dbm.region, blockids)
+					PutMultipart(bucket, key, dbm.region, dbm.cacheDir, blockids)
 				}
 			}
 

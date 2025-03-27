@@ -1,0 +1,25 @@
+{
+    "LibraryDevice": "/dev/sch0",
+    "TapeDevices": {
+        "0": {
+            "Slot": 0,
+            "Device": "/dev/sg11",
+	    "MountPoint": "/ltfs0"
+        },
+        "1": {
+            "Slot": 1,
+            "Device": "/dev/sg10",
+	    "MountPoint": "/ltfs1"
+        },
+        "2": {
+            "Slot": 2,
+            "Device": "/dev/sg9",
+	    "MountPoint": "/ltfs2"
+        },
+        "3": {
+            "Slot": 3,
+            "Device": "/dev/sg8",
+	    "MountPoint": "/ltfs3"
+        }
+    }
+}
