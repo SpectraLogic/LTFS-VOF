@@ -1,0 +1,51 @@
+This golang program allows for the decoding of tapes produced in the LTFS version object format (LTFS-VOF). These are tapes that have been written by the Spectralogic Vail software in conjunction with BlackPearl tape mangement. There are several steps a customer needs to perform to run the program.
+
+Physical Equipment Setup
+
+- A Tape Library with a logical or physical partition that can be used exclusively for this decoding operation.
+- The tape library partition should contain all cartridges to be decoded.
+- The tape library partition should have one or more tape drives, the program will use tape drives in parallel to speed up the decoding process.  
+- A server that has a physical connection to the tape library partition and all of its tape drives.
+
+Software Setup
+- This program should be installed and compiled on the server.
+- A mount point should be made on the server for each drive that is in the library partition 
+
+$ sudo mkdir /ltfs0
+$ sudo mkdir /ltfs1
+etc.
+
+- The file config.json should be copied over to another file name and its entries edited based on the tape library partition and drives.
+
+{
+    "LibraryDevice": "/dev/sch0",
+    "TapeDevices": {
+        "0": {
+            "Slot": 0,
+            "Device": "/dev/sg11",
+            "MountPoint": "/ltfs0"
+        },
+        "1": {
+            "Slot": 1,
+            "Device": "/dev/sg10",
+            "MountPoint": "/ltfs1"
+        },
+        "2": {
+            "Slot": 2,
+            "Device": "/dev/sg9",
+            "MountPoint": "/ltfs2"
+        },
+        "3": {
+            "Slot": 3,
+            "Device": "/dev/sg8",
+            "MountPoint": "/ltfs3"
+        }
+    }
+}
+// Once the json file has been created you can check the 
+// The program should be ran for extracting *.ver files off of the tapes
+
+$  
+
+
+

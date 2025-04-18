@@ -10,7 +10,7 @@ type TapeLibrary interface {
 }
 type TapeDrive interface {
 	MountLTFS() (map[string]string, map[string]string, bool)
-	Unmount() 
+	Unmount()
 	GetCart() (TapeCartridge, bool)
 	Name() string
 }

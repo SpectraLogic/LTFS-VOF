@@ -2,21 +2,21 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
-	. "ltfs-vof/tapehardware"
 	"io/ioutil"
-	"os"
 	"log"
+	. "ltfs-vof/tapehardware"
+	"os"
 	"runtime"
 	"time"
-	"encoding/json"
 )
+
 // the format of the json config file
 type Config struct {
-	LibraryDevice string `json:"LibraryDevice"`
-	TapeDriveDevices map[int] *TapeDriveDevice `json:"TapeDevices"`
+	LibraryDevice    string                   `json:"LibraryDevice"`
+	TapeDriveDevices map[int]*TapeDriveDevice `json:"TapeDevices"`
 }
-
 
 const DEFAULT_DB string = "./db"
 const DEFAULT_BLOCK_CACHE string = "cache"
@@ -33,22 +33,35 @@ func main() {
 	database := flag.Bool("database", false, "Create the database")
 	read := flag.Bool("read", false, "Read the tapes")
 	clean := flag.Bool("clean", false, "Clean the log")
-	region := flag.String("region",DEFAULT_REGION,"AWS region to write s3 objects")
-	configFile := flag.String("config",DEFAULT_CONFIG_FILE,"JSON file that defines tape drive mapping")
+	libcheck := flag.Bool("libcheck", false, "run a check on the tape library")
+	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
+	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	flag.Parse()
 
 	// read the config file
 	configData, err := ioutil.ReadFile(*configFile)
 	if err != nil {
-		logEvent("Unable to read configuration file: ",*configFile)
+		logEvent("Unable to read configuration file: ", *configFile)
 		log.Fatal(err)
+	}
+	// run a check on the tape library
+	if *libcheck {
+		library := NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
+		tapeDrives, tapeCartridges = library.Audit()
+		for i := 0; i < len(tapeDrives); i++ {
+			fmt.Println("Tape Drive: ", tapeDrives[i].SerialNumber)
+		}
+		for i := 0; i < len(tapeCartridges); i++ {
+			fmt.Println("Tape Cartridge: ", tapeCartridges[i].SerialNumber)
+		}
+		os.Exit()
 	}
 
 	// unmarshal the config file
 	var config Config
 	err = json.Unmarshal(configData, &config)
 	if err != nil {
-		logEvent("Unable to json unmarshal the json config file: ",*configFile)
+		logEvent("Unable to json unmarshal the json config file: ", *configFile)
 		log.Fatal(err)
 	}
 
@@ -82,10 +95,10 @@ func main() {
 	if *simulate {
 		library = NewTapeLibrarySimulator()
 	} else {
-		library = NewRealTapeLibrary(config.LibraryDevice,config.TapeDriveDevices)
+		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}
 	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled)
-	db := NewDatabase(DEFAULT_VERSION_CACHE,dbManager,library)
+	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library)
 	// if version is enabled create the database manager and get the version files
 	if *version {
 		logEvent("*****COPYING VERSION FILES******")

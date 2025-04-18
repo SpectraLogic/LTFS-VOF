@@ -1,12 +1,7 @@
-This golang program allows for the decoding tapes produced in the LTFS version object format (LTFS-VOF). 
+This golang program allows for the decoding of tapes produced in the LTFS version object format (LTFS-VOF). These are tapes that have been written by the Spectralogic Vail software in conjunction with BlackPearl tape mangement.  
 
-The program will read each tape extract its contents and then writes to a 3rd party S3 provided by the user. 
+The program reads each tape, extracts their content and writes the objects on those tapes to a 3rd party S3 service provided by the user.  Prior to starting the progrom the user should create the S3 target buckets that correspond to the S3 buckets that were written to the tapes. These buckets need to have identical names along with being setup with the identical versioning or non-versioning configuration. The secret and access keys required by the 3rd part S3 service should be set as environment variables.  
 
-Prior to starting the progrom the user should create the S3 target buckets that correspond to the S3 buckets that were written to the tapes.
+The LTFS-VOF specification defines two types of files, meta-data files that have .ver suffixes and data files that have .blk suffixes. In order to
 
-These buckets need to have identical names along with being setup with the identical versioning or non-versioning configuration. 
-Secret and access keys required for the target backets should be set as environment variables.  
-
-The LTFS-VOF specification defines two types of files;  meta-data files with a .ver suffix and data files with  a .blk suffix. 
-
-
+The LTFS-VOF specification defines two types of files, meta-data files that have .ver suffixes and data files that have .blk suffixes. 
