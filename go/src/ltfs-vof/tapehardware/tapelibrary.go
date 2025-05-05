@@ -190,8 +190,18 @@ func (rtd RealTapeDrive) MountLTFS() (map[string]string, map[string]string,bool)
 func (rtd RealTapeDrive) Unmount() {
 	exec.Command("umount", rtd.driveInfo.MountPoint).Output()
 }
-func (rtd RealTapeDrive) Name() string {
-	return fmt.Sprintf("Drive%d",rtd.id)
+func (rtd RealTapeDrive) Device() string {
+	return rtd.driveInfo.Device
+}
+func (rtd RealTapeDrive) SerialNumber() (string, bool) {
+
+	devname := fmt.Sprintf("devname=%s",rtd.driveInfo.Device)
+	value, err := exec.Command("scsiinfo", "-s",devname).Output()
+	if err != nil {
+		return "", false
+	}
+	fmt.Println("Value: ",value)
+	return "", true 
 }
 //**** REAL TAPE CARTRIDGE ********
 

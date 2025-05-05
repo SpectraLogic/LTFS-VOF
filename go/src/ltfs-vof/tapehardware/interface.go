@@ -12,8 +12,9 @@ type TapeDrive interface {
 	MountLTFS() (map[string]string, map[string]string, bool)
 	Unmount()
 	GetCart() (TapeCartridge, bool)
-	Name() string
+	SerialNumber() (string, bool)
 }
 type TapeCartridge interface {
 	Name() string
+	GetSlot() int
 }

@@ -10,6 +10,7 @@ import (
 	"os"
 	"runtime"
 	"time"
+	"fmt"
 )
 
 // the format of the json config file
@@ -29,11 +30,11 @@ func main() {
 	all := flag.Bool("all", false, "Perform all operaions sequentially")
 	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
 	s3enabled := flag.Bool("s3", false, "Write S3 as the storage backend")
+	verify := flag.Bool("verify", false, "Verify that hardware matches config file")
 	version := flag.Bool("version", false, "Find and copy version files")
 	database := flag.Bool("database", false, "Create the database")
 	read := flag.Bool("read", false, "Read the tapes")
 	clean := flag.Bool("clean", false, "Clean the log")
-	libcheck := flag.Bool("libcheck", false, "run a check on the tape library")
 	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	flag.Parse()
@@ -44,25 +45,45 @@ func main() {
 		logEvent("Unable to read configuration file: ", *configFile)
 		log.Fatal(err)
 	}
-	// run a check on the tape library
-	if *libcheck {
-		library := NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
-		tapeDrives, tapeCartridges = library.Audit()
-		for i := 0; i < len(tapeDrives); i++ {
-			fmt.Println("Tape Drive: ", tapeDrives[i].SerialNumber)
-		}
-		for i := 0; i < len(tapeCartridges); i++ {
-			fmt.Println("Tape Cartridge: ", tapeCartridges[i].SerialNumber)
-		}
-		os.Exit()
-	}
-
 	// unmarshal the config file
 	var config Config
 	err = json.Unmarshal(configData, &config)
 	if err != nil {
 		logEvent("Unable to json unmarshal the json config file: ", *configFile)
 		log.Fatal(err)
+	}
+
+	// run a verification of the config file 
+	if *verify {
+		library := NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
+		fmt.Println("\n\nLibrary: ",config.LibraryDevice)
+		tapeDrives, tapeCartridges := library.Audit()
+		fmt.Println("\n\tCartridge\tSlot")
+		for _,tc := range tapeCartridges {
+			fmt.Printf("\t%.18s%d", tc.Name(),tc.GetSlot())
+		}
+		// check that tape drives the 
+		fmt.Println("\n\tDevice\tSerial\t\tCart")
+		drivePathFailure := false
+		for _,td := range tapeDrives {
+			// if does not exist on data path then exit
+			sn, exists := td.SerialNumber()
+			if !exists {
+				drivePathFailure = true
+				logEvent("Device Path did not see drive",td.Device())
+				fmt.Println("\t",td.Device(),"\tDevice Not Seen")
+				continue
+			}
+			cart,_ := td.GetCart()
+			if cart == "" {
+				cart = "Empty"
+			}
+			fmt.Println("\t",td.Device(),"\t",sn,"\t",cart)
+		}
+		if drivePathFailure {
+			logEvent("Verification of config file: ", *configFile, " failed")
+			log.Fatal("Verification of config file: ", *configFile, " failed")
+		}
 	}
 
 	// create or append the log file

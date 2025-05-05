@@ -20,6 +20,7 @@ type TapeDriveSimulator struct {
 }
 type TapeCartridgeSimulator struct {
 	name         string
+	slot         int
 }
 
 const NumDrives int = 1
@@ -69,8 +70,8 @@ func NewTapeDriveSimulator(i int, tapeDirectory string) *TapeDriveSimulator {
 	}
 	return &drive
 }
-func (td *TapeDriveSimulator) Name() string {
-	return td.name
+func (td *TapeDriveSimulator) SerialNumber() (string, bool) {
+	return td.name,true
 }
 func (td *TapeDriveSimulator) GetCart() (TapeCartridge, bool){
 	if !td.busy  {
@@ -98,7 +99,11 @@ func (td *TapeDriveSimulator) Unmount() {
 func NewTapeCartridgeSimulator(i int) *TapeCartridgeSimulator {
 	var cart TapeCartridgeSimulator
 	cart.name = fmt.Sprintf("tape%d", i)
+	cart.slot = i
 	return &cart
+}
+func (c *TapeCartridgeSimulator) GetSlot() int {
+	return c.slot
 }
 func (c *TapeCartridgeSimulator) Name() string {
 	return c.name
