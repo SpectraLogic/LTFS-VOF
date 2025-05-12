@@ -195,13 +195,15 @@ func (rtd RealTapeDrive) Device() string {
 }
 func (rtd RealTapeDrive) SerialNumber() (string, bool) {
 
-	devname := fmt.Sprintf("devname=%s",rtd.driveInfo.Device)
-	value, err := exec.Command("scsiinfo", "-s",devname).Output()
+	value, err := exec.Command("scsiinfo", "-s",rtd.driveInfo.Device).Output()
 	if err != nil {
 		return "", false
 	}
-	fmt.Println("Value: ",value)
-	return "", true 
+	sn := strings.ReplaceAll(string(value),"'","")
+	sn = strings.ReplaceAll(sn,"Serial Number","")
+	sn = strings.ReplaceAll(sn,"\n","")
+
+	return sn, true 
 }
 //**** REAL TAPE CARTRIDGE ********
 

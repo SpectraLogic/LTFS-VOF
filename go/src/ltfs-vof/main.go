@@ -5,11 +5,8 @@ import (
 	"encoding/json"
 	"flag"
 	"io/ioutil"
-	"log"
 	. "ltfs-vof/tapehardware"
-	"os"
-	"runtime"
-	"time"
+	. "ltfs-vof/logger"
 	"fmt"
 )
 
@@ -24,10 +21,10 @@ const DEFAULT_BLOCK_CACHE string = "cache"
 const DEFAULT_VERSION_CACHE string = "versions"
 const DEFAULT_REGION string = "us-west-1"
 const DEFAULT_CONFIG_FILE string = "config.json"
+const DEFAULT_LOG_FILE string = "ltfs-vof.log"
 
 func main() {
 	// get the command line arguments
-	all := flag.Bool("all", false, "Perform all operaions sequentially")
 	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
 	s3enabled := flag.Bool("s3", false, "Write S3 as the storage backend")
 	verify := flag.Bool("verify", false, "Verify that hardware matches config file")
@@ -37,20 +34,22 @@ func main() {
 	clean := flag.Bool("clean", false, "Clean the log")
 	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
+	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
 	flag.Parse()
+
+	// create the customer logger
+	logger := NewLogger(*logFile,*clean)
 
 	// read the config file
 	configData, err := ioutil.ReadFile(*configFile)
 	if err != nil {
-		logEvent("Unable to read configuration file: ", *configFile)
-		log.Fatal(err)
+		logger.Fatal("Unable to read configuration file: ", *configFile)
 	}
 	// unmarshal the config file
 	var config Config
 	err = json.Unmarshal(configData, &config)
 	if err != nil {
-		logEvent("Unable to json unmarshal the json config file: ", *configFile)
-		log.Fatal(err)
+		logger.Fatal("Unable to json unmarshal the json config file: ", *configFile)
 	}
 
 	// run a verification of the config file 
@@ -58,58 +57,37 @@ func main() {
 		library := NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 		fmt.Println("\n\nLibrary: ",config.LibraryDevice)
 		tapeDrives, tapeCartridges := library.Audit()
-		fmt.Println("\n\tCartridge\tSlot")
+		
+		fmt.Println("\nCartridge\tSlot")
 		for _,tc := range tapeCartridges {
-			fmt.Printf("\t%.18s%d", tc.Name(),tc.GetSlot())
+			fmt.Printf("%.18s%d\n", tc.Name(),tc.GetSlot())
 		}
 		// check that tape drives the 
-		fmt.Println("\n\tDevice\tSerial\t\tCart")
+		fmt.Println("\nDrive\tSerial\t\tCart")
 		drivePathFailure := false
-		for _,td := range tapeDrives {
+		for d,td := range tapeDrives {
 			// if does not exist on data path then exit
 			sn, exists := td.SerialNumber()
 			if !exists {
 				drivePathFailure = true
-				logEvent("Device Path did not see drive",td.Device())
-				fmt.Println("\t",td.Device(),"\tDevice Not Seen")
+				logger.Event("Device Path did not see drive: ",d)
 				continue
 			}
 			cart,_ := td.GetCart()
-			if cart == "" {
-				cart = "Empty"
+			if cart != nil {
+				fmt.Printf("%02d%16s%16s\n",d, sn,cart.Name())
+			} else {
+				fmt.Printf("%02d%16s%16s\n",d, sn,"No Cartridge")
 			}
-			fmt.Println("\t",td.Device(),"\t",sn,"\t",cart)
 		}
 		if drivePathFailure {
-			logEvent("Verification of config file: ", *configFile, " failed")
-			log.Fatal("Verification of config file: ", *configFile, " failed")
+			logger.Fatal("Verification of config file: ", *configFile, " failed")
 		}
-	}
-
-	// create or append the log file
-	var file *os.File
-	if *all || *clean {
-		file, err = os.Create("ltfs-vof.log")
-		os.Remove(DEFAULT_DB)
-	} else {
-		file, err = os.OpenFile("ltfs-vof.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	}
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-	log.SetOutput(file)
-
-	// if all set everything as enabled
-	if *all {
-		*version = true
-		*database = true
-		*read = true
 	}
 
 	// log arguments
-	logEvent("****RUN PARMS **** ")
-	logEvent("\n\tSIMULATE: ", *simulate, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *s3enabled)
+	logger.Event("****RUN PARMS **** ")
+	logger.Event("\n\tSIMULATE: ", *simulate, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *s3enabled)
 
 	// select the library type used
 	var library TapeLibrary
@@ -118,25 +96,25 @@ func main() {
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}
-	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled)
-	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library)
+	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled,logger)
+	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library, logger)
 	// if version is enabled create the database manager and get the version files
 	if *version {
-		logEvent("*****COPYING VERSION FILES******")
+		logger.Event("*****COPYING VERSION FILES******")
 		db.GetVersionFiles()
-		logEvent("****VERSION FILES COPIED******")
+		logger.Event("****VERSION FILES COPIED******")
 	}
 	if *database {
-		logEvent("******BUILDING DATABASE*******")
+		logger.Event("******BUILDING DATABASE*******")
 		db.CreateDatabase()
-		logEvent("******ENDING BUILDING DATABASE*******")
+		logger.Event("******ENDING BUILDING DATABASE*******")
 	}
 
 	// restore all the content if specified
 	if *read {
-		logEvent("******READING BLOCK FILES*******")
+		logger.Event("******READING BLOCK FILES*******")
 		db.RestoreAll()
-		logEvent("******READ ALL BLOCK FILES*******")
+		logger.Event("******READ ALL BLOCK FILES*******")
 	}
 	/*
 		// compare all source and corresponding target buckets
@@ -150,18 +128,4 @@ func main() {
 			}
 		}
 	*/
-}
-
-// log events with a time stamp and function name as a prefix
-func logEvent(args ...any) {
-
-	// get function name
-	pc, _, _, _ := runtime.Caller(1)
-	fname := runtime.FuncForPC(pc).Name()
-
-	// get current time
-	currentTime := time.Now().Format("Mon Jan _2 15:04:05")
-
-	// print line
-	log.Println(currentTime, fname, ": ", args)
 }

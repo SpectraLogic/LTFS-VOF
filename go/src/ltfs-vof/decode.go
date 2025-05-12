@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
-	"log"
+	. "ltfs-vof/logger"
 	"os"
 	"strings"
 )
@@ -32,7 +32,7 @@ type TLV struct {
 	tag        TagType
 }
 
-func ReadTLV(file *os.File) *TLV {
+func ReadTLV(file *os.File,logger *Logger) *TLV {
 
 	var tlv TLV
 	header := make([]byte, 32)
@@ -56,7 +56,7 @@ func ReadTLV(file *os.File) *TLV {
 		}
 	}
 	if tlv.tag == -1 {
-		log.Fatal("Tag not found")
+		logger.Fatal("Tag not found")
 	}
 	return &tlv
 }
@@ -302,16 +302,16 @@ func NewBlock(blockID, bucket, object, version string, data []byte, logicalStart
 // Read is used by application to read a data Block out of a pack
 // a read block does not include the pack information but does include the
 // uploadid: versionid, objectid, and the data
-func ReadBlock(file *os.File, length uint64) *Block {
+func ReadBlock(file *os.File, length uint64,logger *Logger) *Block {
 
 	var b Block
 	decoder := value.NewDecoder()
 	secondaryData, _, err := decoder.ReadWithBytes(file, &b)
 	if err != nil {
-		logEvent("error reading block data:", err)
+		logger.Event("error reading block data:", err)
 	}
 	if secondaryData == nil {
-		logEvent("Block contains no data")
+		logger.Event("Block contains no data")
 	}
 	b.data = make([]byte, len(secondaryData.Bytes()))
 	copy(b.data, secondaryData.Bytes())
@@ -319,13 +319,13 @@ func ReadBlock(file *os.File, length uint64) *Block {
 	// strip components out of versionInfo   download #: version ID: bucket/key
 	segments := strings.Split(b.VersionInfo,":")
 	if len(segments) != 3 {
-		log.Fatal("Invalid Version Info String From Block: ",b.VersionInfo)
+		logger.Fatal("Invalid Version Info String From Block: ",b.VersionInfo)
 	}
 	b.Version = segments[1]
 	// now split the bucket/key
 	segments = strings.SplitN(segments[2], "/", 2)
         if len(segments) != 2 {
-                log.Fatal("Could not split bucket key", segments[2])
+                logger.Fatal("Could not split bucket key", segments[2])
         }
 	b.Bucket = segments[0]
 	b.Object = segments[1]
@@ -354,26 +354,26 @@ func (b *Block) GetLength() int {
 }
 
 // Read is used by application to read a pack list Block out of a pack
-func ReadPackListRecord(file *os.File, length uint64) Packs {
+func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 	/** FOR SOME REASON ONLY DECODING A SINGLE PACKENTRY, NEED TO TALK JOE ABOUT WHY THIS IS **/
 	var pack StoredPack
 	decoder := value.NewDecoder()
 	_, _, err := decoder.ReadWithBytes(file, &pack)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	return pack.Packs
 }
 
 // VERSION - Contains a MetaReference Structure
-func ReadVersionRecord(file *os.File, length uint64) *MetaReference {
+func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaReference {
 
 	var versionRecord MetaReference
 	decoder := value.NewDecoder()
 	_, _, err := decoder.ReadWithBytes(file, &versionRecord)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 	return &versionRecord
 }
@@ -418,13 +418,13 @@ type MetaFile struct {
 	Oldest string `codec:"o" json:"oldest,omitempty"`
 }
 
-func ReadMetaFile(file *os.File, length uint64) *MetaFile {
+func ReadMetaFile(file *os.File, length uint64, logger *Logger) *MetaFile {
 
 	var metaFile MetaFile
 	decoder := value.NewDecoder()
 	_, _, err := decoder.ReadWithBytes(file, &metaFile)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	return &metaFile

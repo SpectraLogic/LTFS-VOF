@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/oklog/ulid/v2"
-	"log"
+	. "ltfs-vof/logger"
 	_ "modernc.org/sqlite"
 	"os"
 	"sort"
@@ -18,19 +18,21 @@ type DBManager struct {
 	s3Enabled    bool
 	lockResource *Resource
 	lockValue    int
+	logger *Logger
 }
 
-func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool) *DBManager {
+func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool, logger *Logger) *DBManager {
 	var manager DBManager
 	manager.region = region
 	manager.s3Enabled = s3Enabled
 	manager.lockResource = NewResource(1)
 	manager.cacheDir = cacheDir
+	manager.logger = logger
 
 	var err error
 	manager.db, err = sql.Open("sqlite", dbName)
 	if manager.db == nil {
-		log.Fatal("Could not open db", err)
+		logger.Fatal("Could not open db", err)
 	}
 
 	// remove and setup the db
@@ -38,23 +40,23 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool) *DBMan
 		os.Remove(dbName)
 		file, err := os.Create(dbName)
 		if err != nil {
-			log.Fatal(err)
+			logger.Fatal(err)
 		}
 		file.Close()
 		// create blocks table
 		_, err = manager.db.Exec(`CREATE TABLE blocks (blockid TEXT NOT NULL PRIMARY KEY, state INT default 0,blockinfo BLOB)`)
 		if err != nil {
-			log.Fatal("Could not create block table", err)
+			logger.Fatal("Could not create block table", err)
 		}
 		// create versions table
 		_, err = manager.db.Exec(`CREATE TABLE versions (versionid TEXT NOT NULL PRIMARY KEY, bucketkey string KEY, inrecord BOOL KEY, completed BOOL DEFAULT false, deletemarker BOOL default false, ispacklist BOOL default false, blocklist BLOB )`)
 		if err != nil {
-			log.Fatal("Could not create version table", err)
+			logger.Fatal("Could not create version table", err)
 		}
 		// create the packs table
 		_, err = manager.db.Exec(`CREATE TABLE packs (packid TEXT NOT NULL PRIMARY KEY,tapeid TEXT KEY, blocklist BLOB)`)
 		if err != nil {
-			log.Fatal("Could not create pack table", err)
+			logger.Fatal("Could not create pack table", err)
 		}
 		// remove everything from the cache directory
 		if !s3Enabled {
@@ -120,7 +122,7 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 		dbm.insertPackTable(packList.GetPackName(), packList.GetPhysicalStart(), mr.GetVersion(), "")
 		dbm.insertVersionTable(bucketObject, mr.GetVersion(), false, false, true, nil)
 	} else {
-		log.Fatal("Version added that doesn't have data in the version, packs or a packlist")
+		dbm.logger.Fatal("Version added that doesn't have data in the version, packs or a packlist")
 	}
 	dbm.unlock()
 }
@@ -176,14 +178,14 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 	// it could be deleted because the version associated with it was deleted
 	state, entry := dbm.getBlockRecord(packMapEntry.BlockID)
 	if state != STATE_READY {
-		logEvent("No BLock Record for : ", packMapEntry.BlockID)
+		dbm.logger.Event("No BLock Record for : ", packMapEntry.BlockID)
 		dbm.unlock()
 		return
 	}
 
 	// write the block to the cache
 	dbm.unlock()
-	logEvent("Write the block to cache: ", packMapEntry.BlockID)
+	dbm.logger.Event("Write the block to cache: ", packMapEntry.BlockID)
 	dbm.writeBlockToCache(packMapEntry.BlockID, block)
 	dbm.lock()
 
@@ -213,7 +215,7 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 	}
 
 	// process the version in case all blocks are cached
-	logEvent("Process Version: ", packMapEntry.VersionID)
+	dbm.logger.Event("Process Version: ", packMapEntry.VersionID)
 	dbm.processVersion(packMapEntry.VersionID)
 	dbm.unlock()
 }
@@ -228,7 +230,7 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 	packMap := dbm.getPackMap(packName)
 	packEntry, ok := packMap[offset]
 	if !ok {
-		log.Fatal("Could not find pack entry for pack list", packName, " offset ", offset)
+		dbm.logger.Fatal("Could not find pack entry for pack list", packName, " offset ", offset)
 	}
 	versionID := packEntry.VersionID
 	// step 2: for block entries that don't exist create them, if they have already
@@ -267,7 +269,7 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 }
 
 func (dbm *DBManager) processVersion(versionID string) {
-	logEvent("versionID: ", versionID)
+	dbm.logger.Event("versionID: ", versionID)
 	// db should be locked by calling process
 	// loop processing versions of this bucket and key starting with the oldest
 	// two conditions are required
@@ -282,28 +284,28 @@ func (dbm *DBManager) processVersion(versionID string) {
 			// check to see if all blocks associated with this version have been cached
 			// if not return and wait for the next block to be written
 			if blockids == nil {
-				logEvent("alls the bucketkey: ", bucketkey)
+				dbm.logger.Event("alls the bucketkey: ", bucketkey)
 				return
 			}
 			for _, blockid := range blockids {
 				state, _ := dbm.getBlockRecord(blockid)
 				if state != STATE_CACHED {
-					logEvent("Not all blocks assosciated with verison are in cache bucketkey: ", bucketkey)
+					dbm.logger.Event("Not all blocks assosciated with verison are in cache bucketkey: ", bucketkey)
 					return
 				}
 			}
 		}
 		// all blocks have been written or this is delete marker
-		logEvent("All blocks have been written")
+		dbm.logger.Event("All blocks have been written")
 		versions := dbm.getVersionsNotCompleted(bucketkey)
 		if versions == nil {
-			logEvent("Verson completed")
+			dbm.logger.Event("Verson completed")
 			return
 		}
 
 		// if this isn't the oldest version id return and wait for the oldest version to be written
 		if versions[0] != versionID {
-			logEvent("Version not oldest")
+			dbm.logger.Event("Version not oldest")
 			return
 		}
 		bucket, key := dbm.getBucketKey(bucketkey)
@@ -332,7 +334,7 @@ func (dbm *DBManager) processVersion(versionID string) {
 		} else {
 			// delete marker
 			if dbm.s3Enabled {
-				logEvent("S3, Delete Marker, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
+				dbm.logger.Event("S3, Delete Marker, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
 				DeleteMarker(bucket, key, dbm.region)
 			}
 		}
@@ -375,8 +377,8 @@ func (dbm *DBManager) GetTapePackOrder() ([]string, map[string][]string) {
 		packtimes := make([]uint64, 0)
 		for _, packid := range packids {
 			// remove the suffix from the packid
-			logEvent("Get time from ID: ", packid)
-			_, packtime := getTimeFromID(packid)
+			dbm.logger.Event("Get time from ID: ", packid)
+			_, packtime := getTimeFromID(packid,dbm.logger)
 			packtimes = append(packtimes, packtime)
 		}
 		// sort the packids based on the time
@@ -393,8 +395,8 @@ func (dbm *DBManager) GetTapePackOrder() ([]string, map[string][]string) {
 	// create the ordered list of tapes based on oldest pack time of
 	// first element
 	sort.Slice(orderedList, func(i, j int) bool {
-		_, oldi := getTimeFromID(tapepacks[orderedList[i]][0])
-		_, oldj := getTimeFromID(tapepacks[orderedList[j]][0])
+		_, oldi := getTimeFromID(tapepacks[orderedList[i]][0],dbm.logger)
+		_, oldj := getTimeFromID(tapepacks[orderedList[j]][0],dbm.logger)
 		if oldi < oldj {
 			return true
 		}
@@ -433,19 +435,19 @@ func (dbm *DBManager) insertVersionTable(bucketkey, versionid string, inRecord, 
 
 	blocklistjson, err := json.Marshal(blockids)
 	if err != nil {
-		log.Fatal("Could not marshal blocklist", err)
+		dbm.logger.Fatal("Could not marshal blocklist", err)
 	}
 	sql := "INSERT or REPLACE INTO versions (versionid, bucketkey, inrecord, deleteMarker, ispacklist, blocklist) VALUES (?,?,?,?,?,?)"
 	_, err = dbm.db.Exec(sql, versionid, bucketkey, inRecord, deleteMarker, ispacklist, blocklistjson)
 	if err != nil {
-		log.Fatal("Could not insert or replace version id: ", versionid, " bucketkey: ", bucketkey, "bucketkey", " error: ", err)
+		dbm.logger.Fatal("Could not insert or replace version id: ", versionid, " bucketkey: ", bucketkey, "bucketkey", " error: ", err)
 	}
 }
 func (dbm *DBManager) deleteVersionsTable(versionid string) {
 	sql := "DELETE FROM versions WHERE versionid = ?"
 	_, err := dbm.db.Exec(sql, versionid)
 	if err != nil {
-		log.Fatal("Could not delete version", err)
+		dbm.logger.Fatal("Could not delete version", err)
 	}
 }
 
@@ -453,7 +455,7 @@ func (dbm *DBManager) deleteVersionsTable(versionid string) {
 func (dbm *DBManager) getVersionInfo(versionid string) (string, bool, bool, bool, []string) {
 	buckkey, inRecord, deleteMarker, ispacklist, blocklist, exist := dbm.getVersionRecord(versionid)
 	if !exist {
-		log.Fatal("Version record does not exist")
+		dbm.logger.Fatal("Version record does not exist")
 	}
 	return buckkey, inRecord, deleteMarker, ispacklist, blocklist
 }
@@ -479,7 +481,7 @@ func (dbm *DBManager) getVersionRecord(versionid string) (string, bool, bool, bo
 	var blocklist []string
 	err = json.Unmarshal(blockinfo, &blocklist)
 	if err != nil {
-		log.Fatal("Could not unmarshal blocklist for read", err)
+		dbm.logger.Fatal("Could not unmarshal blocklist for read", err)
 	}
 	return bucketkey, inRecord == 1, deleteMarker == 1, ispacklist == 1, blocklist, true
 }
@@ -491,14 +493,14 @@ func (dbm *DBManager) getVersionsInRecord() []string {
 
 	v, err := dbm.db.Query("SELECT versionid FROM versions WHERE inrecord = 1")
 	if err != nil {
-		log.Fatal("Could not read versions associated with in record", err)
+		dbm.logger.Fatal("Could not read versions associated with in record", err)
 	}
 	defer v.Close()
 	for v.Next() {
 		var versionid string
 		err = v.Scan(&versionid)
 		if err != nil {
-			log.Fatal("Could not read versionid", err)
+			dbm.logger.Fatal("Could not read versionid", err)
 		}
 		versions = append(versions, versionid)
 	}
@@ -513,7 +515,7 @@ func (dbm *DBManager) getVersionsNotCompleted(bucketkey string) []string {
 	sql := "SELECT versionid,completed FROM versions WHERE bucketkey = ?"
 	v, err := dbm.db.Query(sql, bucketkey)
 	if err != nil {
-		log.Fatal("Could not read versions associated with bucket and key", err)
+		dbm.logger.Fatal("Could not read versions associated with bucket and key", err)
 	}
 	defer v.Close()
 	for v.Next() {
@@ -521,7 +523,7 @@ func (dbm *DBManager) getVersionsNotCompleted(bucketkey string) []string {
 		var completed int
 		err = v.Scan(&versionid, &completed)
 		if err != nil {
-			log.Fatal("Could not read versionid", err)
+			dbm.logger.Fatal("Could not read versionid", err)
 		}
 		// add to the array if not completed
 		if completed == 0 {
@@ -531,8 +533,8 @@ func (dbm *DBManager) getVersionsNotCompleted(bucketkey string) []string {
 
 	// sort the versions by oldest to newest
 	sort.Slice(versions, func(i, j int) bool {
-		_, timei := getTimeFromID(versions[i])
-		_, timej := getTimeFromID(versions[j])
+		_, timei := getTimeFromID(versions[i],dbm.logger)
+		_, timej := getTimeFromID(versions[j],dbm.logger)
 		if timei < timej {
 			return true
 		}
@@ -546,7 +548,7 @@ func (dbm *DBManager) updateVersionCompletedState(versionid string) {
 	sql := "UPDATE versions SET completed = 1 WHERE versionid = ?"
 	_, err := dbm.db.Exec(sql, versionid)
 	if err != nil {
-		log.Fatal("Could not update version", err)
+		dbm.logger.Fatal("Could not update version", err)
 	}
 }
 
@@ -554,12 +556,12 @@ func (dbm *DBManager) updateVersionCompletedState(versionid string) {
 func (dbm *DBManager) updateVersionBlockIDs(versionid string, blockids []string) {
 	blocklistjson, err := json.Marshal(blockids)
 	if err != nil {
-		log.Fatal("Could not marshal blocklist", err)
+		dbm.logger.Fatal("Could not marshal blocklist", err)
 	}
 	sql := "UPDATE versions SET blocklist = ? WHERE versionid = ?"
 	_, err = dbm.db.Exec(sql, blocklistjson, versionid)
 	if err != nil {
-		log.Fatal("Could not update version", err)
+		dbm.logger.Fatal("Could not update version", err)
 	}
 }
 
@@ -580,12 +582,12 @@ func (dbm *DBManager) insertBlocksTable(entry *PackEntry) string {
 	blockid := ulid.Make().String()
 	blockinfo, err := json.Marshal(entry)
 	if err != nil {
-		log.Fatal("Could not marshal block", err)
+		dbm.logger.Fatal("Could not marshal block", err)
 	}
 	sql := "INSERT INTO blocks (blockid, state, blockinfo) VALUES (?,?,?)"
 	_, err = dbm.db.Exec(sql, blockid, STATE_READY, blockinfo)
 	if err != nil {
-		log.Fatal("Could not insert into blocks table: ", err)
+		dbm.logger.Fatal("Could not insert into blocks table: ", err)
 	}
 	return blockid
 }
@@ -595,7 +597,7 @@ func (dbm *DBManager) updateBlockRecordState(blockid string, state blockState) {
 	sql := "UPDATE blocks SET state = ? WHERE blockid = ?"
 	_, err := dbm.db.Exec(sql, state, blockid)
 	if err != nil {
-		log.Fatal("Could not update block", err)
+		dbm.logger.Fatal("Could not update block", err)
 	}
 }
 
@@ -605,14 +607,14 @@ func (dbm *DBManager) updateBlocksTable(blockid string, entry *PackEntry) {
 
 	blockinfo, err := json.Marshal(entry)
 	if err != nil {
-		log.Fatal("Could not marshal block", err)
+		dbm.logger.Fatal("Could not marshal block", err)
 	}
 
 	// update the record
 	sql := "UPDATE blocks SET blockinfo = ? WHERE blockid = ?"
 	_, err = dbm.db.Exec(sql, blockinfo, blockid)
 	if err != nil {
-		log.Fatal("Could not update block", err)
+		dbm.logger.Fatal("Could not update block", err)
 	}
 }
 
@@ -626,7 +628,7 @@ func (dbm *DBManager) getBlockRecord(blockid string) (blockState, *PackEntry) {
 	sql := "SELECT state,blockinfo FROM blocks WHERE blockid = ?"
 	err = dbm.db.QueryRow(sql, blockid).Scan(&state, &blockinfo)
 	if err != nil {
-		log.Fatal("Could not read block", err)
+		dbm.logger.Fatal("Could not read block", err)
 	}
 	// decode json
 	var entry PackEntry
@@ -640,7 +642,7 @@ func (dbm *DBManager) deleteBlockRecord(blockid string) {
 	sql := "DELETE FROM blocks WHERE blockid = ?"
 	_, err := dbm.db.Exec(sql, blockid)
 	if err != nil {
-		log.Fatal("Could not read block", err)
+		dbm.logger.Fatal("Could not read block", err)
 	}
 }
 
@@ -662,20 +664,20 @@ func (dbm *DBManager) insertPackTable(packid string, start int64, versionid, blo
 	} else {
 		err = json.Unmarshal(blockinfo, &blocklist)
 		if err != nil {
-			log.Fatal("Could not unmarshal blocklist", err)
+			dbm.logger.Fatal("Could not unmarshal blocklist", err)
 		}
 	}
 	// add the block and version id to the pack
 	blocklist[start] = PackMapEntry{VersionID: versionid, BlockID: blockid}
 	blocklistjson, err := json.Marshal(blocklist)
 	if err != nil {
-		log.Fatal("Could not marshal blocklist", err)
+		dbm.logger.Fatal("Could not marshal blocklist", err)
 	}
 
 	sql = "INSERT OR REPLACE INTO packs (packid, tapeid, blocklist) VALUES (?,?,?)"
 	_, err = dbm.db.Exec(sql, packid, cartid, blocklistjson)
 	if err != nil {
-		log.Fatal("Could not insert packs", err)
+		dbm.logger.Fatal("Could not insert packs", err)
 	}
 }
 
@@ -695,7 +697,7 @@ func (dbm *DBManager) getPackMap(packID string) (packMap PackMapType) {
 	}
 	err = json.Unmarshal(packinfo, &packMap)
 	if err != nil {
-		log.Fatal("Could not unmarshal pack mapd", err)
+		dbm.logger.Fatal("Could not unmarshal pack mapd", err)
 	}
 	return packMap
 }
@@ -705,7 +707,7 @@ func (dbm *DBManager) insertTapePacksTable(packid, tapeid string) {
 	var blockinfo []byte
 	var err error
 
-	logEvent("pack: ", packid, "tape: ", tapeid)
+	dbm.logger.Event("pack: ", packid, "tape: ", tapeid)
 
 	sql := "SELECT blocklist FROM packs WHERE packid = ?"
 	dbm.db.QueryRow(sql, packid).Scan(&blockinfo)
@@ -715,7 +717,7 @@ func (dbm *DBManager) insertTapePacksTable(packid, tapeid string) {
 
 	_, err = dbm.db.Exec(sql, packid, tapeid, blockinfo)
 	if err != nil {
-		log.Fatal("Could not insert tape into packs table", err)
+		dbm.logger.Fatal("Could not insert tape into packs table", err)
 	}
 }
 
@@ -727,7 +729,7 @@ func (dbm *DBManager) getTapesPacksTable() ([]string, []string) {
 	sql := "SELECT packid, tapeid FROM packs"
 	p, err := dbm.db.Query(sql)
 	if err != nil {
-		log.Fatal("Could not read pack file ", err)
+		dbm.logger.Fatal("Could not read pack file ", err)
 	}
 	defer p.Close()
 	for p.Next() {
@@ -735,7 +737,7 @@ func (dbm *DBManager) getTapesPacksTable() ([]string, []string) {
 		var packid string
 		err = p.Scan(&packid, &tapeid)
 		if err != nil {
-			log.Fatal("Could not read pack table", err)
+			dbm.logger.Fatal("Could not read pack table", err)
 		}
 		tapeids = append(tapeids, tapeid)
 		packids = append(packids, packid)
@@ -753,20 +755,20 @@ func (dbm *DBManager) writeBlockToCache(blockid string, block *Block) {
 	os.Create(fileName)
 	file, err := os.OpenFile(fileName, os.O_RDWR, 0644)
 	if err != nil {
-		log.Fatal("Could not open file", err)
+		dbm.logger.Fatal("Could not open file", err)
 	}
 	defer file.Close()
 	// write the data to the file
 	_, err = file.Write(block.GetData())
 	if err != nil {
-		log.Fatal("Could not write block to cache", err)
+		dbm.logger.Fatal("Could not write block to cache", err)
 	}
 }
 func (dbm *DBManager) removeBlockFromCache(blockid, bucket string) {
 	fileName := dbm.cacheDir + "/" + bucket + "/" + blockid
 	err := os.Remove(fileName)
 	if err != nil {
-		log.Fatal("Could not remove block from cache", err)
+		dbm.logger.Fatal("Could not remove block from cache", err)
 	}
 }
 
@@ -796,7 +798,7 @@ func (dbm *DBManager) createBucketKey(bucket, Key string) string {
 func (dbm *DBManager) getBucketKey(bucketKey string) (string, string) {
 	segments := strings.SplitN(bucketKey, "/", 2)
 	if len(segments) != 2 {
-		log.Fatal("Could not split bucket key", bucketKey)
+		dbm.logger.Fatal("Could not split bucket key", bucketKey)
 	}
 	// for some reason it is putting an extra space in argument[0]
 	return segments[0], segments[1]

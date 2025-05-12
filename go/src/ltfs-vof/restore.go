@@ -2,8 +2,8 @@ package main
 
 import (
 	"io"
-	"log"
 	. "ltfs-vof/tapehardware"
+	//	. "ltfs-vof/logger"
 	_ "modernc.org/sqlite"
 	"os"
 )
@@ -20,19 +20,19 @@ func (db *Database) RestoreAll() {
 	// need to be scannned now so if they are the only version of an object they can be
 	// processed
 	versionRecordsWithData := db.dbManager.getVersionsInRecord()
-	logEvent("Processing ", len(versionRecordsWithData), " version records that contain data")
+	db.logger.Event("Processing ", len(versionRecordsWithData), " version records that contain data")
 	for _, versionID := range versionRecordsWithData {
-		logEvent("Writing in Record Data for VersionID: ",versionID)
+		db.logger.Event("Writing in Record Data for VersionID: ",versionID)
 		db.dbManager.processVersion(versionID)
 	}
 
 	// audit the library
 	drives, tapes := db.library.Audit()
-	logEvent("Audited Tape Library #cartridges: ", len(tapes), "  #drives: ", len(drives))
+	db.logger.Event("Audited Tape Library #cartridges: ", len(tapes), "  #drives: ", len(drives))
 
 	// get resource allocation for tape drives
 	driveReserve := NewResource(len(drives))
-	logEvent("Reserving drives")
+	db.logger.Event("Reserving drives")
 
 	// create a channel for goroutines to post to when completed
 	tapeCompleteChannel := make(chan bool, len(tapes))
@@ -40,8 +40,8 @@ func (db *Database) RestoreAll() {
 	// get an ordered list of tapes from oldest to newest
 	// also get a list of the pack order on each tape from oldest to newest
 	tapeCartridgeOrder, packsOrder := db.dbManager.GetTapePackOrder()
-	logEvent("Cartridge Order: ", tapeCartridgeOrder)
-	logEvent("Pack Order: ", packsOrder)
+	db.logger.Event("Cartridge Order: ", tapeCartridgeOrder)
+	db.logger.Event("Pack Order: ", packsOrder)
 	for _, nextTape := range tapeCartridgeOrder {
 		// get the tape from the list of tapes
 		var tape TapeCartridge
@@ -53,7 +53,7 @@ func (db *Database) RestoreAll() {
 		}
 		// if didn't find it then failed
 		if tape == nil {
-			log.Fatal("Tape not found")
+			db.logger.Fatal("Tape not found")
 		}
 		// reserve a drive
 		driveNumber := driveReserve.Reserve()
@@ -61,66 +61,70 @@ func (db *Database) RestoreAll() {
 		go func(tape TapeCartridge, drive TapeDrive) {
 
 			// load tape into drive
-			logEvent("Loading and Mounting tape: ", tape.Name(), " toDrive: ", drive.Name())
+			sn, exists := drive.SerialNumber()
+			if !exists {
+				db.logger.Fatal("Drive has not serial number:")
+			}
+
+			db.logger.Event("Loading and Mounting tape: ", tape.Name(), " toDrive: ", sn)
 			status := db.library.Load(tape, drive)
 			// if unable to load tape
 			if !status {
-				log.Fatal("Failed to load tape")
+				db.logger.Fatal("Failed to load tape drive: ",sn)
 			}
 
 			// mount the tape for LTFS get the pack files witht their full paths
 			_, packFilePaths, status := drive.MountLTFS()
 			if !status {
-				log.Fatal("Failed to load tape")
+				db.logger.Fatal("Failed to mount LTFS tape drive: ",sn)
 			}
 
 			// now read each pack from oldest to newest
 			for _, pack := range packsOrder[tape.Name()] {
 				// open the pack file
-				logEvent("Open Pack File: ", packFilePaths[pack])
+				db.logger.Event("Open Pack File: ", packFilePaths[pack])
 
 				file, err := os.Open(packFilePaths[pack])
-				logEvent("Reading Pack, drive: ", drive.Name(), "  tape: ", tape.Name(), " pack: ", pack)
 				if err != nil {
-					log.Fatal(err)
+					db.logger.Fatal("Unable to get open pack file: ",packFilePaths[pack])
 				}
+				db.logger.Event("Reading Pack, drive: ", sn, "  tape: ", tape.Name(), " pack: ", pack)
 				defer file.Close()
 				for {
 					// get current location in file
-					offset := currentFileLocation(file)
+					offset := db.currentFileLocation(file)
 
-					tlv := ReadTLV(file)
+					tlv := ReadTLV(file,db.logger)
 					if tlv == nil {
 						break
 					}
 					switch tlv.Tag() {
 					case BLOCK:
-						logEvent("TLV is Block type datalength = ", tlv.DataLength)
-						block := ReadBlock(file, tlv.DataLength())
+						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength)
+						block := ReadBlock(file, tlv.DataLength(),db.logger)
 						// see if there is a version record associated with this block
 						// if  there  is then cache the block and
 						if db.dbManager.doesVersionRecordExist(block.GetVersion()) {
 							// cache the block and send version to s3 if version is complete
-							db.dbManager.WriteBlock(pack, offset, currentFileLocation(file), block)
-							logEvent("Read & Wrote Block Pack:", pack, " offset: ", offset)
+							db.dbManager.WriteBlock(pack, offset, db.currentFileLocation(file), block)
+							db.logger.Event("Read & Wrote Block Pack:", pack, " offset: ", offset)
 						} else {
-							logEvent("Block not associated with a version record")
+							db.logger.Event("Block not associated with a version record")
 						}
 					case PACKLIST:
-						logEvent("TLV is packlist")
-						packs := ReadPackListRecord(file, tlv.DataLength())
+						db.logger.Event("TLV is packlist")
+						packs := ReadPackListRecord(file, tlv.DataLength(),db.logger)
 						if packs == nil {
-							log.Fatal("unable to read packlist")
+							db.logger.Fatal("unable to read packlist")
 						}
-						logEvent("Processing Pack List", pack, " offset: ", offset)
+						db.logger.Event("Processing Pack List", pack, " offset: ", offset)
 						db.dbManager.ProcessPackList(pack, offset, packs)
 					default:
-						log.Fatal("TLV not of Version or Version Delete type")
+						db.logger.Fatal("TLV not of Version or Version Delete type")
 					}
 				}
 			}
-			// unload and dismount the tape
-			logEvent("Dismounting and Unloading tape: ", tape.Name(), " toDrive: ", drive.Name())
+			db.logger.Event("Dismounting and Unloading tape: ", tape.Name(), " toDrive: ", sn)
 			drive.Unmount()
 			db.library.Unload(drive)
 			// release the drive and notify the channel
@@ -138,10 +142,10 @@ func (db *Database) RestoreAll() {
 	driveReserve.Stop()
 
 }
-func currentFileLocation(file *os.File) int64 {
+func (db *Database)currentFileLocation(file *os.File) int64 {
 	offset, err := file.Seek(0, io.SeekCurrent)
 	if err != nil {
-		log.Fatal("unable to size file: ", err)
+		db.logger.Fatal("unable to size file: ", err)
 	}
 	return offset
 }
