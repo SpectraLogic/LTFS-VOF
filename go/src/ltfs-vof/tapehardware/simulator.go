@@ -2,9 +2,9 @@
 package tapehardware
 
 import (
+	"fmt"
 	"log"
 	"os"
-	"fmt"
 )
 
 type TapeLibrarySimulator struct {
@@ -19,13 +19,13 @@ type TapeDriveSimulator struct {
 	tapeDirectory string
 }
 type TapeCartridgeSimulator struct {
-	name         string
-	slot         int
+	name string
+	slot int
 }
 
 const NumDrives int = 1
-const NumTapes int = 2
-const TapeDirectory string = "tapehardware/"
+const NumTapes int = 1
+const TapeDirectory string = "tapehardware/tapes/"
 
 func NewTapeLibrarySimulator() *TapeLibrarySimulator {
 
@@ -71,16 +71,16 @@ func NewTapeDriveSimulator(i int, tapeDirectory string) *TapeDriveSimulator {
 	return &drive
 }
 func (td *TapeDriveSimulator) SerialNumber() (string, bool) {
-	return td.name,true
+	return td.name, true
 }
-func (td *TapeDriveSimulator) GetCart() (TapeCartridge, bool){
-	if !td.busy  {
-		return nil,false
+func (td *TapeDriveSimulator) GetCart() (TapeCartridge, bool) {
+	if !td.busy {
+		return nil, false
 	}
 	return td.tape, true
 }
 
-func (td *TapeDriveSimulator) MountLTFS() ( map[string]string, map[string]string, bool) {
+func (td *TapeDriveSimulator) MountLTFS() (map[string]string, map[string]string, bool) {
 	if !td.busy {
 		log.Fatal("drive not busy")
 	}
@@ -92,7 +92,7 @@ func (td *TapeDriveSimulator) MountLTFS() ( map[string]string, map[string]string
 	// tape directory is current directory + tape
 	tapeDirectory := currentDir + "/" + TapeDirectory + td.tape.Name()
 	versionFiles, blockFiles := FindVersionAndBlockFiles(tapeDirectory)
-	return versionFiles,blockFiles, true
+	return versionFiles, blockFiles, true
 }
 func (td *TapeDriveSimulator) Unmount() {
 }
