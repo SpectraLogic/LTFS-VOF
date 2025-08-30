@@ -4,10 +4,10 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	. "ltfs-vof/tapehardware"
-	. "ltfs-vof/logger"
-	"fmt"
+	. "ltfs-vof/utils"
 )
 
 // the format of the json config file
@@ -38,7 +38,7 @@ func main() {
 	flag.Parse()
 
 	// create the customer logger
-	logger := NewLogger(*logFile,*clean)
+	logger := NewLogger(*logFile, *clean)
 
 	// read the config file
 	configData, err := ioutil.ReadFile(*configFile)
@@ -52,32 +52,32 @@ func main() {
 		logger.Fatal("Unable to json unmarshal the json config file: ", *configFile)
 	}
 
-	// run a verification of the config file 
+	// run a verification of the config file
 	if *verify {
 		library := NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
-		fmt.Println("\n\nLibrary: ",config.LibraryDevice)
+		fmt.Println("\n\nLibrary: ", config.LibraryDevice)
 		tapeDrives, tapeCartridges := library.Audit()
-		
+
 		fmt.Println("\nCartridge\tSlot")
-		for _,tc := range tapeCartridges {
-			fmt.Printf("%.18s%d\n", tc.Name(),tc.GetSlot())
+		for _, tc := range tapeCartridges {
+			fmt.Printf("%.18s%d\n", tc.Name(), tc.GetSlot())
 		}
-		// check that tape drives the 
+		// check that tape drives the
 		fmt.Println("\nDrive\tSerial\t\tCart")
 		drivePathFailure := false
-		for d,td := range tapeDrives {
+		for d, td := range tapeDrives {
 			// if does not exist on data path then exit
 			sn, exists := td.SerialNumber()
 			if !exists {
 				drivePathFailure = true
-				logger.Event("Device Path did not see drive: ",d)
+				logger.Event("Device Path did not see drive: ", d)
 				continue
 			}
-			cart,_ := td.GetCart()
+			cart, _ := td.GetCart()
 			if cart != nil {
-				fmt.Printf("%02d%16s%16s\n",d, sn,cart.Name())
+				fmt.Printf("%02d%16s%16s\n", d, sn, cart.Name())
 			} else {
-				fmt.Printf("%02d%16s%16s\n",d, sn,"No Cartridge")
+				fmt.Printf("%02d%16s%16s\n", d, sn, "No Cartridge")
 			}
 		}
 		if drivePathFailure {
@@ -96,7 +96,7 @@ func main() {
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}
-	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled,logger)
+	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled, logger)
 	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library, logger)
 	// if version is enabled create the database manager and get the version files
 	if *version {

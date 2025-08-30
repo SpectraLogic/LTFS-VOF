@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/oklog/ulid/v2"
-	. "ltfs-vof/logger"
+	. "ltfs-vof/utils"
 	_ "modernc.org/sqlite"
 	"os"
 	"sort"
@@ -18,7 +18,7 @@ type DBManager struct {
 	s3Enabled    bool
 	lockResource *Resource
 	lockValue    int
-	logger *Logger
+	logger       *Logger
 }
 
 func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool, logger *Logger) *DBManager {
@@ -378,7 +378,7 @@ func (dbm *DBManager) GetTapePackOrder() ([]string, map[string][]string) {
 		for _, packid := range packids {
 			// remove the suffix from the packid
 			dbm.logger.Event("Get time from ID: ", packid)
-			_, packtime := getTimeFromID(packid,dbm.logger)
+			_, packtime := GetTimeFromID(packid, dbm.logger)
 			packtimes = append(packtimes, packtime)
 		}
 		// sort the packids based on the time
@@ -395,8 +395,8 @@ func (dbm *DBManager) GetTapePackOrder() ([]string, map[string][]string) {
 	// create the ordered list of tapes based on oldest pack time of
 	// first element
 	sort.Slice(orderedList, func(i, j int) bool {
-		_, oldi := getTimeFromID(tapepacks[orderedList[i]][0],dbm.logger)
-		_, oldj := getTimeFromID(tapepacks[orderedList[j]][0],dbm.logger)
+		_, oldi := GetTimeFromID(tapepacks[orderedList[i]][0], dbm.logger)
+		_, oldj := GetTimeFromID(tapepacks[orderedList[j]][0], dbm.logger)
 		if oldi < oldj {
 			return true
 		}
@@ -533,8 +533,8 @@ func (dbm *DBManager) getVersionsNotCompleted(bucketkey string) []string {
 
 	// sort the versions by oldest to newest
 	sort.Slice(versions, func(i, j int) bool {
-		_, timei := getTimeFromID(versions[i],dbm.logger)
-		_, timej := getTimeFromID(versions[j],dbm.logger)
+		_, timei := GetTimeFromID(versions[i], dbm.logger)
+		_, timej := GetTimeFromID(versions[j], dbm.logger)
 		if timei < timej {
 			return true
 		}

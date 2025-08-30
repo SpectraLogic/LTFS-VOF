@@ -3,7 +3,7 @@ package main
 import (
 	"io"
 	. "ltfs-vof/tapehardware"
-	//	. "ltfs-vof/logger"
+	. "ltfs-vof/utils"
 	_ "modernc.org/sqlite"
 	"os"
 )
@@ -22,7 +22,7 @@ func (db *Database) RestoreAll() {
 	versionRecordsWithData := db.dbManager.getVersionsInRecord()
 	db.logger.Event("Processing ", len(versionRecordsWithData), " version records that contain data")
 	for _, versionID := range versionRecordsWithData {
-		db.logger.Event("Writing in Record Data for VersionID: ",versionID)
+		db.logger.Event("Writing in Record Data for VersionID: ", versionID)
 		db.dbManager.processVersion(versionID)
 	}
 
@@ -70,13 +70,13 @@ func (db *Database) RestoreAll() {
 			status := db.library.Load(tape, drive)
 			// if unable to load tape
 			if !status {
-				db.logger.Fatal("Failed to load tape drive: ",sn)
+				db.logger.Fatal("Failed to load tape drive: ", sn)
 			}
 
 			// mount the tape for LTFS get the pack files witht their full paths
 			_, packFilePaths, status := drive.MountLTFS()
 			if !status {
-				db.logger.Fatal("Failed to mount LTFS tape drive: ",sn)
+				db.logger.Fatal("Failed to mount LTFS tape drive: ", sn)
 			}
 
 			// now read each pack from oldest to newest
@@ -86,7 +86,7 @@ func (db *Database) RestoreAll() {
 
 				file, err := os.Open(packFilePaths[pack])
 				if err != nil {
-					db.logger.Fatal("Unable to get open pack file: ",packFilePaths[pack])
+					db.logger.Fatal("Unable to get open pack file: ", packFilePaths[pack])
 				}
 				db.logger.Event("Reading Pack, drive: ", sn, "  tape: ", tape.Name(), " pack: ", pack)
 				defer file.Close()
@@ -94,14 +94,14 @@ func (db *Database) RestoreAll() {
 					// get current location in file
 					offset := db.currentFileLocation(file)
 
-					tlv := ReadTLV(file,db.logger)
+					tlv := ReadTLV(file, db.logger)
 					if tlv == nil {
 						break
 					}
 					switch tlv.Tag() {
 					case BLOCK:
 						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength)
-						block := ReadBlock(file, tlv.DataLength(),db.logger)
+						block := ReadBlock(file, tlv.DataLength(), db.logger)
 						// see if there is a version record associated with this block
 						// if  there  is then cache the block and
 						if db.dbManager.doesVersionRecordExist(block.GetVersion()) {
@@ -113,7 +113,7 @@ func (db *Database) RestoreAll() {
 						}
 					case PACKLIST:
 						db.logger.Event("TLV is packlist")
-						packs := ReadPackListRecord(file, tlv.DataLength(),db.logger)
+						packs := ReadPackListRecord(file, tlv.DataLength(), db.logger)
 						if packs == nil {
 							db.logger.Fatal("unable to read packlist")
 						}
@@ -142,7 +142,7 @@ func (db *Database) RestoreAll() {
 	driveReserve.Stop()
 
 }
-func (db *Database)currentFileLocation(file *os.File) int64 {
+func (db *Database) currentFileLocation(file *os.File) int64 {
 	offset, err := file.Seek(0, io.SeekCurrent)
 	if err != nil {
 		db.logger.Fatal("unable to size file: ", err)

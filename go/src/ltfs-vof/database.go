@@ -4,25 +4,27 @@ import (
 	"github.com/oklog/ulid/v2"
 	"io"
 	. "ltfs-vof/tapehardware"
-	. "ltfs-vof/logger"
+	. "ltfs-vof/utils"
 	_ "modernc.org/sqlite"
 	"os"
+	"slices"
 	"sort"
 	"strings"
-	"slices"
 )
+
 type Database struct {
 	versionCache string
-	dbManager *DBManager
-	library TapeLibrary
-	logger *Logger
+	dbManager    *DBManager
+	library      TapeLibrary
+	logger       *Logger
 }
+
 func NewDatabase(versionCache string, dbManager *DBManager, library TapeLibrary, logger *Logger) *Database {
-	return &Database {
+	return &Database{
 		versionCache: versionCache,
-		dbManager: dbManager,
-		library: library,
-		logger: logger, 
+		dbManager:    dbManager,
+		library:      library,
+		logger:       logger,
 	}
 }
 
@@ -37,7 +39,7 @@ func (db *Database) GetVersionFiles() {
 	driveReserve := NewResource(len(drives))
 
 	// create a channel for goroutines to post to when completed
-	completeChannel := make(chan bool) 
+	completeChannel := make(chan bool)
 
 	// process all tapes that are currently in drives
 	count := 0
@@ -50,14 +52,14 @@ func (db *Database) GetVersionFiles() {
 		}
 		// cart in drive process it
 		count++
-		go db.readVersionFiles(drive, number, cart,completeChannel,nil) 
+		go db.readVersionFiles(drive, number, cart, completeChannel, nil)
 		// remove cartridge from total carts list
 		carts = slices.DeleteFunc(carts, func(nextCart TapeCartridge) bool {
-        		return nextCart == cart 
-    		})
+			return nextCart == cart
+		})
 	}
 	// wait for all carts in drive to be processed
-	for i := 0; i < count;i++ {
+	for i := 0; i < count; i++ {
 		<-completeChannel
 	}
 
@@ -71,24 +73,24 @@ func (db *Database) GetVersionFiles() {
 		drive := drives[driveNumber]
 
 		// load the cart into the drive
-		status := db.library.Load(cart,drive)
+		status := db.library.Load(cart, drive)
 		if !status {
 			db.logger.Fatal("Failed to load tape")
 		}
 
 		// use go routine to keep all drives busy
 		count += 1
-		go db.readVersionFiles(drive, driveNumber, cart,completeChannel,driveReserve)
+		go db.readVersionFiles(drive, driveNumber, cart, completeChannel, driveReserve)
 	}
 	// wait for all carts not in drive to be processed
-	for i := 0; i < count;i++ {
+	for i := 0; i < count; i++ {
 		<-completeChannel
 	}
 	driveReserve.Stop()
 }
-func (db *Database) readVersionFiles(drive TapeDrive, driveNumber int, tape TapeCartridge, completeChannel chan bool,driveReserve *Resource) {
+func (db *Database) readVersionFiles(drive TapeDrive, driveNumber int, tape TapeCartridge, completeChannel chan bool, driveReserve *Resource) {
 	// mount LTFS on the tape
-	sn,exists := drive.SerialNumber()
+	sn, exists := drive.SerialNumber()
 	if !exists {
 		db.logger.Fatal("Unable to get drive serial number")
 	}
@@ -159,26 +161,26 @@ func (db *Database) CreateDatabase() {
 		// read TLV's followed by blocks
 		for {
 			db.logger.Event("Reading TLV ")
-			tlv := ReadTLV(file,db.logger)
+			tlv := ReadTLV(file, db.logger)
 			if tlv == nil {
 				db.logger.Event("End of Processing version file: ", versionFileName)
 				break
 			}
 			switch tlv.Tag() {
 			case VERSION:
-				v := ReadVersionRecord(file, tlv.DataLength(),db.logger)
+				v := ReadVersionRecord(file, tlv.DataLength(), db.logger)
 				db.logger.Event("Reading Version Record, Object Name ", v.VersionID.Object, " File Name: ", versionFileName)
 				// insert the version into the database
 				db.dbManager.AddVersion(v)
 			case DELETEVERSION:
 				db.logger.Event("Reading Delete Version Record, version file: ", versionFileName)
-				delete := ReadVersionRecord(file, tlv.DataLength(),db.logger)
+				delete := ReadVersionRecord(file, tlv.DataLength(), db.logger)
 				// insert the version into the database
 				db.dbManager.DeleteVersion(delete.GetVersion())
 			// ignore duplicate meta files
 			case METAFILE:
 				db.logger.Event("Ignoring already processed metafile in version file: ", versionFileName)
-				ReadMetaFile(file, tlv.DataLength(),db.logger)
+				ReadMetaFile(file, tlv.DataLength(), db.logger)
 			default:
 				db.logger.Event("Invalid TLV: ", tlv, " in version file: ", versionFileName)
 			}
@@ -198,7 +200,7 @@ func (db *Database) sortVersionFiles() []ulid.ULID {
 	}
 	// remove the .ver suffix from the file name
 	for _, file := range files {
-		versionUlid, _ := getTimeFromID(file.Name(),db.logger)
+		versionUlid, _ := GetTimeFromID(file.Name(), db.logger)
 		versionFileUlids = append(versionFileUlids, versionUlid)
 	}
 
@@ -235,7 +237,7 @@ func (db *Database) findVersionFilesToProcess(versionFileUlids []ulid.ULID) []ul
 		switch tlv.Tag() {
 		case METAFILE:
 			// if a metafile is found then this is the first version file to process
-			metaFile := ReadMetaFile(file, tlv.DataLength(),db.logger)
+			metaFile := ReadMetaFile(file, tlv.DataLength(), db.logger)
 			// if metafile is nil then their is no metafile record to process
 			if metaFile == nil {
 				continue

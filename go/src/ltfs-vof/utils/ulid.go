@@ -1,12 +1,12 @@
-package main
+package utils
 
 import (
 	"github.com/oklog/ulid/v2"
 	"strings"
-	. "ltfs-vof/logger"
 )
-// get time from a file with a ulid name followed
-func getTimeFromID(filename string, logger *Logger) (ulid.ULID, uint64) {
+
+// get time from a file with a ulid name
+func GetTimeFromID(filename string, logger *Logger) (ulid.ULID, uint64) {
 	// need to remove suffix from filename
 	name := strings.TrimSuffix(filename, ".blk")
 	// if not .blk suffix then trim .ver

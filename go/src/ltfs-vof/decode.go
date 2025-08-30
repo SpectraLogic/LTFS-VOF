@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
-	. "ltfs-vof/logger"
+	. "ltfs-vof/utils"
 	"os"
 	"strings"
 )
@@ -32,7 +32,7 @@ type TLV struct {
 	tag        TagType
 }
 
-func ReadTLV(file *os.File,logger *Logger) *TLV {
+func ReadTLV(file *os.File, logger *Logger) *TLV {
 
 	var tlv TLV
 	header := make([]byte, 32)
@@ -273,11 +273,11 @@ func (pr *PackReference) GetPhysicalStart() int64 {
 
 type Block struct {
 	VersionInfo string `codec:"I" json:"versionid,omitempty"` // ID of pack containing this offset to next offset
-	Bucket string 
-	Version string 
-	Object string 
-	data       []byte
-	pack       *PackEntry
+	Bucket      string
+	Version     string
+	Object      string
+	data        []byte
+	pack        *PackEntry
 }
 
 // NewBlock is used by simulator to create a new block not yet placed in a pack yet
@@ -302,7 +302,7 @@ func NewBlock(blockID, bucket, object, version string, data []byte, logicalStart
 // Read is used by application to read a data Block out of a pack
 // a read block does not include the pack information but does include the
 // uploadid: versionid, objectid, and the data
-func ReadBlock(file *os.File, length uint64,logger *Logger) *Block {
+func ReadBlock(file *os.File, length uint64, logger *Logger) *Block {
 
 	var b Block
 	decoder := value.NewDecoder()
@@ -317,16 +317,16 @@ func ReadBlock(file *os.File, length uint64,logger *Logger) *Block {
 	copy(b.data, secondaryData.Bytes())
 	secondaryData.Release()
 	// strip components out of versionInfo   download #: version ID: bucket/key
-	segments := strings.Split(b.VersionInfo,":")
+	segments := strings.Split(b.VersionInfo, ":")
 	if len(segments) != 3 {
-		logger.Fatal("Invalid Version Info String From Block: ",b.VersionInfo)
+		logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
 	}
 	b.Version = segments[1]
 	// now split the bucket/key
 	segments = strings.SplitN(segments[2], "/", 2)
-        if len(segments) != 2 {
-                logger.Fatal("Could not split bucket key", segments[2])
-        }
+	if len(segments) != 2 {
+		logger.Fatal("Could not split bucket key", segments[2])
+	}
 	b.Bucket = segments[0]
 	b.Object = segments[1]
 

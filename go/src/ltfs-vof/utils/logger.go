@@ -1,4 +1,4 @@
-package logger
+package utils
 
 import (
 	"fmt"
@@ -16,8 +16,12 @@ func NewLogger(filename string, cleanup bool) *Logger {
 		// remove the file if it exists
 		os.Remove(filename)
 	}
-	// create the file if it doesn't exist
-	os.Create(filename)
+	// see if file exists
+	_, err := os.Stat(filename)
+	if err != nil {
+		// create the file
+		os.Create(filename)
+	}
 	return &Logger{Filename: filename}
 }
 func (l *Logger) Event(message ...any) {
