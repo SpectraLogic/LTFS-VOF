@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/oklog/ulid/v2"
 	"io"
 	. "ltfs-vof/tapehardware"
@@ -162,6 +163,7 @@ func (db *Database) CreateDatabase() {
 		for {
 			db.logger.Event("Reading TLV ")
 			tlv := ReadTLV(file, db.logger)
+			fmt.Println("TLV: ", tlv)
 			if tlv == nil {
 				db.logger.Event("End of Processing version file: ", versionFileName)
 				break

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	. "ltfs-vof/tapehardware"
 	. "ltfs-vof/utils"
@@ -80,8 +81,13 @@ func (db *Database) RestoreAll() {
 			}
 
 			// now read each pack from oldest to newest
+			fmt.Println("PacksOrder: ", packsOrder)
 			for _, pack := range packsOrder[tape.Name()] {
+				fmt.Println("Pack: ", pack, "Path: ", packFilePaths[pack])
 				// open the pack file
+				db.logger.Event("Open Pack File: ", packFilePaths[pack])
+
+				fmt.Println("packFilePaths: ", packFilePaths)
 				db.logger.Event("Open Pack File: ", packFilePaths[pack])
 
 				file, err := os.Open(packFilePaths[pack])
@@ -98,9 +104,10 @@ func (db *Database) RestoreAll() {
 					if tlv == nil {
 						break
 					}
+					fmt.Println("Read TLV at offset: ", offset, " tag: ", tlv.Tag(), " length: ", tlv.DataLength())
 					switch tlv.Tag() {
 					case BLOCK:
-						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength)
+						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength())
 						block := ReadBlock(file, tlv.DataLength(), db.logger)
 						// see if there is a version record associated with this block
 						// if  there  is then cache the block and
@@ -120,7 +127,7 @@ func (db *Database) RestoreAll() {
 						db.logger.Event("Processing Pack List", pack, " offset: ", offset)
 						db.dbManager.ProcessPackList(pack, offset, packs)
 					default:
-						db.logger.Fatal("TLV not of Version or Version Delete type")
+						db.logger.Fatal("TLV not of BLOCK or PACKLIST type")
 					}
 				}
 			}

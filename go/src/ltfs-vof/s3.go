@@ -16,6 +16,30 @@ import (
 	"time"
 )
 
+func PutObject(bucket, key, region string, data []byte) {
+	fmt.Println("Bucket:", bucket, " Key:", key, " Region:", region, " Data length:", len(data))
+	client := getClient(region)
+
+	// create a reader
+	r := io.ReadSeeker(bytes.NewReader(data))
+
+	// create the corresponding
+	params := &s3.PutObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+		Body:   r,
+	}
+	fmt.Println(params)
+
+	// put the object
+	resp, err := client.PutObject(context.TODO(), params)
+	if err != nil {
+		log.Fatal("S3 PUTObject: ", err.Error())
+	}
+	fmt.Println(resp)
+	fmt.Println(resp)
+}
+
 func Put(bucket, key, region string, prefix, block string) {
 
 	client := getClient(region)
@@ -35,7 +59,7 @@ func Put(bucket, key, region string, prefix, block string) {
 
 	// create the corresponding
 	params := &s3.PutObjectInput{
-		Bucket: aws.String(bucket+"-test"),
+		Bucket: aws.String(bucket + "-test"),
 		Key:    aws.String(key),
 		Body:   r,
 	}
@@ -52,7 +76,7 @@ func DeleteMarker(bucket, key, region string) {
 
 	client := getClient(region)
 	params := &s3.DeleteObjectInput{
-		Bucket: aws.String(bucket+"-test"),
+		Bucket: aws.String(bucket + "-test"),
 		Key:    aws.String(key),
 	}
 	_, err := client.DeleteObject(context.TODO(), params)
@@ -66,7 +90,7 @@ func DeleteVersion(versionID, bucket, key, region string) {
 
 	client := getClient(region)
 	params := &s3.DeleteObjectInput{
-		Bucket:    aws.String(bucket+"-test"),
+		Bucket:    aws.String(bucket + "-test"),
 		Key:       aws.String(key),
 		VersionId: aws.String(versionID),
 	}
@@ -85,7 +109,7 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 
 	// input for starting a multipart upload
 	input := s3.CreateMultipartUploadInput{
-		Bucket: aws.String(bucket+"-test"),
+		Bucket: aws.String(bucket + "-test"),
 		Key:    aws.String(key),
 	}
 
@@ -119,9 +143,9 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 		// create a reader
 		r := io.ReadSeeker(bytes.NewReader(data))
 		partInput := s3.UploadPartInput{
-			Bucket:     aws.String(bucket+"-test"),
+			Bucket:     aws.String(bucket + "-test"),
 			Key:        aws.String(key),
-			PartNumber: aws.Int32(int32(partNum+1)),
+			PartNumber: aws.Int32(int32(partNum + 1)),
 			UploadId:   aws.String(uploadId),
 			Body:       r,
 		}
@@ -132,7 +156,7 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 		// save off partinfo for completed multipart upload
 		partInfo := types.CompletedPart{
 			ETag:       uploadResult.ETag,
-			PartNumber: aws.Int32(int32(partNum+1)),
+			PartNumber: aws.Int32(int32(partNum + 1)),
 		}
 		partsInfo = append(partsInfo, partInfo)
 	}
@@ -143,7 +167,7 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 	}
 
 	complete := s3.CompleteMultipartUploadInput{
-		Bucket:          aws.String(bucket+"-test"),
+		Bucket:          aws.String(bucket + "-test"),
 		Key:             aws.String(key),
 		UploadId:        aws.String(uploadId),
 		MultipartUpload: &mpu,

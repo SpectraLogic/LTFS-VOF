@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"github.com/oklog/ulid/v2"
 	. "ltfs-vof/utils"
 	_ "modernc.org/sqlite"
@@ -109,8 +110,9 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 		dbm.insertVersionTable(bucketObject, mr.GetVersion(), true, false, false, blockIDs)
 		dbm.addVersionBlockID(mr.GetVersion(), blockid)
 	} else if packs != nil {
-		// if the packs are to be in the version record then add them to the pack table
+		// if the packs are in the version record then add them to the pack table
 		for i, pEntry := range packs {
+			fmt.Println("Pack Entry: ", pEntry)
 			// if there are packs then add the pack list to the version table
 			blockIDs = append(blockIDs, dbm.insertBlocksTable(pEntry))
 			dbm.insertPackTable(pEntry.GetPackName(), pEntry.GetPhysicalStart(), mr.GetVersion(), blockIDs[i])

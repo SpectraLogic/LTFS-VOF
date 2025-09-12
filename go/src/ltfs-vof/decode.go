@@ -1,12 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
 	. "ltfs-vof/utils"
 	"os"
-	"strings"
+	//"strings"
 )
 
 type TagType int
@@ -19,12 +20,12 @@ const (
 	METAFILE              = iota
 )
 
-var Tags map[TagType][]byte = map[TagType][]byte{
-	BLOCK:         {'b', 'k'},
-	PACKLIST:      {'o', 'l'},
-	VERSION:       {'v', 'm'},
-	DELETEVERSION: {'v', 'd'},
-	METAFILE:      {'m', 'f'},
+var Tags map[TagType]tlvcore.Tag = map[TagType]tlvcore.Tag{
+	BLOCK:         ('b'<<8 | 'k'),
+	PACKLIST:      ('o'<<8 | 'l'),
+	VERSION:       ('v'<<8 | 'm'),
+	DELETEVERSION: ('v'<<8 | 'd'),
+	METAFILE:      ('m'<<8 | 'f'),
 }
 
 type TLV struct {
@@ -40,25 +41,42 @@ func ReadTLV(file *os.File, logger *Logger) *TLV {
 	if err != nil {
 		return nil
 	}
-	tagValue, size, _, err := tlvcore.DecodeHeader(header)
+	fmt.Println("Decode Header:", header)
+	tag, size, _, err := tlvcore.DecodeHeader(header)
 	if err != nil {
 		return nil
 	}
-	tlv.dataLength = size
-	// convert tag to map
-	tlv.tag = TagType(-1)
-	for i, tag := range Tags {
-		tagLowerByte := byte(tagValue & 0xff)
-		tagUpperByte := byte(tagValue >> 8 & 0xff)
-		if tag[0] == tagUpperByte && tag[1] == tagLowerByte {
-			tlv.tag = TagType(i)
+	// find the tag type
+	var found bool
+	found = false
+	for t, v := range Tags {
+		if v == tag { // found the tag
+			tlv.tag = t
+			fmt.Println("Found TLV tag:", t)
+			found = true
 			break
 		}
 	}
-	if tlv.tag == -1 {
-		logger.Fatal("Tag not found")
+	if !found {
+		logger.Event("Unknown TLV tag found:", tag)
+		return nil
 	}
+	tlv.dataLength = size
 	return &tlv
+}
+
+// write a TLV header to a file
+func WriteTLV(file *os.File, tag TagType, data []byte, logger *Logger) {
+
+	header := make([]byte, 32)
+	_, err := tlvcore.EncodeHeader(Tags[tag], data, header)
+	if err != nil {
+		logger.Fatal("Error encoding TLV header", err)
+	}
+	_, err = file.Write(header)
+	if err != nil {
+		logger.Fatal("Error writing TLV header", err)
+	}
 }
 
 func (t *TLV) Tag() TagType {
@@ -281,7 +299,7 @@ type Block struct {
 }
 
 // NewBlock is used by simulator to create a new block not yet placed in a pack yet
-func NewBlock(blockID, bucket, object, version string, data []byte, logicalStart, logicalEnd int64) *Block {
+func NewBlock(blockId, bucket, object, version string, data []byte, logicalStart, logicalEnd int64) *Block {
 
 	var block Block
 
@@ -298,39 +316,57 @@ func NewBlock(blockID, bucket, object, version string, data []byte, logicalStart
 
 	return &block
 }
+func WriteBlock(file *os.File, b *Block, logger *Logger) {
+	/*
+		encoder := value.NewEncoder()
+		encoder.Write(file, nil, b.data)
+	*/
+}
 
 // Read is used by application to read a data Block out of a pack
 // a read block does not include the pack information but does include the
 // uploadid: versionid, objectid, and the data
 func ReadBlock(file *os.File, length uint64, logger *Logger) *Block {
 
+	// read the block temporily not encoded
 	var b Block
-	decoder := value.NewDecoder()
-	secondaryData, _, err := decoder.ReadWithBytes(file, &b)
-	if err != nil {
-		logger.Event("error reading block data:", err)
-	}
-	if secondaryData == nil {
-		logger.Event("Block contains no data")
-	}
-	b.data = make([]byte, len(secondaryData.Bytes()))
-	copy(b.data, secondaryData.Bytes())
-	secondaryData.Release()
-	// strip components out of versionInfo   download #: version ID: bucket/key
-	segments := strings.Split(b.VersionInfo, ":")
-	if len(segments) != 3 {
-		logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
-	}
-	b.Version = segments[1]
-	// now split the bucket/key
-	segments = strings.SplitN(segments[2], "/", 2)
-	if len(segments) != 2 {
-		logger.Fatal("Could not split bucket key", segments[2])
-	}
-	b.Bucket = segments[0]
-	b.Object = segments[1]
+	b.data = make([]byte, length)
 
+	_, err := file.Read(b.data)
+	if err != nil {
+		logger.Fatal(err)
+	}
+	// json decode structure
+	json.Unmarshal(b.data, &b)
 	return &b
+	/*
+			var b Block
+			decoder := value.NewDecoder()
+			secondaryData, _, err := decoder.ReadWithBytes(file, &b)
+			if err != nil {
+				logger.Event("error reading block data:", err)
+			}
+			if secondaryData == nil {
+				logger.Event("Block contains no data")
+			}
+			b.data = make([]byte, len(secondaryData.Bytes()))
+			copy(b.data, secondaryData.Bytes())
+			secondaryData.Release()
+			// strip components out of versionInfo   download #: version ID: bucket/key
+			segments := strings.Split(b.VersionInfo, ":")
+			if len(segments) != 3 {
+				logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
+			}
+			b.Version = segments[1]
+			// now split the bucket/key
+			segments = strings.SplitN(segments[2], "/", 2)
+			if len(segments) != 2 {
+				logger.Fatal("Could not split bucket key", segments[2])
+			}
+			b.Bucket = segments[0]
+			b.Object = segments[1]
+		return &b
+	*/
 }
 
 func (b *Block) Pack() *PackEntry {
@@ -366,15 +402,46 @@ func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 	return pack.Packs
 }
 
-// VERSION - Contains a MetaReference Structure
+// VERSION - Contains a MetaReference Structure for a single packentry object
+func NewVersionRecord(bucket, object, version string, packEntry *PackEntry) *MetaReference {
+	var versionRecord MetaReference
+	var versionId VersionID
+	versionId.Bucket = bucket
+	versionId.Object = object
+	versionId.Version = version
+	versionRecord.VersionID = &versionId
+	versionRecord.Packs = Packs{packEntry}
+	return &versionRecord
+}
+
+/*
+	func WriteVersionRecord(file *os.File, vr *MetaReference, logger *Logger) {
+		encoder := value.NewEncoder()
+		_, err := encoder.Write(file, nil, vr)
+		if err != nil {
+			logger.Fatal(err)
+		}
+	}
+*/
 func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaReference {
 
-	var versionRecord MetaReference
-	decoder := value.NewDecoder()
-	_, _, err := decoder.ReadWithBytes(file, &versionRecord)
+	/*
+		var versionRecord MetaReference
+		decoder := value.NewDecoder()
+		_, _, err := decoder.ReadWithBytes(file, &versionRecord)
+		if err != nil {
+			logger.Fatal(err)
+		}
+	*/
+	// need to read the entire length into a buffer and then decode from that
+	data := make([]byte, length)
+	_, err := file.Read(data)
 	if err != nil {
 		logger.Fatal(err)
 	}
+	// json decode structure
+	var versionRecord MetaReference
+	json.Unmarshal(data, &versionRecord)
 	return &versionRecord
 }
 func (mr *MetaReference) GetBucket() string {

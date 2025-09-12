@@ -19,7 +19,7 @@ type Config struct {
 const DEFAULT_DB string = "./db"
 const DEFAULT_BLOCK_CACHE string = "cache"
 const DEFAULT_VERSION_CACHE string = "versions"
-const DEFAULT_REGION string = "us-west-1"
+const DEFAULT_REGION string = "us-east-1"
 const DEFAULT_CONFIG_FILE string = "config.json"
 const DEFAULT_LOG_FILE string = "ltfs-vof.log"
 
@@ -35,10 +35,18 @@ func main() {
 	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
+	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
+	simBucket := flag.String("simbucket", "", "The S3 bucket to use to write simulated objects")
 	flag.Parse()
 
 	// create the customer logger
 	logger := NewLogger(*logFile, *clean)
+
+	// if create simulated tapes then do it and exit
+	if *simTapes != 0 {
+		createSimulatedTapes(*simTapes, *simBucket, logger)
+		return
+	}
 
 	// read the config file
 	configData, err := ioutil.ReadFile(*configFile)
@@ -92,7 +100,7 @@ func main() {
 	// select the library type used
 	var library TapeLibrary
 	if *simulate {
-		library = NewTapeLibrarySimulator()
+		library = NewTapeLibrarySimulator(SIMULATION_FILES, logger)
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}

@@ -3,13 +3,15 @@ package tapehardware
 
 import (
 	"fmt"
-	"log"
+	. "ltfs-vof/utils"
 	"os"
 )
 
 type TapeLibrarySimulator struct {
-	drives []TapeDrive
-	tapes  []TapeCartridge
+	drives        []TapeDrive
+	tapes         []TapeCartridge
+	logger        *Logger
+	tapeDirectory string
 }
 type TapeDriveSimulator struct {
 	name          string
@@ -17,6 +19,7 @@ type TapeDriveSimulator struct {
 	number        int
 	busy          bool
 	tapeDirectory string
+	logger        *Logger
 }
 type TapeCartridgeSimulator struct {
 	name string
@@ -24,20 +27,26 @@ type TapeCartridgeSimulator struct {
 }
 
 const NumDrives int = 1
-const NumTapes int = 1
-const TapeDirectory string = "tapehardware/tapes/"
 
-func NewTapeLibrarySimulator() *TapeLibrarySimulator {
+func NewTapeLibrarySimulator(tapeDirectory string, logger *Logger) *TapeLibrarySimulator {
 
 	var simulator TapeLibrarySimulator
+	simulator.tapeDirectory = tapeDirectory
+	simulator.logger = logger
 
 	// create drives based on number of drives
 	for i := 0; i < NumDrives; i++ {
-		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, TapeDirectory))
+		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, tapeDirectory, logger))
 	}
-	// create tapes based on number
-	for i := 0; i < NumTapes; i++ {
-		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(i))
+	// find the number of simulated tapes by opening up the sumlator directory
+	tapes, err := os.ReadDir(tapeDirectory)
+	if err != nil {
+		simulator.logger.Fatal(err)
+	}
+	for slot, tape := range tapes {
+		fmt.Println("Found tape:", tape.Name())
+		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(slot, tape.Name()))
+		slot++
 	}
 	return &simulator
 }
@@ -49,7 +58,7 @@ func (t *TapeLibrarySimulator) Audit() ([]TapeDrive, []TapeCartridge) {
 func (t *TapeLibrarySimulator) Load(tape TapeCartridge, drive TapeDrive) bool {
 	td := drive.(*TapeDriveSimulator)
 	if td.busy {
-		log.Fatal("drive busy")
+		t.logger.Fatal("drive busy")
 	}
 	td.tape = tape.(*TapeCartridgeSimulator)
 	td.busy = true
@@ -63,10 +72,12 @@ func (t *TapeLibrarySimulator) Unload(drive TapeDrive) bool {
 	td.busy = false
 	return true
 }
-func NewTapeDriveSimulator(i int, tapeDirectory string) *TapeDriveSimulator {
+func NewTapeDriveSimulator(i int, tapeDirectory string, logger *Logger) *TapeDriveSimulator {
 	drive := TapeDriveSimulator{
-		name: fmt.Sprintf("Drive-%d", i),
-		busy: false,
+		name:          fmt.Sprintf("Drive-%d", i),
+		busy:          false,
+		tapeDirectory: tapeDirectory,
+		logger:        logger,
 	}
 	return &drive
 }
@@ -82,24 +93,21 @@ func (td *TapeDriveSimulator) GetCart() (TapeCartridge, bool) {
 
 func (td *TapeDriveSimulator) MountLTFS() (map[string]string, map[string]string, bool) {
 	if !td.busy {
-		log.Fatal("drive not busy")
-	}
-	// get current directory
-	currentDir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
+		td.logger.Fatal("drive not busy")
 	}
 	// tape directory is current directory + tape
-	tapeDirectory := currentDir + "/" + TapeDirectory + td.tape.Name()
+	tapeDirectory := td.tapeDirectory + td.tape.Name()
+	fmt.Println("Tape Directory:", tapeDirectory)
 	versionFiles, blockFiles := FindVersionAndBlockFiles(tapeDirectory)
+	fmt.Println("Version Files:", versionFiles, "Block Files:", blockFiles)
 	return versionFiles, blockFiles, true
 }
 func (td *TapeDriveSimulator) Unmount() {
 }
-func NewTapeCartridgeSimulator(i int) *TapeCartridgeSimulator {
+func NewTapeCartridgeSimulator(i int, name string) *TapeCartridgeSimulator {
 	var cart TapeCartridgeSimulator
-	cart.name = fmt.Sprintf("tape%d", i)
 	cart.slot = i
+	cart.name = name
 	return &cart
 }
 func (c *TapeCartridgeSimulator) GetSlot() int {
