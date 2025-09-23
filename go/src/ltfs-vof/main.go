@@ -35,8 +35,10 @@ func main() {
 	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
+	// simulation options
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
 	simBucket := flag.String("simbucket", "", "The S3 bucket to use to write simulated objects")
+	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
 	flag.Parse()
 
 	// create the customer logger
@@ -100,7 +102,7 @@ func main() {
 	// select the library type used
 	var library TapeLibrary
 	if *simulate {
-		library = NewTapeLibrarySimulator(SIMULATION_FILES, logger)
+		library = NewTapeLibrarySimulator(SIMULATION_FILES, *simDrives, logger)
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}

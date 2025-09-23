@@ -26,16 +26,14 @@ type TapeCartridgeSimulator struct {
 	slot int
 }
 
-const NumDrives int = 1
-
-func NewTapeLibrarySimulator(tapeDirectory string, logger *Logger) *TapeLibrarySimulator {
+func NewTapeLibrarySimulator(tapeDirectory string, numDrives int, logger *Logger) *TapeLibrarySimulator {
 
 	var simulator TapeLibrarySimulator
 	simulator.tapeDirectory = tapeDirectory
 	simulator.logger = logger
 
 	// create drives based on number of drives
-	for i := 0; i < NumDrives; i++ {
+	for i := 0; i < numDrives; i++ {
 		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, tapeDirectory, logger))
 	}
 	// find the number of simulated tapes by opening up the sumlator directory
