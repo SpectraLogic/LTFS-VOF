@@ -37,7 +37,7 @@ func main() {
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
 	// simulation options
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
-	simBucket := flag.String("simbucket", "", "The S3 bucket to use to write simulated objects")
+	simBucket := flag.String("simbucket", "simulationbucket55", "The S3 bucket to use to write simulated objects")
 	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
 	flag.Parse()
 

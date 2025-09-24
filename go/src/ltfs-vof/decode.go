@@ -3,12 +3,11 @@ package main
 import (
 	//"encoding/json"
 	"fmt"
-	"github.com/spectralogic/go-core/buffer"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
 	. "ltfs-vof/utils"
 	"os"
-	"strings"
+	// "strings"
 )
 
 type TagType int
@@ -291,12 +290,9 @@ func (pr *PackReference) GetPhysicalStart() int64 {
 // for use by the simulator
 
 type Block struct {
-	VersionInfo string `codec:"I" json:"versionid,omitempty"` // ID of pack containing this offset to next offset
-	Bucket      string
-	Version     string
-	Object      string
-	data        []byte
-	pack        *PackEntry
+	*VersionID `codec:"i,omitempty"`
+	data       []byte
+	pack       *PackEntry
 }
 
 // NewBlock is used by simulator to create a new block not yet placed in a pack yet
@@ -305,9 +301,10 @@ func NewBlock(blockId, bucket, object, version string, data []byte, logicalStart
 	var block Block
 
 	// fill in the block information that is not encoded
-	block.Bucket = bucket
-	block.Object = object
-	block.Version = version
+	block.VersionID = &VersionID{}
+	block.VersionID.Bucket = bucket
+	block.VersionID.Object = object
+	block.VersionID.Version = version
 
 	// fill in the block information that is encoded
 	block.data = data
@@ -319,7 +316,7 @@ func NewBlock(blockId, bucket, object, version string, data []byte, logicalStart
 }
 func WriteBlock(file *os.File, b *Block, logger *Logger) {
 	encoder := value.NewEncoder()
-	encoder.Write(file, b.VersionInfo, b.data)
+	encoder.Write(file, b, b.data, nil)
 }
 
 // Read is used by application to read a data Block out of a pack
@@ -327,44 +324,21 @@ func WriteBlock(file *os.File, b *Block, logger *Logger) {
 // uploadid: versionid, objectid, and the data
 func ReadBlock(file *os.File, length uint64, logger *Logger) *Block {
 
-	/*
-		var b Block
-		b.data = make([]byte, length)
-
-		_, err := file.Read(b.data)
-		if err != nil {
-			logger.Fatal(err)
-		}
-		// json decode structure
-		json.Unmarshal(b.data, &b)
-		return &b
-	*/
 	// read the block temporily not encoded
 	var b Block
 	decoder := value.NewDecoder()
 	secondaryData, _, err := decoder.ReadWithBytes(file, &b)
 	if err != nil {
-		logger.Event("error reading block data:", err)
+		logger.Fatal("error reading block data:", err)
 	}
 	if secondaryData == nil {
-		logger.Event("Block contains no data")
+		logger.Fatal("Block contains no data")
 	}
 	b.data = make([]byte, len(secondaryData.Bytes()))
+	fmt.Println("Secondary Bytes Length:", len(secondaryData.Bytes()))
 	copy(b.data, secondaryData.Bytes())
 	secondaryData.Release()
-	// strip components out of versionInfo   download #: version ID: bucket/key
-	segments := strings.Split(b.VersionInfo, ":")
-	if len(segments) != 3 {
-		logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
-	}
-	b.Version = segments[1]
-	// now split the bucket/key
-	segments = strings.SplitN(segments[2], "/", 2)
-	if len(segments) != 2 {
-		logger.Fatal("Could not split bucket key", segments[2])
-	}
-	b.Bucket = segments[0]
-	b.Object = segments[1]
+	fmt.Println("VersionID:", b.VersionID)
 	return &b
 }
 
@@ -413,14 +387,20 @@ func NewVersionRecord(bucket, object, version string, packEntry *PackEntry) *Met
 	return &versionRecord
 }
 
-// must release buffer
-func EncodeVersionRecord(vr *MetaReference, logger *Logger) *buffer.Buffer {
+// Get buffer and then copy it over and release
+func EncodeVersionRecord(vr *MetaReference, logger *Logger) []byte {
 	encoder := value.NewEncoder()
 	buffer, _, err := encoder.Encode(vr, nil)
 	if err != nil {
 		logger.Fatal(err)
 	}
-	return buffer
+	defer buffer.Release()
+
+	// make a copy of the buffer to return
+	// this way the encoder buffer can be released
+	bufferCopy := make([]byte, buffer.Len())
+	copy(bufferCopy, buffer.Bytes())
+	return bufferCopy
 }
 
 func WriteVersionRecord(file *os.File, vr *MetaReference, logger *Logger) {

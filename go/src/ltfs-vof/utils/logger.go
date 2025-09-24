@@ -3,6 +3,8 @@ package utils
 import (
 	"fmt"
 	"os"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -32,9 +34,10 @@ func (l *Logger) Event(message ...any) {
 	}
 	defer f.Close()
 	// write the header to the file
-	if _, err := fmt.Fprintf(f, "%s: Event: ", l.getTime()); err != nil {
+	if _, err := fmt.Fprintf(f, " %s\n\tEvent: ", l.getHeader()); err != nil {
 		fmt.Println("Error writing event to log file:", err)
 	}
+	// write the message to the file
 	if _, err := fmt.Fprintln(f, message); err != nil {
 		fmt.Println("Error writing event to log file:", err)
 	}
@@ -47,7 +50,7 @@ func (l *Logger) Fatal(message ...any) {
 	}
 	defer f.Close()
 	// write the header to the file
-	if _, err := fmt.Fprintf(f, "%s: Fatal: ", l.getTime()); err != nil {
+	if _, err := fmt.Fprintf(f, "%s \n\tFatal: ", l.getHeader()); err != nil {
 		fmt.Println("Error writing event to log file:", err)
 	}
 	// write the message to the file
@@ -56,7 +59,29 @@ func (l *Logger) Fatal(message ...any) {
 	}
 	os.Exit(1)
 }
-func (l *Logger) getTime() string {
-	// get the current time in the format YYYY-MM-DD HH:MM:SS
-	return time.Now().Format("2006-01-02 15:04:05")
+func (l *Logger) getHeader() string {
+	// runtime.Caller returns the program counter, file name, line number, and a boolean indicating success.
+	pc, file, line, ok := runtime.Caller(2) // +2 to account for getCallerInfo and logger function
+	if !ok {
+		return "unknown"
+	}
+
+	// runtime.FuncForPC returns a *runtime.Func object for the given program counter.
+	f := runtime.FuncForPC(pc)
+	if f == nil {
+		return "unknown"
+	}
+
+	// Extract the function name from the fully qualified name.
+	// For example, "main.myFunction" becomes "myFunction".
+	funcName := f.Name()
+	lastSlash := strings.LastIndex(funcName, "/")
+	if lastSlash != -1 {
+		funcName = funcName[lastSlash+1:]
+	}
+	lastDot := strings.LastIndex(funcName, ".")
+	if lastDot != -1 {
+		funcName = funcName[lastDot+1:]
+	}
+	return fmt.Sprintf("%s:Func %s Line %d:  ", time.Now().Format("2006-01-02 15:04:05"), file, line)
 }

@@ -3,7 +3,6 @@ package main
 
 import (
 	"crypto/rand"
-	//	"encoding/json"
 	"fmt"
 	"github.com/oklog/ulid/v2"
 	"io"
@@ -15,12 +14,11 @@ const SIMULATION_FILES string = "tapehardware/tapes/"
 
 func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 	objectCount := 0
+	// remove all the tapes first
+	os.RemoveAll(SIMULATION_FILES)
 	for tape := 0; tape < numberOfTapes; tape++ {
-		// remove existing directory
-		err := os.RemoveAll(fmt.Sprintf("%stape%02d", SIMULATION_FILES, tape))
-
 		// create 10 block files of random data
-		err = os.MkdirAll(fmt.Sprintf("%stape%02d", SIMULATION_FILES, tape), 0755)
+		err := os.MkdirAll(fmt.Sprintf("%stape%02d", SIMULATION_FILES, tape), 0755)
 		if err != nil {
 			logger.Fatal("Unable to create simulated tape directory")
 		}
@@ -52,9 +50,11 @@ func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 				objectCount++
 
 				// write object to s3
-				if bucket != "" {
-					PutObject(bucket, objectName, DEFAULT_REGION, randomData)
-				}
+				/*
+					if bucket != "" {
+						PutObject(bucket, objectName, DEFAULT_REGION, randomData)
+					}
+				*/
 
 				//create the block
 				block := NewBlock("", bucket, objectName, vid, randomData, int64(0), int64(len(randomData)))
@@ -65,24 +65,12 @@ func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 					logger.Fatal("Unable to get start range")
 				}
 
-				/*
-					// json marshal the block
-					blockData, _ := json.Marshal(block)
-				*/
-
 				// write a TLV for the block
 				WriteTLV(fd, BLOCK, block.data, logger)
 				fmt.Println("Block Data Length: ", len(block.data))
 
 				// write the block to the block file
 				WriteBlock(fd, block, logger)
-
-				/*
-					_, err = fd.Write(block)
-					if err != nil {
-						logger.Fatal("Unable to write block data")
-					}
-				*/
 
 				// create the packentry for this block both the physical and logical
 				packEntry := NewPackEntry(blockFileName, 0, int64(len(block.data)))
@@ -95,11 +83,8 @@ func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 				buffer := EncodeVersionRecord(vr, logger)
 
 				// write a version TLV in the version file
-				fmt.Println("version file: ", versionName, " size: ", len(buffer.Bytes()))
-				WriteTLV(versionfd, VERSION, buffer.Bytes(), logger)
-
-				// release the buffer
-				buffer.Release()
+				fmt.Println("version file: ", versionName, " size: ", len(buffer))
+				WriteTLV(versionfd, VERSION, buffer, logger)
 
 				// write the version data
 				WriteVersionRecord(versionfd, vr, logger)
