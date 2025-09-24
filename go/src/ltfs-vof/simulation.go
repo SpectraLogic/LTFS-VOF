@@ -3,7 +3,7 @@ package main
 
 import (
 	"crypto/rand"
-	"encoding/json"
+	//	"encoding/json"
 	"fmt"
 	"github.com/oklog/ulid/v2"
 	"io"
@@ -59,46 +59,50 @@ func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 				//create the block
 				block := NewBlock("", bucket, objectName, vid, randomData, int64(0), int64(len(randomData)))
 
-				// json marshal the block
-				blockData, _ := json.Marshal(block)
-
-				// write a TLV for the block
-				WriteTLV(fd, BLOCK, blockData, logger)
-				fmt.Println("Block Data Length: ", len(blockData))
-
 				// record start of TLV and write a TLV block header
 				startRange, err := fd.Seek(0, io.SeekCurrent)
 				if err != nil {
 					logger.Fatal("Unable to get start range")
 				}
 
+				/*
+					// json marshal the block
+					blockData, _ := json.Marshal(block)
+				*/
+
+				// write a TLV for the block
+				WriteTLV(fd, BLOCK, block.data, logger)
+				fmt.Println("Block Data Length: ", len(block.data))
+
 				// write the block to the block file
-				_, err = fd.Write(blockData)
-				if err != nil {
-					logger.Fatal("Unable to write block data")
-				}
+				WriteBlock(fd, block, logger)
+
+				/*
+					_, err = fd.Write(block)
+					if err != nil {
+						logger.Fatal("Unable to write block data")
+					}
+				*/
 
 				// create the packentry for this block both the physical and logical
-				packEntry := NewPackEntry(blockFileName, 0, int64(len(blockData)))
-				packEntry.SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(blockData)))
+				packEntry := NewPackEntry(blockFileName, 0, int64(len(block.data)))
+				packEntry.SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
 
 				// create the version data
-				vd := NewVersionRecord(bucket, objectName, vid, packEntry)
-				// encode the structure using json
-				ud, err := json.Marshal(vd)
-				if err != nil {
-					logger.Fatal("Unable to marshal version data")
-				}
+				vr := NewVersionRecord(bucket, objectName, vid, packEntry)
+
+				// encode the version record
+				buffer := EncodeVersionRecord(vr, logger)
 
 				// write a version TLV in the version file
-				fmt.Println("version file: ", versionName, " size: ", len(ud))
-				WriteTLV(versionfd, VERSION, ud, logger)
-				// write the version data
-				_, err = versionfd.Write(ud)
-				if err != nil {
-					logger.Fatal("Unable to write version data")
-				}
+				fmt.Println("version file: ", versionName, " size: ", len(buffer.Bytes()))
+				WriteTLV(versionfd, VERSION, buffer.Bytes(), logger)
 
+				// release the buffer
+				buffer.Release()
+
+				// write the version data
+				WriteVersionRecord(versionfd, vr, logger)
 			}
 		}
 	}

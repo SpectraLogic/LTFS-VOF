@@ -1,13 +1,14 @@
 package main
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
+	"github.com/spectralogic/go-core/buffer"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
 	. "ltfs-vof/utils"
 	"os"
-	//"strings"
+	"strings"
 )
 
 type TagType int
@@ -317,10 +318,8 @@ func NewBlock(blockId, bucket, object, version string, data []byte, logicalStart
 	return &block
 }
 func WriteBlock(file *os.File, b *Block, logger *Logger) {
-	/*
-		encoder := value.NewEncoder()
-		encoder.Write(file, nil, b.data)
-	*/
+	encoder := value.NewEncoder()
+	encoder.Write(file, b.VersionInfo, b.data)
 }
 
 // Read is used by application to read a data Block out of a pack
@@ -328,45 +327,45 @@ func WriteBlock(file *os.File, b *Block, logger *Logger) {
 // uploadid: versionid, objectid, and the data
 func ReadBlock(file *os.File, length uint64, logger *Logger) *Block {
 
-	// read the block temporily not encoded
-	var b Block
-	b.data = make([]byte, length)
-
-	_, err := file.Read(b.data)
-	if err != nil {
-		logger.Fatal(err)
-	}
-	// json decode structure
-	json.Unmarshal(b.data, &b)
-	return &b
 	/*
-			var b Block
-			decoder := value.NewDecoder()
-			secondaryData, _, err := decoder.ReadWithBytes(file, &b)
-			if err != nil {
-				logger.Event("error reading block data:", err)
-			}
-			if secondaryData == nil {
-				logger.Event("Block contains no data")
-			}
-			b.data = make([]byte, len(secondaryData.Bytes()))
-			copy(b.data, secondaryData.Bytes())
-			secondaryData.Release()
-			// strip components out of versionInfo   download #: version ID: bucket/key
-			segments := strings.Split(b.VersionInfo, ":")
-			if len(segments) != 3 {
-				logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
-			}
-			b.Version = segments[1]
-			// now split the bucket/key
-			segments = strings.SplitN(segments[2], "/", 2)
-			if len(segments) != 2 {
-				logger.Fatal("Could not split bucket key", segments[2])
-			}
-			b.Bucket = segments[0]
-			b.Object = segments[1]
+		var b Block
+		b.data = make([]byte, length)
+
+		_, err := file.Read(b.data)
+		if err != nil {
+			logger.Fatal(err)
+		}
+		// json decode structure
+		json.Unmarshal(b.data, &b)
 		return &b
 	*/
+	// read the block temporily not encoded
+	var b Block
+	decoder := value.NewDecoder()
+	secondaryData, _, err := decoder.ReadWithBytes(file, &b)
+	if err != nil {
+		logger.Event("error reading block data:", err)
+	}
+	if secondaryData == nil {
+		logger.Event("Block contains no data")
+	}
+	b.data = make([]byte, len(secondaryData.Bytes()))
+	copy(b.data, secondaryData.Bytes())
+	secondaryData.Release()
+	// strip components out of versionInfo   download #: version ID: bucket/key
+	segments := strings.Split(b.VersionInfo, ":")
+	if len(segments) != 3 {
+		logger.Fatal("Invalid Version Info String From Block: ", b.VersionInfo)
+	}
+	b.Version = segments[1]
+	// now split the bucket/key
+	segments = strings.SplitN(segments[2], "/", 2)
+	if len(segments) != 2 {
+		logger.Fatal("Could not split bucket key", segments[2])
+	}
+	b.Bucket = segments[0]
+	b.Object = segments[1]
+	return &b
 }
 
 func (b *Block) Pack() *PackEntry {
@@ -414,35 +413,44 @@ func NewVersionRecord(bucket, object, version string, packEntry *PackEntry) *Met
 	return &versionRecord
 }
 
-/*
-	func WriteVersionRecord(file *os.File, vr *MetaReference, logger *Logger) {
-		encoder := value.NewEncoder()
-		_, err := encoder.Write(file, nil, vr)
-		if err != nil {
-			logger.Fatal(err)
-		}
-	}
-*/
-func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaReference {
-
-	/*
-		var versionRecord MetaReference
-		decoder := value.NewDecoder()
-		_, _, err := decoder.ReadWithBytes(file, &versionRecord)
-		if err != nil {
-			logger.Fatal(err)
-		}
-	*/
-	// need to read the entire length into a buffer and then decode from that
-	data := make([]byte, length)
-	_, err := file.Read(data)
+// must release buffer
+func EncodeVersionRecord(vr *MetaReference, logger *Logger) *buffer.Buffer {
+	encoder := value.NewEncoder()
+	buffer, _, err := encoder.Encode(vr, nil)
 	if err != nil {
 		logger.Fatal(err)
 	}
-	// json decode structure
+	return buffer
+}
+
+func WriteVersionRecord(file *os.File, vr *MetaReference, logger *Logger) {
+	encoder := value.NewEncoder()
+	_, err := encoder.Write(file, vr, nil)
+	if err != nil {
+		logger.Fatal(err)
+	}
+}
+func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaReference {
+
 	var versionRecord MetaReference
-	json.Unmarshal(data, &versionRecord)
+	decoder := value.NewDecoder()
+	_, _, err := decoder.ReadWithBytes(file, &versionRecord)
+	if err != nil {
+		logger.Fatal(err)
+	}
 	return &versionRecord
+	/*
+		// need to read the entire length into a buffer and then decode from that
+		data := make([]byte, length)
+		_, err := file.Read(data)
+		if err != nil {
+			logger.Fatal(err)
+		}
+		// json decode structure
+		var versionRecord MetaReference
+		json.Unmarshal(data, &versionRecord)
+		return &versionRecord
+	*/
 }
 func (mr *MetaReference) GetBucket() string {
 	return mr.Bucket
