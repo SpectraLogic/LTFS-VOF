@@ -151,7 +151,7 @@ type PackReference struct {
 
 type MetaReference struct {
 	*VersionID `codec:"i,omitempty"`
-	// Owner ID and ACLs are not supported
+	// Owner ID and ACLs are not supported as they are different on different backends
 	OwnerID string `codec:"o,omitempty" json:"owner,omitempty"` // Canonical ID of owner
 	ACLs    ACLs   `codec:"A,omitempty" json:"acls,omitempty"`  // Map of ID -> Permission
 
@@ -261,7 +261,6 @@ func (p *PackEntry) SetPhysicalLength(length int64) {
 func (p *PackEntry) AddSequentialPacks(nextPack *PackEntry) {
 	p.SourceRange.Add(nextPack.SourceRange)
 	p.PackRange.Add(nextPack.PackRange)
-
 }
 
 // HELPER FUNCTIONS FOR PACKREFERENCE
@@ -375,22 +374,32 @@ func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 	return pack.Packs
 }
 
-// VERSION - Contains a MetaReference Structure for a single packentry object
-func NewVersionRecord(bucket, object, version string, packEntry *PackEntry) *MetaReference {
+// VERSION - Creates a MetaReference for a version record
+// if there are no packentries then the data is stored in the version record
+// for a pack
+// returns the MetaReference structure and the encoded byte array
+func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, data []byte, logger *Logger) (*MetaReference, []byte) {
+
 	var versionRecord MetaReference
-	var versionId VersionID
+	versionId := VersionID{}
 	versionId.Bucket = bucket
 	versionId.Object = object
 	versionId.Version = version
 	versionRecord.VersionID = &versionId
-	versionRecord.Packs = Packs{packEntry}
-	return &versionRecord
+	versionRecord.Packs = packEntries
+	return &versionRecord, versionRecord.encode(logger)
+}
+func (mr *MetaReference) AddMetaData(key, value string) {
+	if mr.Metadata == nil {
+		mr.Metadata = make(map[string]string)
+	}
+	mr.Metadata[key] = value
 }
 
-// Get buffer and then copy it over and release
-func EncodeVersionRecord(vr *MetaReference, logger *Logger) []byte {
+// encode the version record and copy it over so *buffer can be realeedo
+func (mr *MetaReference) encode(logger *Logger) []byte {
 	encoder := value.NewEncoder()
-	buffer, _, err := encoder.Encode(vr, nil)
+	buffer, _, err := encoder.Encode(mr, nil)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -403,13 +412,15 @@ func EncodeVersionRecord(vr *MetaReference, logger *Logger) []byte {
 	return bufferCopy
 }
 
-func WriteVersionRecord(file *os.File, vr *MetaReference, logger *Logger) {
+func (mr *MetaReference) WriteVersionRecord(file *os.File, logger *Logger) {
 	encoder := value.NewEncoder()
-	_, err := encoder.Write(file, vr, nil)
+	_, err := encoder.Write(file, mr, nil)
 	if err != nil {
 		logger.Fatal(err)
 	}
 }
+
+// read from file and decode version record
 func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaReference {
 
 	var versionRecord MetaReference
@@ -419,18 +430,6 @@ func ReadVersionRecord(file *os.File, length uint64, logger *Logger) *MetaRefere
 		logger.Fatal(err)
 	}
 	return &versionRecord
-	/*
-		// need to read the entire length into a buffer and then decode from that
-		data := make([]byte, length)
-		_, err := file.Read(data)
-		if err != nil {
-			logger.Fatal(err)
-		}
-		// json decode structure
-		var versionRecord MetaReference
-		json.Unmarshal(data, &versionRecord)
-		return &versionRecord
-	*/
 }
 func (mr *MetaReference) GetBucket() string {
 	return mr.Bucket

@@ -12,7 +12,7 @@ import (
 
 const SIMULATION_FILES string = "tapehardware/tapes/"
 
-func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
+func createSimulatedTapes(numberOfTapes int, bucket string, blocksPerObject int, logger *Logger) {
 	objectCount := 0
 	// remove all the tapes first
 	os.RemoveAll(SIMULATION_FILES)
@@ -72,22 +72,21 @@ func createSimulatedTapes(numberOfTapes int, bucket string, logger *Logger) {
 				// write the block to the block file
 				WriteBlock(fd, block, logger)
 
-				// create the packentry for this block both the physical and logical
-				packEntry := NewPackEntry(blockFileName, 0, int64(len(block.data)))
-				packEntry.SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
+				// create a single packentry for this block both the physical and logical
+				packEntries := make([]*PackEntry, 1)
+
+				packEntries[0] = NewPackEntry(blockFileName, 0, int64(len(block.data)))
+				packEntries[0].SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
 
 				// create the version data
-				vr := NewVersionRecord(bucket, objectName, vid, packEntry)
-
-				// encode the version record
-				buffer := EncodeVersionRecord(vr, logger)
+				vr, vrEncoded := NewVersionRecord(bucket, objectName, vid, packEntries, nil, logger)
 
 				// write a version TLV in the version file
-				fmt.Println("version file: ", versionName, " size: ", len(buffer))
-				WriteTLV(versionfd, VERSION, buffer, logger)
+				fmt.Println("version file: ", versionName, " size: ", len(vrEncoded))
+				WriteTLV(versionfd, VERSION, vrEncoded, logger)
 
 				// write the version data
-				WriteVersionRecord(versionfd, vr, logger)
+				vr.WriteVersionRecord(versionfd, logger)
 			}
 		}
 	}

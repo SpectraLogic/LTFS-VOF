@@ -103,7 +103,7 @@ func DeleteVersion(versionID, bucket, key, region string) {
 	time.Sleep(1 * time.Second)
 }
 
-// put using multipart where each block is
+// put using multipart where each block is a part
 func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 	client := getClient(region)
 

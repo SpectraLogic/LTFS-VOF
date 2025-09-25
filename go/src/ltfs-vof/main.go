@@ -37,8 +37,10 @@ func main() {
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
 	// simulation options
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
-	simBucket := flag.String("simbucket", "simulationbucket55", "The S3 bucket to use to write simulated objects")
+	simBucket := flag.String("simbucket", "ltfsvof", "The S3 bucket that the source represents")
 	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
+	simBlocks := flag.Int("simblocks", 1, "Number of blocks per object")
+	simS3 := flag.Bool("sims3", false, "create source bucket and target bucket on s3")
 	flag.Parse()
 
 	// create the customer logger
@@ -46,7 +48,8 @@ func main() {
 
 	// if create simulated tapes then do it and exit
 	if *simTapes != 0 {
-		createSimulatedTapes(*simTapes, *simBucket, logger)
+		// the source bucket for the simulator will be prefixed with source
+		createSimulatedTapes(*simTapes, "source"+*simBucket, *simBlocks, logger)
 		return
 	}
 
