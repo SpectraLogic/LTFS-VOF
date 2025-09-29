@@ -17,12 +17,13 @@ type DBManager struct {
 	cacheDir     string
 	region       string
 	s3Enabled    bool
+	s3Customer   *S3Customer
 	lockResource *Resource
 	lockValue    int
 	logger       *Logger
 }
 
-func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool, logger *Logger) *DBManager {
+func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled, versioned, simulation bool, logger *Logger) *DBManager {
 	var manager DBManager
 	manager.region = region
 	manager.s3Enabled = s3Enabled
@@ -64,6 +65,10 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled bool, logger
 			os.RemoveAll(manager.cacheDir)
 			os.Mkdir(cacheDir, 0777)
 		}
+	}
+	// create s3 customer service if enabled
+	if s3Enabled {
+		manager.s3Customer = NewS3Customer(region, cacheDir, versioned, simulation, logger)
 	}
 
 	return &manager
@@ -318,14 +323,8 @@ func (dbm *DBManager) processVersion(versionID string) {
 
 			// if s3 enabled write version to S3
 			if dbm.s3Enabled {
-				// if single block just execute a single PUT
-				if len(blockids) == 1 {
-					Put(bucket, key, dbm.region, dbm.cacheDir, blockids[0])
-
-				} else {
-					// if multiple blocks do a multiple part upload where each block is a part
-					PutMultipart(bucket, key, dbm.region, dbm.cacheDir, blockids)
-				}
+				dbm.logger.Event("S3, Put Object, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
+				dbm.s3Customer.Put(bucket, key, blockids)
 			}
 
 			// remove the block data from the cache and delete the blockid records
@@ -337,7 +336,7 @@ func (dbm *DBManager) processVersion(versionID string) {
 			// delete marker
 			if dbm.s3Enabled {
 				dbm.logger.Event("S3, Delete Marker, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
-				DeleteMarker(bucket, key, dbm.region)
+				// DeleteMarker(bucket, key, dbm.region)
 			}
 		}
 

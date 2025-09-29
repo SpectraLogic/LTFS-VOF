@@ -1,3 +1,4 @@
+// provides s3 services for both source simulator and customer target buckets
 package main
 
 import (
@@ -15,18 +16,18 @@ import (
 	"time"
 )
 
-type S3Source struct {
+type S3Simulator struct {
 	region string
 	bucket string
 	logger *Logger
 }
 
 // create a bucket for the simulator to write to as a source
-func NewS3Source(region, bucket string, versioning bool, logger *Logger) *S3Source {
+func NewS3Simulator(region, bucket string, versioning bool, logger *Logger) *S3Simulator {
 	// make the bucket with versioning or not
 	createBucket(region, bucket, versioning, logger)
 
-	return &S3Source{
+	return &S3Simulator{
 		region: region,
 		bucket: bucket,
 		logger: logger,
@@ -34,7 +35,7 @@ func NewS3Source(region, bucket string, versioning bool, logger *Logger) *S3Sour
 }
 
 // put a object to the s3 souce bucket
-func (s *S3Source) Put(objectName string, data []byte) {
+func (s *S3Simulator) Put(objectName string, data []byte) {
 
 	client := getClient(s.region, s.logger)
 	// create a reader
@@ -53,10 +54,11 @@ func (s *S3Source) Put(objectName string, data []byte) {
 		s.logger.Fatal("S3 Source PUT: ", err.Error())
 	}
 }
-func (s *S3Source) Delete(objectName string) {
+func (s *S3Simulator) Delete(objectName string) {
 	deleteObject(s.region, s.bucket, objectName, s.logger)
 }
 
+// S3Customer is used to put data to the customer s3 target bucket
 type S3Customer struct {
 	region     string
 	directory  string
@@ -66,7 +68,7 @@ type S3Customer struct {
 	buckets    []string
 }
 
-// create a bucket that is used to output to customer world
+// store parameters so that they don't need to be passed each time
 func NewS3Customer(region, directory string, versioning, simulation bool, logger *Logger) *S3Customer {
 	return &S3Customer{
 		region:     region,
@@ -140,58 +142,12 @@ func (s *S3Customer) checkBucket(bucketName string) {
 			return
 		}
 	}
+	s.logger.Event("Bucket ", bucketName, " doesn't exist on list so 	creating it")
 	// not on list put it there and create the bucket
 	s.buckets = append(s.buckets, bucketName)
 
 	// create the bucket
 	createBucket(s.region, bucketName, s.versioning, s.logger)
-}
-
-func createBucket(region, bucketName string, versioning bool, logger *Logger) {
-
-	// if bucket exist then clean it out and return
-	if doesExist(region, bucketName, logger) {
-		cleanout(region, bucketName, logger)
-	} else {
-		// create bucket
-		bucketInput := &s3.CreateBucketInput{
-			Bucket: aws.String(bucketName),
-		}
-		// create bucket, print error
-		client := getClient(region, logger)
-		_, err := client.CreateBucket(context.TODO(), bucketInput)
-		if err != nil {
-			logger.Fatal("S3Bucket.Create: ", err.Error())
-		}
-	}
-	// if versioning is set then set for the bucket
-	if versioning {
-		versioningInput := &s3.PutBucketVersioningInput{
-			Bucket: aws.String(bucketName),
-			VersioningConfiguration: &s3.VersioningConfiguration{
-				Status: aws.String("Enabled"),
-			},
-		}
-		client := getClient(region, logger)
-		_, err := client.PutBucketVersioning(context.TODO(), versioningInput)
-		if err != nil {
-			logger.Fatal("S3Bucket.Versionsing: ", err.Error())
-		}
-	}
-}
-func deleteObject(bucket, key, region string, logger *Logger) {
-
-	client := getClient(region, logger)
-	params := &s3.DeleteObjectInput{
-		Bucket: aws.String(bucket),
-		Key:    aws.String(key),
-	}
-	_, err := client.DeleteObject(context.TODO(), params)
-	if err != nil {
-		logger.Fatal("DeleteObject: ", err.Error())
-	}
-	// need to sleep so that delete marker is created before next version
-	time.Sleep(1 * time.Second)
 }
 
 // put using multipart where each block is a part
@@ -270,6 +226,58 @@ func (s *S3Customer) putMultipart(bucket, key string, blockFiles []string) {
 	}
 }
 
+// these functions are used by both the S3 source simulator and the S3 customer target
+func createBucket(region, bucketName string, versioning bool, logger *Logger) {
+
+	// if bucket exist then clean it out and return
+	if doesExist(region, bucketName, logger) {
+		logger.Event("Bucket ", bucketName, " already exists, cleaning out")
+		cleanout(region, bucketName, logger)
+	} else {
+		// create bucket
+		logger.Event("Bucket ", bucketName, " doesn't exists creating it")
+		bucketInput := &s3.CreateBucketInput{
+			Bucket: aws.String(bucketName),
+		}
+		// create bucket, print error
+		client := getClient(region, logger)
+		_, err := client.CreateBucket(context.TODO(), bucketInput)
+		if err != nil {
+			logger.Fatal("S3Bucket.Create: ", err.Error())
+		}
+	}
+	// if versioning is set then set for the bucket
+	if versioning {
+		logger.Event("Bucket ", bucketName, " Turning on versioning")
+		versioningInput := &s3.PutBucketVersioningInput{
+			Bucket: aws.String(bucketName),
+			VersioningConfiguration: &types.VersioningConfiguration{
+				Status: types.BucketVersioningStatusEnabled,
+			},
+		}
+		client := getClient(region, logger)
+		_, err := client.PutBucketVersioning(context.TODO(), versioningInput)
+		if err != nil {
+			logger.Fatal("S3Bucket.Versionsing: ", err.Error())
+		}
+	}
+}
+func deleteObject(bucket, key, region string, logger *Logger) {
+
+	logger.Event("Deleting object ", key, " from bucket ", bucket)
+	client := getClient(region, logger)
+	params := &s3.DeleteObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+	}
+	_, err := client.DeleteObject(context.TODO(), params)
+	if err != nil {
+		logger.Fatal("DeleteObject: ", err.Error())
+	}
+	// need to sleep so that delete marker is created before next version
+	time.Sleep(1 * time.Second)
+}
+
 // List all versions and delete them including delete markers
 func cleanout(region, bucketName string, logger *Logger) {
 	// loop until no versions available in bucket
@@ -325,6 +333,7 @@ func getClient(region string, logger *Logger) *s3.Client {
 	})
 }
 func deleteVersion(region, bucketName, objectName, versionID string, logger *Logger) {
+	logger.Event("Deleting version ", versionID, " of object ", objectName, " from bucket ", bucketName)
 	client := getClient(region, logger)
 	params := &s3.DeleteObjectInput{
 		Bucket:    aws.String(bucketName),
@@ -337,5 +346,5 @@ func deleteVersion(region, bucketName, objectName, versionID string, logger *Log
 		logger.Fatal("DeleteVersion: ", err.Error())
 	}
 	// need to sleep so that delete marker is created before next version
-	time.Sleep(1 * time.Second)
+	// time.Sleep(1 * time.Second)
 }

@@ -12,12 +12,23 @@ import (
 
 const SIMULATION_FILES string = "tapehardware/tapes/"
 
-func createSimulatedTapes(numberOfTapes int, bucket string, blocksPerObject int, logger *Logger) {
+func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning bool, logger *Logger) {
 	objectCount := 0
 	// remove all the tapes first
 	os.RemoveAll(SIMULATION_FILES)
+
+	// create the s3 simulation buckets
+	s3Buckets := make(map[string]*S3Simulator)
+	if s3Enabled {
+		for _, bucket := range buckets {
+			// create the s3 simulation buckets
+			logger.Event("Creating simulated S3 bucket: ", bucket)
+			s3Buckets[bucket] = NewS3Simulator(DEFAULT_REGION, bucket+"simulat", versioning, logger)
+		}
+	}
+
 	for tape := 0; tape < numberOfTapes; tape++ {
-		// create 10 block files of random data
+		// make the tape directory
 		err := os.MkdirAll(fmt.Sprintf("%stape%02d", SIMULATION_FILES, tape), 0755)
 		if err != nil {
 			logger.Fatal("Unable to create simulated tape directory")
@@ -27,19 +38,19 @@ func createSimulatedTapes(numberOfTapes int, bucket string, blocksPerObject int,
 		versionfd, err := os.Create(fmt.Sprintf("%stape%02d/%s.ver", SIMULATION_FILES, tape, versionName))
 		defer versionfd.Close()
 
-		// 10 block files per tape
-		for blockFile := 0; blockFile < 1; blockFile += 1 {
+		// one block file per bucket per tape
+		for _, bucket := range buckets {
 			// create the block file
 			blockFileName := ulid.Make().String()
 			fd, err := os.Create(fmt.Sprintf("%stape%02d/%s.blk", SIMULATION_FILES, tape, blockFileName))
 			defer fd.Close()
 
-			// put a 10 objects in each file
-			for blocks := 0; blocks < 10; blocks++ {
+			// put a 100 objects in each file
+			for objects := 0; objects < 100; objects++ {
 				// create a unique version ulid
 				vid := ulid.Make().String()
 
-				// create a random 500 bytes of data to be a block
+				// right now a single block per object
 				randomData := make([]byte, 500)
 				_, err = rand.Read(randomData)
 				if err != nil {
@@ -49,12 +60,10 @@ func createSimulatedTapes(numberOfTapes int, bucket string, blocksPerObject int,
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 
-				// write object to s3
-				/*
-					if bucket != "" {
-						PutObject(bucket, objectName, DEFAULT_REGION, randomData)
-					}
-				*/
+				// write the object to the proper simulation bucket
+				if s3Enabled {
+					s3Buckets[bucket].Put(objectName, randomData)
+				}
 
 				//create the block
 				block := NewBlock("", bucket, objectName, vid, randomData, int64(0), int64(len(randomData)))
@@ -79,7 +88,7 @@ func createSimulatedTapes(numberOfTapes int, bucket string, blocksPerObject int,
 				packEntries[0].SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
 
 				// create the version data
-				vr, vrEncoded := NewVersionRecord(bucket, objectName, vid, packEntries, nil, logger)
+				vr, vrEncoded := NewVersionRecord(buckets[0], objectName, vid, packEntries, nil, logger)
 
 				// write a version TLV in the version file
 				fmt.Println("version file: ", versionName, " size: ", len(vrEncoded))

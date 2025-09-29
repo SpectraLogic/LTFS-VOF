@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	. "ltfs-vof/tapehardware"
 	. "ltfs-vof/utils"
+	"strings"
 )
 
 // the format of the json config file
@@ -25,21 +26,25 @@ const DEFAULT_LOG_FILE string = "ltfs-vof.log"
 
 func main() {
 	// get the command line arguments
-	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
-	verify := flag.Bool("verify", false, "Verify that hardware matches config file")
+	verify := flag.Bool("verify", false, "Verify that the config file matches the hardware")
 	version := flag.Bool("version", false, "Find and copy version files")
 	database := flag.Bool("database", false, "Create the database")
 	read := flag.Bool("read", false, "Read the tapes")
-	clean := flag.Bool("clean", false, "Clean the log")
-	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
+	clean := flag.Bool("clean", false, "Clean the log and database file")
+	region := flag.String("region", DEFAULT_REGION, "region or endpoint to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
-	S3 := flag.Bool("s3", false, "write output to s3")
+	versioned := flag.Bool("versioning", true, "set to false if customer buckets are non versioned")
+	s3 := flag.Bool("s3", true, "Write objects to S3 buckets ")
 	// simulation options
+	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
-	simBucket := flag.String("simbucket", "simltfsvof", "The S3 bucket to use in simulation")
+	simS3 := flag.Bool("sims3", false, "Write simulated objects to S3 buckets ")
 	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
 	simBlocks := flag.Int("simblocks", 1, "Number of blocks per object")
+	// simS3compare := flag.Bool("simscompare", false, "Verify that simulation bucket and the customer output bucket match")
+	var simBuckets stringSlice
+	flag.Var(&simBuckets, "simbucket", "simbucket may be repeated to create multiple simulation buckets")
 	flag.Parse()
 
 	// create the customer logger
@@ -48,7 +53,8 @@ func main() {
 	// if create simulated tapes then do it and exit
 	if *simTapes != 0 {
 		// the source bucket for the simulator will be prefixed with source
-		createSimulatedTapes(*simTapes, "source"+*simBucket, *simBlocks, logger)
+		logger.Event("****CREATING SIMULATED TAPES AND BUCKETS **** ")
+		createSimulatedTapes(*simTapes, *simS3, simBuckets.Slice(), *simBlocks, *versioned, logger)
 		return
 	}
 
@@ -108,7 +114,7 @@ func main() {
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}
-	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *simS3, logger)
+	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3, *versioned, *simulate, logger)
 	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library, logger)
 	// if version is enabled create the database manager and get the version files
 	if *version {
@@ -140,4 +146,21 @@ func main() {
 			}
 		}
 	*/
+}
+
+// stringSlice is a custom type to hold a slice of strings
+type stringSlice []string
+
+// String implements the flag.Value interface's String method
+func (s *stringSlice) String() string {
+	return strings.Join(*s, ",")
+}
+
+// Set implements the flag.Value interface's Set method
+func (s *stringSlice) Set(value string) error {
+	*s = append(*s, value)
+	return nil
+}
+func (s *stringSlice) Slice() []string {
+	return []string(*s)
 }
