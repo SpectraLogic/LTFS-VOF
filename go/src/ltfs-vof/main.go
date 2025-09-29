@@ -26,7 +26,6 @@ const DEFAULT_LOG_FILE string = "ltfs-vof.log"
 func main() {
 	// get the command line arguments
 	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
-	s3enabled := flag.Bool("s3", false, "Write S3 as the storage backend")
 	verify := flag.Bool("verify", false, "Verify that hardware matches config file")
 	version := flag.Bool("version", false, "Find and copy version files")
 	database := flag.Bool("database", false, "Create the database")
@@ -35,12 +34,12 @@ func main() {
 	region := flag.String("region", DEFAULT_REGION, "AWS region to write s3 objects")
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
+	S3 := flag.Bool("s3", false, "write output to s3")
 	// simulation options
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
-	simBucket := flag.String("simbucket", "ltfsvof", "The S3 bucket that the source represents")
+	simBucket := flag.String("simbucket", "simltfsvof", "The S3 bucket to use in simulation")
 	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
 	simBlocks := flag.Int("simblocks", 1, "Number of blocks per object")
-	simS3 := flag.Bool("sims3", false, "create source bucket and target bucket on s3")
 	flag.Parse()
 
 	// create the customer logger
@@ -100,7 +99,7 @@ func main() {
 
 	// log arguments
 	logger.Event("****RUN PARMS **** ")
-	logger.Event("\n\tSIMULATE: ", *simulate, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *s3enabled)
+	logger.Event("\n\tSIMULATE: ", *simulate, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *simS3)
 
 	// select the library type used
 	var library TapeLibrary
@@ -109,7 +108,7 @@ func main() {
 	} else {
 		library = NewRealTapeLibrary(config.LibraryDevice, config.TapeDriveDevices)
 	}
-	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *s3enabled, logger)
+	dbManager := NewDBManager(DEFAULT_DB, DEFAULT_BLOCK_CACHE, *region, *clean, *simS3, logger)
 	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library, logger)
 	// if version is enabled create the database manager and get the version files
 	if *version {

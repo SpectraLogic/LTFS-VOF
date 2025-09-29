@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -11,105 +10,198 @@ import (
 
 	"io"
 	"io/ioutil"
-	"log"
+	. "ltfs-vof/utils"
 	"os"
 	"time"
 )
 
-func PutObject(bucket, key, region string, data []byte) {
-	fmt.Println("Bucket:", bucket, " Key:", key, " Region:", region, " Data length:", len(data))
-	client := getClient(region)
+type S3Source struct {
+	region string
+	bucket string
+	logger *Logger
+}
 
+// create a bucket for the simulator to write to as a source
+func NewS3Source(region, bucket string, versioning bool, logger *Logger) *S3Source {
+	// make the bucket with versioning or not
+	createBucket(region, bucket, versioning, logger)
+
+	return &S3Source{
+		region: region,
+		bucket: bucket,
+		logger: logger,
+	}
+}
+
+// put a object to the s3 souce bucket
+func (s *S3Source) Put(objectName string, data []byte) {
+
+	client := getClient(s.region, s.logger)
 	// create a reader
 	r := io.ReadSeeker(bytes.NewReader(data))
 
 	// create the corresponding
 	params := &s3.PutObjectInput{
+		Bucket: aws.String(s.bucket),
+		Key:    aws.String(objectName),
+		Body:   r,
+	}
+
+	// put the object
+	_, err := client.PutObject(context.TODO(), params)
+	if err != nil {
+		s.logger.Fatal("S3 Source PUT: ", err.Error())
+	}
+}
+func (s *S3Source) Delete(objectName string) {
+	deleteObject(s.region, s.bucket, objectName, s.logger)
+}
+
+type S3Customer struct {
+	region     string
+	directory  string
+	logger     *Logger
+	versioning bool
+	simulation bool
+	buckets    []string
+}
+
+// create a bucket that is used to output to customer world
+func NewS3Customer(region, directory string, versioning, simulation bool, logger *Logger) *S3Customer {
+	return &S3Customer{
+		region:     region,
+		directory:  directory,
+		logger:     logger,
+		versioning: versioning,
+		simulation: simulation,
+	}
+}
+
+// for the S3 target the data is passed as a list of block files
+func (s *S3Customer) Put(bucketName, objectName string, blockFiles []string) {
+
+	// check for zero blocks
+	if len(blockFiles) == 0 {
+		s.logger.Fatal("Zero blocks files sent to Put")
+	}
+
+	// create bucket if doesn't exist
+	s.checkBucket(bucketName)
+
+	// if not in simulation mode and has more then one block file
+	// then multipart upload
+	if !s.simulation && len(blockFiles) > 1 {
+		s.putMultipart(bucketName, objectName, blockFiles)
+		return
+	}
+	// sum data from blockfiles together
+	var fullData []byte
+	for _, blockFile := range blockFiles {
+
+		// open the block file
+		f, err := os.Open(s.directory + "/" + bucketName + "/" + blockFile)
+		if err != nil {
+			s.logger.Fatal("Unable to open block for single block: ", blockFile, "  upload: ", err)
+		}
+		defer f.Close()
+		// read all the bytes
+		data, err := ioutil.ReadAll(f)
+		if err != nil {
+			s.logger.Fatal("Unable to read file for single block upload: ", blockFile, err)
+		}
+		fullData = append(fullData, data...)
+	}
+	// create a reader
+	r := io.ReadSeeker(bytes.NewReader(fullData))
+
+	// create the corresponding request
+	params := &s3.PutObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(objectName),
+		Body:   r,
+	}
+
+	// put the object
+	client := getClient(s.region, s.logger)
+	_, err := client.PutObject(context.TODO(), params)
+	if err != nil {
+		s.logger.Fatal("S3 PUT: ", err.Error())
+	}
+}
+func (s *S3Customer) Delete(bucketName, objectName string) {
+	deleteObject(s.region, bucketName, objectName, s.logger)
+}
+
+// checks to see if bucket has already been created and if not creates it
+func (s *S3Customer) checkBucket(bucketName string) {
+	// if bucket is on list then return
+	for _, bucket := range s.buckets {
+		if bucket == bucketName {
+			return
+		}
+	}
+	// not on list put it there and create the bucket
+	s.buckets = append(s.buckets, bucketName)
+
+	// create the bucket
+	createBucket(s.region, bucketName, s.versioning, s.logger)
+}
+
+func createBucket(region, bucketName string, versioning bool, logger *Logger) {
+
+	// if bucket exist then clean it out and return
+	if doesExist(region, bucketName, logger) {
+		cleanout(region, bucketName, logger)
+	} else {
+		// create bucket
+		bucketInput := &s3.CreateBucketInput{
+			Bucket: aws.String(bucketName),
+		}
+		// create bucket, print error
+		client := getClient(region, logger)
+		_, err := client.CreateBucket(context.TODO(), bucketInput)
+		if err != nil {
+			logger.Fatal("S3Bucket.Create: ", err.Error())
+		}
+	}
+	// if versioning is set then set for the bucket
+	if versioning {
+		versioningInput := &s3.PutBucketVersioningInput{
+			Bucket: aws.String(bucketName),
+			VersioningConfiguration: &s3.VersioningConfiguration{
+				Status: aws.String("Enabled"),
+			},
+		}
+		client := getClient(region, logger)
+		_, err := client.PutBucketVersioning(context.TODO(), versioningInput)
+		if err != nil {
+			logger.Fatal("S3Bucket.Versionsing: ", err.Error())
+		}
+	}
+}
+func deleteObject(bucket, key, region string, logger *Logger) {
+
+	client := getClient(region, logger)
+	params := &s3.DeleteObjectInput{
 		Bucket: aws.String(bucket),
 		Key:    aws.String(key),
-		Body:   r,
-	}
-	fmt.Println(params)
-
-	// put the object
-	resp, err := client.PutObject(context.TODO(), params)
-	if err != nil {
-		log.Fatal("S3 PUTObject: ", err.Error())
-	}
-	fmt.Println(resp)
-	fmt.Println(resp)
-}
-
-func Put(bucket, key, region string, prefix, block string) {
-
-	client := getClient(region)
-	// open the block file
-	f, err := os.Open(prefix + "/" + bucket + "/" + block)
-	if err != nil {
-		log.Fatal("Unable to open block for single block  upload: ", err)
-	}
-	defer f.Close()
-	// read all the bytes
-	data, err := ioutil.ReadAll(f)
-	if err != nil {
-		log.Fatal("Unable to read file for single block upload: ", err)
-	}
-	// create a reader
-	r := io.ReadSeeker(bytes.NewReader(data))
-
-	// create the corresponding
-	params := &s3.PutObjectInput{
-		Bucket: aws.String(bucket + "-test"),
-		Key:    aws.String(key),
-		Body:   r,
-	}
-
-	// put the object
-	resp, err := client.PutObject(context.TODO(), params)
-	if err != nil {
-		log.Fatal("S3 PUT: ", err.Error())
-	}
-	fmt.Println(resp)
-}
-
-func DeleteMarker(bucket, key, region string) {
-
-	client := getClient(region)
-	params := &s3.DeleteObjectInput{
-		Bucket: aws.String(bucket + "-test"),
-		Key:    aws.String(key),
 	}
 	_, err := client.DeleteObject(context.TODO(), params)
 	if err != nil {
-		log.Fatal("DeleteObject: ", err.Error())
-	}
-	// need to sleep so that delete marker is created before next version
-	time.Sleep(1 * time.Second)
-}
-func DeleteVersion(versionID, bucket, key, region string) {
-
-	client := getClient(region)
-	params := &s3.DeleteObjectInput{
-		Bucket:    aws.String(bucket + "-test"),
-		Key:       aws.String(key),
-		VersionId: aws.String(versionID),
-	}
-	_, err := client.DeleteObject(context.TODO(), params)
-
-	if err != nil {
-		log.Fatal("DeleteVersion: ", err.Error())
+		logger.Fatal("DeleteObject: ", err.Error())
 	}
 	// need to sleep so that delete marker is created before next version
 	time.Sleep(1 * time.Second)
 }
 
 // put using multipart where each block is a part
-func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
-	client := getClient(region)
+func (s *S3Customer) putMultipart(bucket, key string, blockFiles []string) {
+
+	client := getClient(s.region, s.logger)
 
 	// input for starting a multipart upload
 	input := s3.CreateMultipartUploadInput{
-		Bucket: aws.String(bucket + "-test"),
+		Bucket: aws.String(bucket),
 		Key:    aws.String(key),
 	}
 
@@ -118,27 +210,27 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 
 	// see if command failed
 	if err != nil || createOutput == nil {
-		log.Fatal("Unable to create multipart upload: ", err)
+		s.logger.Fatal("Unable to create multipart upload: ", err)
 	}
 	if createOutput.UploadId == nil {
-		log.Fatal("No upload id found in start upload request")
+		s.logger.Fatal("No upload id found in start upload request")
 	}
 	// success, store the upload id
 	uploadId := *createOutput.UploadId
 
 	// loop through blocks files uploading each block
 	partsInfo := make([]types.CompletedPart, 0)
-	for partNum, block := range blocks {
+	for partNum, block := range blockFiles {
 		// open file
-		f, err := os.Open(prefix + "/" + bucket + "/" + block)
+		f, err := os.Open(s.directory + "/" + bucket + "/" + block)
 		if err != nil {
-			log.Fatal("Unable to open file for multipart upload: ", err)
+			s.logger.Fatal("Unable to open file for multipart upload: ", err)
 		}
 		defer f.Close()
 		// read all the bytes
 		data, err := ioutil.ReadAll(f)
 		if err != nil {
-			log.Fatal("Unable to read file for multipart upload: ", err)
+			s.logger.Fatal("Unable to read file for multipart upload: ", err)
 		}
 		// create a reader
 		r := io.ReadSeeker(bytes.NewReader(data))
@@ -151,7 +243,7 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 		}
 		uploadResult, err := client.UploadPart(context.TODO(), &partInput)
 		if err != nil || uploadResult == nil {
-			log.Fatal("Error uploading part: ", partNum, err)
+			s.logger.Fatal("Error uploading part: ", partNum, err)
 		}
 		// save off partinfo for completed multipart upload
 		partInfo := types.CompletedPart{
@@ -174,15 +266,76 @@ func PutMultipart(bucket, key, region string, prefix string, blocks []string) {
 	}
 	compOutput, err := client.CompleteMultipartUpload(context.TODO(), &complete)
 	if err != nil || compOutput == nil {
-		log.Fatal("Unable to complete multipart upload: ", err)
+		s.logger.Fatal("Unable to complete multipart upload: ", err)
 	}
 }
-func getClient(region string) *s3.Client {
+
+// List all versions and delete them including delete markers
+func cleanout(region, bucketName string, logger *Logger) {
+	// loop until no versions available in bucket
+	keyMarker := ""
+	for {
+		params := &s3.ListObjectVersionsInput{
+			Bucket:    aws.String(bucketName),
+			KeyMarker: aws.String(keyMarker),
+			MaxKeys:   aws.Int32(1000),
+		}
+		client := getClient(region, logger)
+		resp, err := client.ListObjectVersions(context.TODO(), params)
+		if err != nil {
+			logger.Fatal("S3Bucket.Delete: ", err.Error())
+		}
+		// now delete each version
+		for _, version := range resp.Versions {
+			deleteVersion(region, bucketName, *version.Key, *version.VersionId, logger)
+		}
+		// delete each delete marker
+		for _, deleteMarker := range resp.DeleteMarkers {
+			deleteVersion(region, bucketName, *deleteMarker.Key, *deleteMarker.VersionId, logger)
+		}
+		keyMarker = *resp.KeyMarker
+		if keyMarker == "" {
+			break
+		}
+	}
+}
+
+// returns false if bucket doesn't exist or don't have permissions
+func doesExist(region, bucketName string, logger *Logger) bool {
+	client := getClient(region, logger)
+	// create the corresponding s3 bucket
+	params := &s3.HeadBucketInput{
+		Bucket: aws.String(bucketName),
+	}
+	// Head Bucket will return no nil if either doesn't exist or
+	_, err := client.HeadBucket(context.TODO(), params)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func getClient(region string, logger *Logger) *s3.Client {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
-		log.Fatal("unable to create s3 session")
+		logger.Fatal("unable to create s3 session")
 	}
 	return s3.NewFromConfig(cfg, func(options *s3.Options) {
 		options.Region = region
 	})
+}
+func deleteVersion(region, bucketName, objectName, versionID string, logger *Logger) {
+	client := getClient(region, logger)
+	params := &s3.DeleteObjectInput{
+		Bucket:    aws.String(bucketName),
+		Key:       aws.String(objectName),
+		VersionId: aws.String(versionID),
+	}
+	_, err := client.DeleteObject(context.TODO(), params)
+
+	if err != nil {
+		logger.Fatal("DeleteVersion: ", err.Error())
+	}
+	// need to sleep so that delete marker is created before next version
+	time.Sleep(1 * time.Second)
 }
