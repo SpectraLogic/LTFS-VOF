@@ -36,13 +36,15 @@ func main() {
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
 	versioned := flag.Bool("versioning", true, "set to false if customer buckets are non versioned")
 	s3 := flag.Bool("s3", true, "Write objects to S3 buckets ")
+	compare := flag.Bool("compare", false, "Compare simulation and customer buckets")
 	// simulation options
 	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
 	simTapes := flag.Int("simtapes", 0, "Create the number of simulated tapes specified")
 	simS3 := flag.Bool("sims3", false, "Write simulated objects to S3 buckets ")
 	simDrives := flag.Int("simdrives", 1, "Number of simulated tape drives")
 	simBlocks := flag.Int("simblocks", 1, "Number of blocks per object")
-	// simS3compare := flag.Bool("simscompare", false, "Verify that simulation bucket and the customer output bucket match")
+	simDB := flag.Bool("simdb", false, "Put Block data into Database")
+	simPacks := flag.Bool("simpacks", false, "Put Pack List Into Database")
 	var simBuckets stringSlice
 	flag.Var(&simBuckets, "simbucket", "simbucket may be repeated to create multiple simulation buckets")
 	flag.Parse()
@@ -134,18 +136,11 @@ func main() {
 		db.RestoreAll()
 		logger.Event("******READ ALL BLOCK FILES*******")
 	}
-	/*
-		// compare all source and corresponding target buckets
-		if *compare || (*all && *s3enabled) {
-			for _, bucket := range SIMULATED_BUCKET_NAMES {
-				// list the target bucket
-				result := s3source[bucket].CompareBuckets(s3target[bucket])
-				if result {
-					fmt.Println("S3 BUCKETS ARE THE SAME !!!")
-				}
-			}
-		}
-	*/
+	// if compare set then compare the simulated and customer buckets
+	if *compare {
+		logger.Event("******COMPARING SIMULATED AND CUSTOMER BUCKETS*******")
+		dbManager.CompareBuckets()
+	}
 }
 
 // stringSlice is a custom type to hold a slice of strings

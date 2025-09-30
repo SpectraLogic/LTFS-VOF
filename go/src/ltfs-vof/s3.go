@@ -4,11 +4,11 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-
 	"io"
 	"io/ioutil"
 	. "ltfs-vof/utils"
@@ -55,7 +55,7 @@ func (s *S3Simulator) Put(objectName string, data []byte) {
 	}
 }
 func (s *S3Simulator) Delete(objectName string) {
-	deleteObject(s.region, s.bucket, objectName, s.logger)
+	deleteObject(s.region, s.bucket, objectName, true, s.logger)
 }
 
 // S3Customer is used to put data to the customer s3 target bucket
@@ -131,7 +131,7 @@ func (s *S3Customer) Put(bucketName, objectName string, blockFiles []string) {
 	}
 }
 func (s *S3Customer) Delete(bucketName, objectName string) {
-	deleteObject(s.region, bucketName, objectName, s.logger)
+	deleteObject(s.region, bucketName, objectName, true, s.logger)
 }
 
 // checks to see if bucket has already been created and if not creates it
@@ -226,6 +226,14 @@ func (s *S3Customer) putMultipart(bucket, key string, blockFiles []string) {
 	}
 }
 
+// compare simulation buckets to the customer target buckets
+func (s3 *S3Customer) Compare() {
+	for _, bucket := range s3.buckets {
+		s3.logger.Event("Comparing bucket ", bucket)
+		fmt.Println("Comparing bucket ", bucket)
+	}
+}
+
 // these functions are used by both the S3 source simulator and the S3 customer target
 func createBucket(region, bucketName string, versioning bool, logger *Logger) {
 
@@ -262,7 +270,7 @@ func createBucket(region, bucketName string, versioning bool, logger *Logger) {
 		}
 	}
 }
-func deleteObject(bucket, key, region string, logger *Logger) {
+func deleteObject(bucket, key, region string, sleep bool, logger *Logger) {
 
 	logger.Event("Deleting object ", key, " from bucket ", bucket)
 	client := getClient(region, logger)
@@ -275,7 +283,9 @@ func deleteObject(bucket, key, region string, logger *Logger) {
 		logger.Fatal("DeleteObject: ", err.Error())
 	}
 	// need to sleep so that delete marker is created before next version
-	time.Sleep(1 * time.Second)
+	if sleep {
+		time.Sleep(1 * time.Second)
+	}
 }
 
 // List all versions and delete them including delete markers
@@ -288,6 +298,7 @@ func cleanout(region, bucketName string, logger *Logger) {
 			KeyMarker: aws.String(keyMarker),
 			MaxKeys:   aws.Int32(1000),
 		}
+		fmt.Println("Cleaning out bucket ", bucketName, " Be patient this can take a while")
 		client := getClient(region, logger)
 		resp, err := client.ListObjectVersions(context.TODO(), params)
 		if err != nil {
@@ -295,11 +306,11 @@ func cleanout(region, bucketName string, logger *Logger) {
 		}
 		// now delete each version
 		for _, version := range resp.Versions {
-			deleteVersion(region, bucketName, *version.Key, *version.VersionId, logger)
+			deleteVersion(region, bucketName, *version.Key, *version.VersionId, false, logger)
 		}
 		// delete each delete marker
 		for _, deleteMarker := range resp.DeleteMarkers {
-			deleteVersion(region, bucketName, *deleteMarker.Key, *deleteMarker.VersionId, logger)
+			deleteVersion(region, bucketName, *deleteMarker.Key, *deleteMarker.VersionId, false, logger)
 		}
 		keyMarker = *resp.KeyMarker
 		if keyMarker == "" {
@@ -332,7 +343,7 @@ func getClient(region string, logger *Logger) *s3.Client {
 		options.Region = region
 	})
 }
-func deleteVersion(region, bucketName, objectName, versionID string, logger *Logger) {
+func deleteVersion(region, bucketName, objectName, versionID string, sleep bool, logger *Logger) {
 	logger.Event("Deleting version ", versionID, " of object ", objectName, " from bucket ", bucketName)
 	client := getClient(region, logger)
 	params := &s3.DeleteObjectInput{
@@ -346,5 +357,7 @@ func deleteVersion(region, bucketName, objectName, versionID string, logger *Log
 		logger.Fatal("DeleteVersion: ", err.Error())
 	}
 	// need to sleep so that delete marker is created before next version
-	// time.Sleep(1 * time.Second)
+	if sleep {
+		time.Sleep(1 * time.Second)
+	}
 }

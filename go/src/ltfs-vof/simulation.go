@@ -28,6 +28,7 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 	}
 
 	for tape := 0; tape < numberOfTapes; tape++ {
+		fmt.Println("Creating simulated tape", tape)
 		// make the tape directory
 		err := os.MkdirAll(fmt.Sprintf("%stape%02d", SIMULATION_FILES, tape), 0755)
 		if err != nil {
@@ -76,7 +77,6 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 
 				// write a TLV for the block
 				WriteTLV(fd, BLOCK, block.data, logger)
-				fmt.Println("Block Data Length: ", len(block.data))
 
 				// write the block to the block file
 				WriteBlock(fd, block, logger)
@@ -88,10 +88,8 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 				packEntries[0].SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
 
 				// create the version data
-				vr, vrEncoded := NewVersionRecord(buckets[0], objectName, vid, packEntries, nil, logger)
+				vr, vrEncoded := NewVersionRecord(bucket, objectName, vid, packEntries, nil, logger)
 
-				// write a version TLV in the version file
-				fmt.Println("version file: ", versionName, " size: ", len(vrEncoded))
 				WriteTLV(versionfd, VERSION, vrEncoded, logger)
 
 				// write the version data

@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"github.com/oklog/ulid/v2"
 	. "ltfs-vof/utils"
 	_ "modernc.org/sqlite"
@@ -39,6 +38,11 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled, versioned, 
 
 	// remove and setup the db
 	if clean {
+		os.RemoveAll(cacheDir)
+		file, err := os.Create(dbName)
+		if err != nil {
+			logger.Fatal(err)
+		}
 		os.Remove(dbName)
 		file, err := os.Create(dbName)
 		if err != nil {
@@ -117,7 +121,6 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 	} else if packs != nil {
 		// if the packs are in the version record then add them to the pack table
 		for i, pEntry := range packs {
-			fmt.Println("Pack Entry: ", pEntry)
 			// if there are packs then add the pack list to the version table
 			blockIDs = append(blockIDs, dbm.insertBlocksTable(pEntry))
 			dbm.insertPackTable(pEntry.GetPackName(), pEntry.GetPhysicalStart(), mr.GetVersion(), blockIDs[i])

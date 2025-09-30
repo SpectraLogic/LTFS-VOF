@@ -57,6 +57,7 @@ func (l *Logger) Fatal(message ...any) {
 	if _, err := fmt.Fprintln(f, message); err != nil {
 		fmt.Println("Error writing fatal to log file:", err)
 	}
+	fmt.Println("Fatal error:", message)
 	os.Exit(1)
 }
 func (l *Logger) getHeader() string {

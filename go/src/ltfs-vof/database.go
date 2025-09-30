@@ -118,8 +118,9 @@ func (db *Database) readVersionFiles(drive TapeDrive, driveNumber int, tape Tape
 		}
 		defer cacheFile.Close()
 		// copy the version file to the version cache file
-		db.logger.Event("Copy Version File", sourceFile, " File: ", cacheFile)
+		db.logger.Event("Copy Version File", path, " File: ", cacheFileName)
 		_, err = io.Copy(cacheFile, sourceFile)
+		fmt.Println("Copy Version File", path, " File: ", cacheFileName)
 		if err != nil {
 			db.logger.Fatal("unable to copy version file to version cache file", err)
 		}
@@ -150,6 +151,7 @@ func (db *Database) CreateDatabase() {
 	versionFilesToProcess := db.findVersionFilesToProcess(versionFileUlids)
 
 	for _, versionFile := range versionFilesToProcess {
+		fmt.Println("Processing Version File: ", versionFile.String())
 		// open the oldest version file
 		versionFileName := DEFAULT_VERSION_CACHE + "/" + versionFile.String()
 		file, err := os.Open(versionFileName)
@@ -163,7 +165,6 @@ func (db *Database) CreateDatabase() {
 		for {
 			db.logger.Event("Reading TLV ")
 			tlv := ReadTLV(file, db.logger)
-			fmt.Println("TLV: ", tlv)
 			if tlv == nil {
 				db.logger.Event("End of Processing version file: ", versionFileName)
 				break

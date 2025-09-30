@@ -37,13 +37,20 @@ func NewTapeLibrarySimulator(tapeDirectory string, numDrives int, logger *Logger
 		simulator.drives = append(simulator.drives, NewTapeDriveSimulator(i, tapeDirectory, logger))
 	}
 	// find the number of simulated tapes by opening up the sumlator directory
-	tapes, err := os.ReadDir(tapeDirectory)
+	dirs, err := os.ReadDir(tapeDirectory)
 	if err != nil {
 		simulator.logger.Fatal(err)
 	}
+	var tapes []string
+	for _, dir := range dirs {
+		if !dir.IsDir() {
+			continue
+		}
+		tapes = append(tapes, dir.Name())
+	}
+	fmt.Println("Found tapes in simulator directory: ", tapes)
 	for slot, tape := range tapes {
-		fmt.Println("Found tape:", tape.Name())
-		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(slot, tape.Name()))
+		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(slot, tape))
 		slot++
 	}
 	return &simulator
@@ -51,6 +58,7 @@ func NewTapeLibrarySimulator(tapeDirectory string, numDrives int, logger *Logger
 
 // FUNCTIONS THAT IMPLEMENT THE TAPE LIBRARY INTERFACE
 func (t *TapeLibrarySimulator) Audit() ([]TapeDrive, []TapeCartridge) {
+	fmt.Println("Tape Cartridges in Library:", t.tapes)
 	return t.drives, t.tapes
 }
 func (t *TapeLibrarySimulator) Load(tape TapeCartridge, drive TapeDrive) bool {
@@ -95,9 +103,7 @@ func (td *TapeDriveSimulator) MountLTFS() (map[string]string, map[string]string,
 	}
 	// tape directory is current directory + tape
 	tapeDirectory := td.tapeDirectory + td.tape.Name()
-	fmt.Println("Tape Directory:", tapeDirectory)
 	versionFiles, blockFiles := FindVersionAndBlockFiles(tapeDirectory)
-	fmt.Println("Version Files:", versionFiles, "Block Files:", blockFiles)
 	return versionFiles, blockFiles, true
 }
 func (td *TapeDriveSimulator) Unmount() {

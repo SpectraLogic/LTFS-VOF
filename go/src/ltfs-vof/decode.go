@@ -41,7 +41,6 @@ func ReadTLV(file *os.File, logger *Logger) *TLV {
 	if err != nil {
 		return nil
 	}
-	fmt.Println("Decode Header:", header)
 	tag, size, _, err := tlvcore.DecodeHeader(header)
 	if err != nil {
 		return nil
@@ -52,7 +51,6 @@ func ReadTLV(file *os.File, logger *Logger) *TLV {
 	for t, v := range Tags {
 		if v == tag { // found the tag
 			tlv.tag = t
-			fmt.Println("Found TLV tag:", t)
 			found = true
 			break
 		}
@@ -334,10 +332,8 @@ func ReadBlock(file *os.File, length uint64, logger *Logger) *Block {
 		logger.Fatal("Block contains no data")
 	}
 	b.data = make([]byte, len(secondaryData.Bytes()))
-	fmt.Println("Secondary Bytes Length:", len(secondaryData.Bytes()))
 	copy(b.data, secondaryData.Bytes())
 	secondaryData.Release()
-	fmt.Println("VersionID:", b.VersionID)
 	return &b
 }
 

@@ -56,8 +56,9 @@ func (db *Database) RestoreAll() {
 		if tape == nil {
 			db.logger.Fatal("Tape not found")
 		}
-		// reserve a drive
+		// reserve a drive should hang until drive available
 		driveNumber := driveReserve.Reserve()
+		fmt.Println("Processing Tape: ", tape.Name(), " on Drive#: ", driveNumber)
 		drive := drives[driveNumber]
 		go func(tape TapeCartridge, drive TapeDrive) {
 
@@ -81,13 +82,9 @@ func (db *Database) RestoreAll() {
 			}
 
 			// now read each pack from oldest to newest
-			fmt.Println("PacksOrder: ", packsOrder)
 			for _, pack := range packsOrder[tape.Name()] {
-				fmt.Println("Pack: ", pack, "Path: ", packFilePaths[pack])
+				fmt.Println("Processing Pack: ", packFilePaths[pack])
 				// open the pack file
-				db.logger.Event("Open Pack File: ", packFilePaths[pack])
-
-				fmt.Println("packFilePaths: ", packFilePaths)
 				db.logger.Event("Open Pack File: ", packFilePaths[pack])
 
 				file, err := os.Open(packFilePaths[pack])
@@ -104,7 +101,6 @@ func (db *Database) RestoreAll() {
 					if tlv == nil {
 						break
 					}
-					fmt.Println("Read TLV at offset: ", offset, " tag: ", tlv.Tag(), " length: ", tlv.DataLength())
 					switch tlv.Tag() {
 					case BLOCK:
 						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength())
