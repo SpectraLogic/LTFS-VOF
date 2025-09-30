@@ -45,8 +45,8 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			fd, err := os.Create(fmt.Sprintf("%stape%02d/%s.blk", SIMULATION_FILES, tape, blockFileName))
 			defer fd.Close()
 
-			// put a 100 objects in each file
-			for objects := 0; objects < 100; objects++ {
+			// put a 10 objects in each block file
+			for objects := 0; objects < 10; objects++ {
 				// create a unique version ulid
 				vid := ulid.Make().String()
 
