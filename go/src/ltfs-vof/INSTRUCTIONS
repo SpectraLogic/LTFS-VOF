@@ -54,7 +54,7 @@ is required such that the buckets get written to.
 
 $./ltfs-vof -simulate -read -compare -s3
 
-
+At this point there are four buckets in AWS that can be browsed.
 
 
 Physical Equipment Setup
