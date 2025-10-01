@@ -56,7 +56,7 @@ func main() {
 	if *simTapes != 0 {
 		// the source bucket for the simulator will be prefixed with source
 		logger.Event("****CREATING SIMULATED TAPES AND BUCKETS **** ")
-		createSimulatedTapes(*simTapes, *simS3, simBuckets.Slice(), *simBlocks, *versioned, logger)
+		createSimulatedTapes(*simTapes, *simS3, simBuckets.Slice(), *simBlocks, *versioned, *simDB, *simPacks, logger)
 		return
 	}
 
@@ -139,7 +139,7 @@ func main() {
 	// if compare set then compare the simulated and customer buckets
 	if *compare {
 		logger.Event("******COMPARING SIMULATED AND CUSTOMER BUCKETS*******")
-		dbManager.CompareBuckets()
+		dbManager.Compare()
 	}
 }
 

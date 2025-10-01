@@ -39,10 +39,6 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled, versioned, 
 	// remove and setup the db
 	if clean {
 		os.RemoveAll(cacheDir)
-		file, err := os.Create(dbName)
-		if err != nil {
-			logger.Fatal(err)
-		}
 		os.Remove(dbName)
 		file, err := os.Create(dbName)
 		if err != nil {
@@ -82,6 +78,9 @@ func (dbm *DBManager) lock() {
 }
 func (dbm *DBManager) unlock() {
 	dbm.lockResource.Release(dbm.lockValue)
+}
+func (dbm *DBManager) Compare() bool {
+	return dbm.s3Customer.Compare()
 }
 
 // add a version to the version table

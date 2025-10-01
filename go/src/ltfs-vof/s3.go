@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+const SIMULATOR_SUFFIX string = "simul"
+
 type S3Simulator struct {
 	region string
 	bucket string
@@ -29,7 +31,7 @@ func NewS3Simulator(region, bucket string, versioning bool, logger *Logger) *S3S
 
 	return &S3Simulator{
 		region: region,
-		bucket: bucket,
+		bucket: bucket + SIMULATOR_SUFFIX,
 		logger: logger,
 	}
 }
@@ -226,12 +228,79 @@ func (s *S3Customer) putMultipart(bucket, key string, blockFiles []string) {
 	}
 }
 
-// compare simulation buckets to the customer target buckets
-func (s3 *S3Customer) Compare() {
-	for _, bucket := range s3.buckets {
-		s3.logger.Event("Comparing bucket ", bucket)
-		fmt.Println("Comparing bucket ", bucket)
+type S3ObjectInfo struct {
+	Key  string
+	Size int64
+	ETag string
+}
+
+func (s *S3Customer) Compare() bool {
+	success := true
+	// if no buckets then throw error
+	if len(s.buckets) == 0 {
+		s.logger.Fatal("No buckets to compare, -compare option must be ran with -read option")
 	}
+	// go through each bucket seen by S3 customer
+	for _, bucket := range s.buckets {
+		// get bucket objects
+		customerObjects := s.listObjects(bucket)
+		simulatorBucket := bucket + SIMULATOR_SUFFIX
+		simulatorObjects := s.listObjects(simulatorBucket)
+
+		// if number of objects differ throw failure
+		if len(customerObjects) != len(simulatorObjects) {
+			s.logger.Fatal("Number of Objects Differ Between bucket: ", bucket, " and simulator bucket: ", simulatorBucket)
+		}
+		// count the number of miscompares, throw a fatal if get to 10
+		miscompares := 0
+		for _, cobject := range customerObjects {
+			sobject := simulatorObjects[cobject.Key]
+			// check key
+			if cobject.Key != sobject.Key {
+				miscompares += 1
+				success = false
+				s.logger.Event("Mismatched Keys Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+			}
+			if cobject.Size != sobject.Size {
+				miscompares += 1
+				success = false
+				s.logger.Event("Mismatched Size Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+			}
+			if cobject.ETag != sobject.ETag {
+				miscompares += 1
+				success = false
+				s.logger.Event("Mismatched Etags Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+			}
+			// if 10 miscompares then return false
+			if miscompares >= 10 {
+				s.logger.Event("Too Many Miscompares")
+				return false
+			}
+		}
+	}
+	return success
+}
+func (s *S3Customer) listObjects(bucket string) map[string]S3ObjectInfo {
+	objects := make(map[string]S3ObjectInfo)
+	client := getClient(s.region, s.logger)
+	paginator := s3.NewListObjectsV2Paginator(client, &s3.ListObjectsV2Input{
+		Bucket: aws.String(bucket),
+	})
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage()
+		if err != nil {
+			s.logger.Fatal("Failed in list Objects", err)
+		}
+		for _, obj := range page.Contents {
+			objects[*obj.Key] = S3ObjectInfo{
+				Key:  *obj.Key,
+				Size: obj.Size,
+				ETag: aws.ToString(obj.ETag),
+			}
+		}
+	}
+	return objects
 }
 
 // these functions are used by both the S3 source simulator and the S3 customer target

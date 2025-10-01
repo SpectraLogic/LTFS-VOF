@@ -12,7 +12,7 @@ import (
 
 const SIMULATION_FILES string = "tapehardware/tapes/"
 
-func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning bool, logger *Logger) {
+func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning, inDB, packList bool, logger *Logger) {
 	objectCount := 0
 	// remove all the tapes first
 	os.RemoveAll(SIMULATION_FILES)
