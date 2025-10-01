@@ -23,7 +23,7 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 		for _, bucket := range buckets {
 			// create the s3 simulation buckets
 			logger.Event("Creating simulated S3 bucket: ", bucket)
-			s3Buckets[bucket] = NewS3Simulator(DEFAULT_REGION, bucket+"simulat", versioning, logger)
+			s3Buckets[bucket] = NewS3Simulator(DEFAULT_REGION, bucket, versioning, logger)
 		}
 	}
 

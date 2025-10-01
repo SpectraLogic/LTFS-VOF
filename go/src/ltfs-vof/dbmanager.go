@@ -39,6 +39,7 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled, versioned, 
 	// remove and setup the db
 	if clean {
 		os.RemoveAll(cacheDir)
+		os.Mkdir(cacheDir, 0777)
 		os.Remove(dbName)
 		file, err := os.Create(dbName)
 		if err != nil {

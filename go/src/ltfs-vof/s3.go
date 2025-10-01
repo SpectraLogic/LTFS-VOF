@@ -27,7 +27,7 @@ type S3Simulator struct {
 // create a bucket for the simulator to write to as a source
 func NewS3Simulator(region, bucket string, versioning bool, logger *Logger) *S3Simulator {
 	// make the bucket with versioning or not
-	createBucket(region, bucket, versioning, logger)
+	createBucket(region, bucket+SIMULATOR_SUFFIX, versioning, logger)
 
 	return &S3Simulator{
 		region: region,
@@ -228,14 +228,8 @@ func (s *S3Customer) putMultipart(bucket, key string, blockFiles []string) {
 	}
 }
 
-type S3ObjectInfo struct {
-	Key  string
-	Size int64
-	ETag string
-}
-
 func (s *S3Customer) Compare() bool {
-	success := true
+
 	// if no buckets then throw error
 	if len(s.buckets) == 0 {
 		s.logger.Fatal("No buckets to compare, -compare option must be ran with -read option")
@@ -243,64 +237,117 @@ func (s *S3Customer) Compare() bool {
 	// go through each bucket seen by S3 customer
 	for _, bucket := range s.buckets {
 		// get bucket objects
-		customerObjects := s.listObjects(bucket)
 		simulatorBucket := bucket + SIMULATOR_SUFFIX
-		simulatorObjects := s.listObjects(simulatorBucket)
+		s.logger.Event("Comparing versions between bucket: ", bucket, " and simulator bucket: ", simulatorBucket)
 
-		// if number of objects differ throw failure
-		if len(customerObjects) != len(simulatorObjects) {
-			s.logger.Fatal("Number of Objects Differ Between bucket: ", bucket, " and simulator bucket: ", simulatorBucket)
+		// get a sorted map of versions and delete markers from the source bucket
+		sourceVersions, sourceDeleteMarkers := s.ListVersions(simulatorBucket)
+
+		// get a sorted map of versions and delete markers from the results bucket
+		resultVersions, resultDeleteMarkers := s.ListVersions(bucket)
+
+		// check that the version maps are identical
+
+		var keyFailure bool
+		if len(sourceVersions) != len(resultVersions) {
+			keyFailure = true
 		}
-		// count the number of miscompares, throw a fatal if get to 10
-		miscompares := 0
-		for _, cobject := range customerObjects {
-			sobject := simulatorObjects[cobject.Key]
-			// check key
-			if cobject.Key != sobject.Key {
-				miscompares += 1
-				success = false
-				s.logger.Event("Mismatched Keys Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+		for key, sourceVersion := range sourceVersions {
+			if _, ok := resultVersions[key]; !ok {
+				keyFailure = true
+				continue
 			}
-			if cobject.Size != sobject.Size {
-				miscompares += 1
-				success = false
-				s.logger.Event("Mismatched Size Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+			// loop through the versions and compare the versionId and Etag
+			if len(sourceVersion) != len(resultVersions[key]) {
+				keyFailure = true
+				continue
 			}
-			if cobject.ETag != sobject.ETag {
-				miscompares += 1
-				success = false
-				s.logger.Event("Mismatched Etags Bucket: ", bucket, " object: ", cobject.Key, "  bucket: ", simulatorBucket, " oobject: ", sobject.Key)
+			for i, version := range sourceVersion {
+				// check key
+				if *version.Key != *resultVersions[key][i].Key {
+					keyFailure = true
+				}
+				// check etag (MD5)
+				if *version.ETag != *resultVersions[key][i].ETag {
+					keyFailure = true
+				}
+				// check latest version
+				if *version.IsLatest != *resultVersions[key][i].IsLatest {
+					keyFailure = true
+				}
 			}
-			// if 10 miscompares then return false
-			if miscompares >= 10 {
-				s.logger.Event("Too Many Miscompares")
-				return false
+		}
+		var deleteMarkerFailure bool
+		if len(sourceDeleteMarkers) != len(resultDeleteMarkers) {
+			deleteMarkerFailure = true
+		}
+		// check that all delete markers are identical
+		for key, sourceMarker := range sourceDeleteMarkers {
+			if _, ok := resultDeleteMarkers[key]; !ok {
+				deleteMarkerFailure = true
+				continue
 			}
+			// loop through the versions and compare the versionId and Etag
+			for i, source := range sourceMarker {
+				// check key
+				if *source.Key != *resultDeleteMarkers[key][i].Key {
+					deleteMarkerFailure = true
+				}
+				// check latest version
+				if *source.IsLatest != *resultDeleteMarkers[key][i].IsLatest {
+					deleteMarkerFailure = true
+				}
+			}
+		}
+		if keyFailure || deleteMarkerFailure {
+			return false
 		}
 	}
-	return success
+	return true
 }
-func (s *S3Customer) listObjects(bucket string) map[string]S3ObjectInfo {
-	objects := make(map[string]S3ObjectInfo)
-	client := getClient(s.region, s.logger)
-	paginator := s3.NewListObjectsV2Paginator(client, &s3.ListObjectsV2Input{
-		Bucket: aws.String(bucket),
-	})
 
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage()
-		if err != nil {
-			s.logger.Fatal("Failed in list Objects", err)
+// returns a map of key to a slice of versions and delete markers
+// the slices are sorted by the last modified date
+func (s *S3Customer) ListVersions(bucket string) (map[string][]*types.ObjectVersion, map[string][]*types.DeleteMarkerEntry) {
+
+	versions := make(map[string][]*types.ObjectVersion, 0)
+	deleteMarkers := make(map[string][]*types.DeleteMarkerEntry, 0)
+
+	// loop until no versions available in bucket
+	keyMarker := ""
+	for {
+		params := &s3.ListObjectVersionsInput{
+			Bucket:    aws.String(bucket),
+			KeyMarker: aws.String(keyMarker),
+			MaxKeys:   aws.Int32(1000),
 		}
-		for _, obj := range page.Contents {
-			objects[*obj.Key] = S3ObjectInfo{
-				Key:  *obj.Key,
-				Size: obj.Size,
-				ETag: aws.ToString(obj.ETag),
+		client := getClient(s.region, s.logger)
+		resp, err := client.ListObjectVersions(context.TODO(), params)
+		if err != nil {
+			s.logger.Fatal("Failed Listing Objects bucket: ", bucket, "  Error: ", err.Error())
+		}
+		// add each version to the map
+		for _, version := range resp.Versions {
+			key := *version.Key
+			if _, ok := versions[key]; !ok {
+				versions[key] = make([]*types.ObjectVersion, 0)
 			}
+			versions[key] = append(versions[key], &version)
+		}
+		// add each delete marker to the map
+		for _, deleteMarker := range resp.DeleteMarkers {
+			key := *deleteMarker.Key
+			if _, ok := deleteMarkers[key]; !ok {
+				deleteMarkers[key] = make([]*types.DeleteMarkerEntry, 0)
+			}
+			deleteMarkers[key] = append(deleteMarkers[key], &deleteMarker)
+		}
+		keyMarker = *resp.KeyMarker
+		if keyMarker == "" {
+			break
 		}
 	}
-	return objects
+	return versions, deleteMarkers
 }
 
 // these functions are used by both the S3 source simulator and the S3 customer target
@@ -430,129 +477,3 @@ func deleteVersion(region, bucketName, objectName, versionID string, sleep bool,
 		time.Sleep(1 * time.Second)
 	}
 }
-package main
-
-import (
-	"context"
-	"fmt"
-	"log"
-
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-)
-
-// BucketObject holds details about an S3 object or delete marker
-type BucketObject struct {
-	Key       string
-	VersionID string
-	IsDelete  bool
-	ETag      string
-	Size      int64
-}
-
-// listBucketObjects retrieves all versions and delete markers for a bucket
-func listBucketObjects(ctx context.Context, client *s3.Client, bucket string) (map[string][]BucketObject, error) {
-	results := make(map[string][]BucketObject)
-
-	input := &s3.ListObjectVersionsInput{
-		Bucket: aws.String(bucket),
-	}
-
-	paginator := s3.NewListObjectVersionsPaginator(client, input)
-
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		// Objects
-		for _, obj := range page.Versions {
-			results[*obj.Key] = append(results[*obj.Key], BucketObject{
-				Key:       *obj.Key,
-				VersionID: *obj.VersionId,
-				IsDelete:  false,
-				ETag:      aws.ToString(obj.ETag),
-				Size:      obj.Size,
-			})
-		}
-
-		// Delete markers
-		for _, del := range page.DeleteMarkers {
-			results[*del.Key] = append(results[*del.Key], BucketObject{
-				Key:       *del.Key,
-				VersionID: *del.VersionId,
-				IsDelete:  true,
-			})
-		}
-	}
-
-	return results, nil
-}
-
-// compareBuckets checks whether two buckets contain identical objects and delete markers
-func compareBuckets(ctx context.Context, client *s3.Client, bucket1, bucket2 string) error {
-	objects1, err := listBucketObjects(ctx, client, bucket1)
-	if err != nil {
-		return fmt.Errorf("failed to list objects from %s: %w", bucket1, err)
-	}
-
-	objects2, err := listBucketObjects(ctx, client, bucket2)
-	if err != nil {
-		return fmt.Errorf("failed to list objects from %s: %w", bucket2, err)
-	}
-
-	// Compare bucket1 → bucket2
-	for key, versions1 := range objects1 {
-		versions2, exists := objects2[key]
-		if !exists {
-			fmt.Printf("Key %s exists in %s but not in %s\n", key, bucket1, bucket2)
-			continue
-		}
-
-		// Compare versions
-		if len(versions1) != len(versions2) {
-			fmt.Printf("Key %s has different version count (%d vs %d)\n", key, len(versions1), len(versions2))
-			continue
-		}
-
-		for i := range versions1 {
-			v1 := versions1[i]
-			v2 := versions2[i]
-
-			if v1.IsDelete != v2.IsDelete || v1.Size != v2.Size || v1.ETag != v2.ETag {
-				fmt.Printf("Mismatch for key %s (version %s vs %s)\n", key, v1.VersionID, v2.VersionID)
-			}
-		}
-	}
-
-	// Check for keys only in bucket2
-	for key := range objects2 {
-		if _, exists := objects1[key]; !exists {
-			fmt.Printf("Key %s exists in %s but not in %s\n", key, bucket2, bucket1)
-		}
-	}
-
-	return nil
-}
-
-func main() {
-	ctx := context.Background()
-
-	cfg, err := config.LoadDefaultConfig(ctx)
-	if err != nil {
-		log.Fatalf("failed to load AWS config: %v", err)
-	}
-
-	client := s3.NewFromConfig(cfg)
-
-	bucket1 := "your-first-bucket"
-	bucket2 := "your-second-bucket"
-
-	if err := compareBuckets(ctx, client, bucket1, bucket2); err != nil {
-		log.Fatalf("comparison failed: %v", err)
-	}
-}
-

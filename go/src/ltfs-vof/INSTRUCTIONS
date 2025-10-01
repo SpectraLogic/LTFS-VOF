@@ -1,6 +1,64 @@
+
+Overview
+-------
 This golang program allows for the decoding of tapes produced in the LTFS version object format (LTFS-VOF). These are tapes that have been written by the Spectralogic Vail software in conjunction with BlackPearl tape mangement. There are several steps a customer needs to perform to run the program.
 
+
+Running the Simulator
+--------------------
+
+In order to avoid the time it takes to read real tapes and create the numerous variations of how tapes 
+can be written the program supports creating simulated tapes. 
+
+To write 5 simulated tapes with two S3 buckets of data the following command should be ran. You should have 
+AWS credentials in order to write to the two buckets. The names of the buckets must be vaild for AWS.  
+
+$./ltfs-vof -simtapes=5 -simbucket=<bucketname1> -simbucket=<bucketname2> -sims3 
+
+This will create five simulated tapes each with one .ver file and two .blk files one for each bucket. The 
+directory that the tapes are written to is ./tapehardware/tapes. Besides creating the five tapes the 
+simulator will also create two S3 buckets with the bucket names provided each with a suffix of "simul". 
+These buckets contain the objects that were created on the tapes and will be used later to compare to the
+decoded results buckets. 
+
+Once the simulated tapes have been created the next step is to pull the version files off of those tapes and 
+write them to the ./versions directory. This simulates the mounting of each tape cartridge and reading
+the version files from them. The clean option removes any existing database, log file or anything in the 
+cache directory. The simulate option is required in order that the system avoids talking to real tape 
+hardware.
+
+$./ltfs-vof -simulate -clean -version
+
+The next step is to create the datbase which is done by the program reading the version files from oldest
+to newest. 
+
+$./ltfs-vof -simulate -database
+
+The database created can be examined,  
+
+$sqlite3 db
+
+There are three tables, 
+
+1) the versions table points to the blocks that comprise a version along with the pack file(s) (i.e. block file)
+where the blocks physically exist.
+2) the blocks table indicates the logical start and ending address of a block inside a version along with pointing
+to the pack file and location where the block exists
+3) the packs table shows the physical location where blocks in each pack file and which object version those blocks
+are part of
+
+The final step is to read the pack files and create object from them and write them to S3 buckets in AWS. The buckets
+that are written to should be the same as specified when creating the simulation tapes. The compare flag will
+compare the simulated buckets originally created with the buckets created from decoding the pack files. The -s3 flag
+is required such that the buckets get written to.
+
+$./ltfs-vof -simulate -read -compare -s3
+
+
+
+
 Physical Equipment Setup
+-----------------------
 
 - A Tape Library with a logical or physical partition that can be used exclusively for this decoding operation.
 - The tape library partition should contain all cartridges to be decoded.

@@ -48,7 +48,6 @@ func NewTapeLibrarySimulator(tapeDirectory string, numDrives int, logger *Logger
 		}
 		tapes = append(tapes, dir.Name())
 	}
-	fmt.Println("Found tapes in simulator directory: ", tapes)
 	for slot, tape := range tapes {
 		simulator.tapes = append(simulator.tapes, NewTapeCartridgeSimulator(slot, tape))
 		slot++
@@ -58,7 +57,6 @@ func NewTapeLibrarySimulator(tapeDirectory string, numDrives int, logger *Logger
 
 // FUNCTIONS THAT IMPLEMENT THE TAPE LIBRARY INTERFACE
 func (t *TapeLibrarySimulator) Audit() ([]TapeDrive, []TapeCartridge) {
-	fmt.Println("Tape Cartridges in Library:", t.tapes)
 	return t.drives, t.tapes
 }
 func (t *TapeLibrarySimulator) Load(tape TapeCartridge, drive TapeDrive) bool {

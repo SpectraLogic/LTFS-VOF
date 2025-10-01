@@ -139,7 +139,13 @@ func main() {
 	// if compare set then compare the simulated and customer buckets
 	if *compare {
 		logger.Event("******COMPARING SIMULATED AND CUSTOMER BUCKETS*******")
-		dbManager.Compare()
+		if dbManager.Compare() {
+			fmt.Println("******SIMULATION AND CUSTOMER BUCKETS ARE THE SAME*******")
+			logger.Event("******SIMULATION AND CUSTOMER BUCKETS ARE THE SAME*******")
+		} else {
+			fmt.Println("******SIMULATION AND CUSTOMER BUCKETS ARE Not THE SAME*******")
+			logger.Fatal("******SIMULATION AND CUSTOMER BUCKETS DIFFER*******")
+		}
 	}
 }
 
