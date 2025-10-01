@@ -430,3 +430,129 @@ func deleteVersion(region, bucketName, objectName, versionID string, sleep bool,
 		time.Sleep(1 * time.Second)
 	}
 }
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+)
+
+// BucketObject holds details about an S3 object or delete marker
+type BucketObject struct {
+	Key       string
+	VersionID string
+	IsDelete  bool
+	ETag      string
+	Size      int64
+}
+
+// listBucketObjects retrieves all versions and delete markers for a bucket
+func listBucketObjects(ctx context.Context, client *s3.Client, bucket string) (map[string][]BucketObject, error) {
+	results := make(map[string][]BucketObject)
+
+	input := &s3.ListObjectVersionsInput{
+		Bucket: aws.String(bucket),
+	}
+
+	paginator := s3.NewListObjectVersionsPaginator(client, input)
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		// Objects
+		for _, obj := range page.Versions {
+			results[*obj.Key] = append(results[*obj.Key], BucketObject{
+				Key:       *obj.Key,
+				VersionID: *obj.VersionId,
+				IsDelete:  false,
+				ETag:      aws.ToString(obj.ETag),
+				Size:      obj.Size,
+			})
+		}
+
+		// Delete markers
+		for _, del := range page.DeleteMarkers {
+			results[*del.Key] = append(results[*del.Key], BucketObject{
+				Key:       *del.Key,
+				VersionID: *del.VersionId,
+				IsDelete:  true,
+			})
+		}
+	}
+
+	return results, nil
+}
+
+// compareBuckets checks whether two buckets contain identical objects and delete markers
+func compareBuckets(ctx context.Context, client *s3.Client, bucket1, bucket2 string) error {
+	objects1, err := listBucketObjects(ctx, client, bucket1)
+	if err != nil {
+		return fmt.Errorf("failed to list objects from %s: %w", bucket1, err)
+	}
+
+	objects2, err := listBucketObjects(ctx, client, bucket2)
+	if err != nil {
+		return fmt.Errorf("failed to list objects from %s: %w", bucket2, err)
+	}
+
+	// Compare bucket1 → bucket2
+	for key, versions1 := range objects1 {
+		versions2, exists := objects2[key]
+		if !exists {
+			fmt.Printf("Key %s exists in %s but not in %s\n", key, bucket1, bucket2)
+			continue
+		}
+
+		// Compare versions
+		if len(versions1) != len(versions2) {
+			fmt.Printf("Key %s has different version count (%d vs %d)\n", key, len(versions1), len(versions2))
+			continue
+		}
+
+		for i := range versions1 {
+			v1 := versions1[i]
+			v2 := versions2[i]
+
+			if v1.IsDelete != v2.IsDelete || v1.Size != v2.Size || v1.ETag != v2.ETag {
+				fmt.Printf("Mismatch for key %s (version %s vs %s)\n", key, v1.VersionID, v2.VersionID)
+			}
+		}
+	}
+
+	// Check for keys only in bucket2
+	for key := range objects2 {
+		if _, exists := objects1[key]; !exists {
+			fmt.Printf("Key %s exists in %s but not in %s\n", key, bucket2, bucket1)
+		}
+	}
+
+	return nil
+}
+
+func main() {
+	ctx := context.Background()
+
+	cfg, err := config.LoadDefaultConfig(ctx)
+	if err != nil {
+		log.Fatalf("failed to load AWS config: %v", err)
+	}
+
+	client := s3.NewFromConfig(cfg)
+
+	bucket1 := "your-first-bucket"
+	bucket2 := "your-second-bucket"
+
+	if err := compareBuckets(ctx, client, bucket1, bucket2); err != nil {
+		log.Fatalf("comparison failed: %v", err)
+	}
+}
+

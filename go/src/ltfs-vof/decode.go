@@ -1,89 +1,21 @@
+// This file isolates the rest of the code from the encoding/decoding of actual packs written
+// There are three parts to this file
+//  1. Structures and functions that have been coped from the Vail source. This has been to avoid
+//     having to include Vail code.
+//  2. Functions to read and write TLVs
+//  3. Functions to read and write specific tags
 package main
 
 import (
-	//"encoding/json"
 	"fmt"
 	"github.com/spectralogic/go-core/codec/value"
 	tlvcore "github.com/spectralogic/go-core/tlv"
 	. "ltfs-vof/utils"
 	"os"
-	// "strings"
 )
 
-type TagType int
-
-const (
-	BLOCK         TagType = iota
-	PACKLIST              = iota
-	VERSION               = iota
-	DELETEVERSION         = iota
-	METAFILE              = iota
-)
-
-var Tags map[TagType]tlvcore.Tag = map[TagType]tlvcore.Tag{
-	BLOCK:         ('b'<<8 | 'k'),
-	PACKLIST:      ('o'<<8 | 'l'),
-	VERSION:       ('v'<<8 | 'm'),
-	DELETEVERSION: ('v'<<8 | 'd'),
-	METAFILE:      ('m'<<8 | 'f'),
-}
-
-type TLV struct {
-	dataLength uint64
-	tag        TagType
-}
-
-func ReadTLV(file *os.File, logger *Logger) *TLV {
-
-	var tlv TLV
-	header := make([]byte, 32)
-	_, err := file.Read(header)
-	if err != nil {
-		return nil
-	}
-	tag, size, _, err := tlvcore.DecodeHeader(header)
-	if err != nil {
-		return nil
-	}
-	// find the tag type
-	var found bool
-	found = false
-	for t, v := range Tags {
-		if v == tag { // found the tag
-			tlv.tag = t
-			found = true
-			break
-		}
-	}
-	if !found {
-		logger.Event("Unknown TLV tag found:", tag)
-		return nil
-	}
-	tlv.dataLength = size
-	return &tlv
-}
-
-// write a TLV header to a file
-func WriteTLV(file *os.File, tag TagType, data []byte, logger *Logger) {
-
-	header := make([]byte, 32)
-	_, err := tlvcore.EncodeHeader(Tags[tag], data, header)
-	if err != nil {
-		logger.Fatal("Error encoding TLV header", err)
-	}
-	_, err = file.Write(header)
-	if err != nil {
-		logger.Fatal("Error writing TLV header", err)
-	}
-}
-
-func (t *TLV) Tag() TagType {
-	return t.tag
-}
-func (t *TLV) DataLength() uint64 {
-	return t.dataLength
-}
-
+// PART 1 - THE FOLLOWING STRUCTURES ARE COPIES FROM THE VAIL CODE BASE
+//
 // PackEntry contains: the range of bytes of a source (version or
 // multipart part), the PackID containing that data, and the matching
 // byte range within the pack.
@@ -275,17 +207,91 @@ func (pr *PackReference) GetPhysicalStart() int64 {
 	return pr.PackRange.GetStart()
 }
 
-// There are five types of TLV records, however the last three PACKLIST, VERSION, DELETEVERSION,
-// are all version records defined by the MetaReference structure.
-// 1. BLOCK
-// 2. PACK LIST
-// 3. VERSION
-// 4. DELETEVERSION
-// 4. METAFILE
+// PART 2 - FUNCTIONS TO WRITE AND READ TLV Headers
+//
+// There are five TLV tag types, mapping from TagType to the actual values
+// of the tag written in the version and pack files
+type TagType int
 
-// Included in this file is reading of each type along wit the cration of each type
-// for use by the simulator
+const (
+	BLOCK         TagType = iota
+	PACKLIST              = iota
+	VERSION               = iota
+	DELETEVERSION         = iota
+	METAFILE              = iota
+)
 
+var Tags map[TagType]tlvcore.Tag = map[TagType]tlvcore.Tag{
+	BLOCK:         ('b'<<8 | 'k'),
+	PACKLIST:      ('o'<<8 | 'l'),
+	VERSION:       ('v'<<8 | 'm'),
+	DELETEVERSION: ('v'<<8 | 'd'),
+	METAFILE:      ('m'<<8 | 'f'),
+}
+
+// THE FOLLOWING HAS BEEN COPIED FROM THE VAIL CODE SUCH
+
+type TLV struct {
+	dataLength uint64
+	tag        TagType
+}
+
+// reads a tlv from a version or block file
+func ReadTLV(file *os.File, logger *Logger) *TLV {
+
+	var tlv TLV
+	header := make([]byte, 32)
+	_, err := file.Read(header)
+	if err != nil {
+		return nil
+	}
+	tag, size, _, err := tlvcore.DecodeHeader(header)
+	if err != nil {
+		return nil
+	}
+	// find the tag type
+	var found bool
+	found = false
+	for t, v := range Tags {
+		if v == tag { // found the tag
+			tlv.tag = t
+			found = true
+			break
+		}
+	}
+	if !found {
+		logger.Event("Unknown TLV tag found:", tag)
+		return nil
+	}
+	tlv.dataLength = size
+	return &tlv
+}
+
+// write a TLV header to a file, this is for creating simulated tapes
+// data needs to provided such that the TLV can include the size of the
+// data field
+func WriteTLV(file *os.File, tag TagType, data []byte, logger *Logger) {
+
+	header := make([]byte, 32)
+	_, err := tlvcore.EncodeHeader(Tags[tag], data, header)
+	if err != nil {
+		logger.Fatal("Error encoding TLV header", err)
+	}
+	_, err = file.Write(header)
+	if err != nil {
+		logger.Fatal("Error writing TLV header", err)
+	}
+}
+
+func (t *TLV) Tag() TagType {
+	return t.tag
+}
+func (t *TLV) DataLength() uint64 {
+	return t.dataLength
+}
+
+// PART 3 - Functions to read and write specific types of TLV data
+// BLOCK
 type Block struct {
 	*VersionID `codec:"i,omitempty"`
 	data       []byte
@@ -357,7 +363,7 @@ func (b *Block) GetLength() int {
 	return len(b.data)
 }
 
-// Read is used by application to read a pack list Block out of a pack
+// PACKLIST
 func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 	/** FOR SOME REASON ONLY DECODING A SINGLE PACKENTRY, NEED TO TALK JOE ABOUT WHY THIS IS **/
 	var pack StoredPack
@@ -372,8 +378,7 @@ func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 
 // VERSION - Creates a MetaReference for a version record
 // if there are no packentries then the data is stored in the version record
-// for a pack
-// returns the MetaReference structure and the encoded byte array
+// returns the version record (i.e. metareference) and the encoded byte stream
 func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, data []byte, logger *Logger) (*MetaReference, []byte) {
 
 	var versionRecord MetaReference
@@ -384,12 +389,6 @@ func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, 
 	versionRecord.VersionID = &versionId
 	versionRecord.Packs = packEntries
 	return &versionRecord, versionRecord.encode(logger)
-}
-func (mr *MetaReference) AddMetaData(key, value string) {
-	if mr.Metadata == nil {
-		mr.Metadata = make(map[string]string)
-	}
-	mr.Metadata[key] = value
 }
 
 // encode the version record and copy it over so *buffer can be realeedo
@@ -408,6 +407,7 @@ func (mr *MetaReference) encode(logger *Logger) []byte {
 	return bufferCopy
 }
 
+// used by simulator to write version record to files
 func (mr *MetaReference) WriteVersionRecord(file *os.File, logger *Logger) {
 	encoder := value.NewEncoder()
 	_, err := encoder.Write(file, mr, nil)

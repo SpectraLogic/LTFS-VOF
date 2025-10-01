@@ -87,7 +87,7 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 				packEntries[0] = NewPackEntry(blockFileName, 0, int64(len(block.data)))
 				packEntries[0].SetPhysicalLocation(blockFileName, startRange, startRange+int64(len(block.data)))
 
-				// create the version data
+				// create the version record
 				vr, vrEncoded := NewVersionRecord(bucket, objectName, vid, packEntries, nil, logger)
 
 				WriteTLV(versionfd, VERSION, vrEncoded, logger)
