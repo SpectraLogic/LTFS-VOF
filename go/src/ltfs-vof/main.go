@@ -35,7 +35,7 @@ func main() {
 	configFile := flag.String("config", DEFAULT_CONFIG_FILE, "JSON file that defines tape drive mapping")
 	logFile := flag.String("log", DEFAULT_LOG_FILE, "Log file for this run")
 	versioned := flag.Bool("versioning", true, "set to false if customer buckets are non versioned")
-	s3 := flag.Bool("s3", true, "Write objects to S3 buckets ")
+	s3 := flag.Bool("s3", false, "Write objects to S3 buckets ")
 	compare := flag.Bool("compare", false, "Compare simulation and customer buckets")
 	// simulation options
 	simulate := flag.Bool("simulate", false, "Simulate a tape library ")
