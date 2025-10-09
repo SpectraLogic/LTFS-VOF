@@ -756,10 +756,9 @@ func (dbm *DBManager) writeBlockToCache(blockid string, block *Block) {
 	directory := dbm.cacheDir + "/" + block.GetBucket()
 	fileName := directory + "/" + blockid
 	os.Mkdir(directory, 0777)
-	os.Create(fileName)
-	file, err := os.OpenFile(fileName, os.O_RDWR, 0644)
+	file, err := os.Create(fileName)
 	if err != nil {
-		dbm.logger.Fatal("Could not open file", err)
+		dbm.logger.Fatal("Could not create/open file", err)
 	}
 	defer file.Close()
 	// write the data to the file

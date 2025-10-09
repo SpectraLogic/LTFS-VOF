@@ -1,0 +1,2206 @@
+ 2025-10-09 14:59:10:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 109:  
+	Event: [****RUN PARMS **** ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 110:  
+	Event: [
+	SIMULATE:  true 
+	VERSION:  true 
+	DATABASE:  true 
+	READ:  false 
+	S3:  false]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 123:  
+	Event: [*****COPYING VERSION FILES******]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 70:  
+	Event: [Look for Version Files From Tape  tape00]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 70:  
+	Event: [Look for Version Files From Tape  tape01]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 98:  
+	Event: [Mounting Tape with LTFS tape00  into Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 106:  
+	Event: [Found Version File 01K6K8J8WR1PQDA4HNVYJJTFA6  Path:  tapehardware\tapes\tape00\01K6K8J8WR1PQDA4HNVYJJTFA6.ver]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 114:  
+	Event: [Cache File Name:  01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 121:  
+	Event: [Copy Version File tapehardware\tapes\tape00\01K6K8J8WR1PQDA4HNVYJJTFA6.ver  File:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape00  Key:  01K6K8J8WTKJ4PEN05K88RT84A   Path:  tapehardware\tapes\tape00\01K6K8J8WTKJ4PEN05K88RT84A.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8J8WTKJ4PEN05K88RT84A tape:  tape00]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape00  Key:  01K6K8JAZJ041G48A1HQ6TZ0X3   Path:  tapehardware\tapes\tape00\01K6K8JAZJ041G48A1HQ6TZ0X3.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JAZJ041G48A1HQ6TZ0X3 tape:  tape00]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 135:  
+	Event: [dismounting and unloading tape tape00  from Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 70:  
+	Event: [Look for Version Files From Tape  tape02]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 98:  
+	Event: [Mounting Tape with LTFS tape01  into Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 106:  
+	Event: [Found Version File 01K6K8JCVP2G8SFAPJY6WXB0T5  Path:  tapehardware\tapes\tape01\01K6K8JCVP2G8SFAPJY6WXB0T5.ver]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 114:  
+	Event: [Cache File Name:  01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 121:  
+	Event: [Copy Version File tapehardware\tapes\tape01\01K6K8JCVP2G8SFAPJY6WXB0T5.ver  File:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape01  Key:  01K6K8JCVREPBBJ9TK724F40BP   Path:  tapehardware\tapes\tape01\01K6K8JCVREPBBJ9TK724F40BP.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JCVREPBBJ9TK724F40BP tape:  tape01]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape01  Key:  01K6K8JEPKFYXSEXV3N5QFP2H0   Path:  tapehardware\tapes\tape01\01K6K8JEPKFYXSEXV3N5QFP2H0.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JEPKFYXSEXV3N5QFP2H0 tape:  tape01]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 135:  
+	Event: [dismounting and unloading tape tape01  from Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 70:  
+	Event: [Look for Version Files From Tape  tape03]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 98:  
+	Event: [Mounting Tape with LTFS tape02  into Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 106:  
+	Event: [Found Version File 01K6K8JGRYAWTH675MAZPVEXEB  Path:  tapehardware\tapes\tape02\01K6K8JGRYAWTH675MAZPVEXEB.ver]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 114:  
+	Event: [Cache File Name:  01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 121:  
+	Event: [Copy Version File tapehardware\tapes\tape02\01K6K8JGRYAWTH675MAZPVEXEB.ver  File:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape02  Key:  01K6K8JGRYAWTH675MB2DS5CYV   Path:  tapehardware\tapes\tape02\01K6K8JGRYAWTH675MB2DS5CYV.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JGRYAWTH675MB2DS5CYV tape:  tape02]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape02  Key:  01K6K8JJTCGP8YKXHW96A12E4Z   Path:  tapehardware\tapes\tape02\01K6K8JJTCGP8YKXHW96A12E4Z.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JJTCGP8YKXHW96A12E4Z tape:  tape02]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 135:  
+	Event: [dismounting and unloading tape tape02  from Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 70:  
+	Event: [Look for Version Files From Tape  tape04]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 98:  
+	Event: [Mounting Tape with LTFS tape03  into Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 106:  
+	Event: [Found Version File 01K6K8JMQT3729GMP48AHM8MVZ  Path:  tapehardware\tapes\tape03\01K6K8JMQT3729GMP48AHM8MVZ.ver]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 114:  
+	Event: [Cache File Name:  01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 121:  
+	Event: [Copy Version File tapehardware\tapes\tape03\01K6K8JMQT3729GMP48AHM8MVZ.ver  File:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape03  Key:  01K6K8JMQW9X58F7ASHVWV8PJZ   Path:  tapehardware\tapes\tape03\01K6K8JMQW9X58F7ASHVWV8PJZ.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JMQW9X58F7ASHVWV8PJZ tape:  tape03]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape03  Key:  01K6K8JPTZSSSG6S6JBKPAPHBZ   Path:  tapehardware\tapes\tape03\01K6K8JPTZSSSG6S6JBKPAPHBZ.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JPTZSSSG6S6JBKPAPHBZ tape:  tape03]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 135:  
+	Event: [dismounting and unloading tape tape03  from Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 98:  
+	Event: [Mounting Tape with LTFS tape04  into Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 106:  
+	Event: [Found Version File 01K6K8JRS2CY41YRNXX2ENWS52  Path:  tapehardware\tapes\tape04\01K6K8JRS2CY41YRNXX2ENWS52.ver]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 114:  
+	Event: [Cache File Name:  01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 121:  
+	Event: [Copy Version File tapehardware\tapes\tape04\01K6K8JRS2CY41YRNXX2ENWS52.ver  File:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape04  Key:  01K6K8JRS44GQT0W9F7ZRJKJHC   Path:  tapehardware\tapes\tape04\01K6K8JRS44GQT0W9F7ZRJKJHC.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JRS44GQT0W9F7ZRJKJHC tape:  tape04]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 131:  
+	Event: [Found Block File Tape:  tape04  Key:  01K6K8JTMBX8SG1A9G1JXE6RGM   Path:  tapehardware\tapes\tape04\01K6K8JTMBX8SG1A9G1JXE6RGM.blk]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 714:  
+	Event: [pack:  01K6K8JTMBX8SG1A9G1JXE6RGM tape:  tape04]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 135:  
+	Event: [dismounting and unloading tape tape04  from Drive  Drive-0]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 125:  
+	Event: [****VERSION FILES COPIED******]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 128:  
+	Event: [******BUILDING DATABASE*******]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 214:  
+	Event: [Sorted Version Files:  [01K6K8J8WR1PQDA4HNVYJJTFA6 01K6K8JCVP2G8SFAPJY6WXB0T5 01K6K8JGRYAWTH675MAZPVEXEB 01K6K8JMQT3729GMP48AHM8MVZ 01K6K8JRS2CY41YRNXX2ENWS52]]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 220:  
+	Event: [LOOKING FOR METAFILES IN VERSION FILES STARTING FROM NEWEST TO OLDEST]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 232:  
+	Event: [Checking version file for Metafile:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 232:  
+	Event: [Checking version file for Metafile:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 232:  
+	Event: [Checking version file for Metafile:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 232:  
+	Event: [Checking version file for Metafile:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 232:  
+	Event: [Checking version file for Metafile:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 162:  
+	Event: [Processing version file:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000000  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000001  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000002  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000003  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000004  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000005  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000006  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000007  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000008  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000009  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000010  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000011  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000012  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000013  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000014  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000015  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000016  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:11:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000017  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000018  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000019  File Name:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 169:  
+	Event: [End of Processing version file:  versions/01K6K8J8WR1PQDA4HNVYJJTFA6]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 162:  
+	Event: [Processing version file:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000020  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000021  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000022  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000023  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000024  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000025  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000026  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000027  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000028  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000029  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000030  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000031  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000032  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000033  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000034  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000035  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000036  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000037  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000038  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000039  File Name:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 169:  
+	Event: [End of Processing version file:  versions/01K6K8JCVP2G8SFAPJY6WXB0T5]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 162:  
+	Event: [Processing version file:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000040  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000041  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000042  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:12:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000043  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000044  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000045  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000046  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000047  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000048  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000049  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000050  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000051  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000052  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000053  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000054  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000055  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000056  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000057  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000058  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000059  File Name:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 169:  
+	Event: [End of Processing version file:  versions/01K6K8JGRYAWTH675MAZPVEXEB]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 162:  
+	Event: [Processing version file:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000060  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000061  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000062  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000063  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000064  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000065  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:13:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000066  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000067  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000068  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000069  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000070  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000071  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000072  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000073  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000074  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000075  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000076  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000077  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000078  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000079  File Name:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 169:  
+	Event: [End of Processing version file:  versions/01K6K8JMQT3729GMP48AHM8MVZ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 162:  
+	Event: [Processing version file:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000080  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000081  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000082  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000083  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000084  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000085  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000086  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:14:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000087  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000088  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000089  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000090  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000091  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000092  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000093  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000094  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000095  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000096  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000097  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000098  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 175:  
+	Event: [Reading Version Record, Object Name  Object000099  File Name:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 166:  
+	Event: [Reading TLV ]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/database.go Line 169:  
+	Event: [End of Processing version file:  versions/01K6K8JRS2CY41YRNXX2ENWS52]
+ 2025-10-09 14:59:15:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 130:  
+	Event: [******ENDING BUILDING DATABASE*******]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 109:  
+	Event: [****RUN PARMS **** ]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 110:  
+	Event: [
+	SIMULATE:  true 
+	VERSION:  false 
+	DATABASE:  false 
+	READ:  true 
+	S3:  false]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 135:  
+	Event: [******READING BLOCK FILES*******]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 24:  
+	Event: [Processing  0  version records that contain data]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 32:  
+	Event: [Audited Tape Library #cartridges:  5   #drives:  1]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 36:  
+	Event: [Reserving drives]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JRS44GQT0W9F7ZRJKJHC]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JTMBX8SG1A9G1JXE6RGM]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8J8WTKJ4PEN05K88RT84A]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JAZJ041G48A1HQ6TZ0X3]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JCVREPBBJ9TK724F40BP]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JEPKFYXSEXV3N5QFP2H0]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JGRYAWTH675MB2DS5CYV]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JJTCGP8YKXHW96A12E4Z]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JMQW9X58F7ASHVWV8PJZ]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 384:  
+	Event: [Get time from ID:  01K6K8JPTZSSSG6S6JBKPAPHBZ]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 44:  
+	Event: [Cartridge Order:  [tape00 tape01 tape02 tape03 tape04]]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 45:  
+	Event: [Pack Order:  map[tape00:[01K6K8J8WTKJ4PEN05K88RT84A 01K6K8JAZJ041G48A1HQ6TZ0X3] tape01:[01K6K8JCVREPBBJ9TK724F40BP 01K6K8JEPKFYXSEXV3N5QFP2H0] tape02:[01K6K8JGRYAWTH675MB2DS5CYV 01K6K8JJTCGP8YKXHW96A12E4Z] tape03:[01K6K8JMQW9X58F7ASHVWV8PJZ 01K6K8JPTZSSSG6S6JBKPAPHBZ] tape04:[01K6K8JRS44GQT0W9F7ZRJKJHC 01K6K8JTMBX8SG1A9G1JXE6RGM]]]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 71:  
+	Event: [Loading and Mounting tape:  tape00  toDrive:  Drive-0]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape00\01K6K8J8WTKJ4PEN05K88RT84A.blk]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape00  pack:  01K6K8J8WTKJ4PEN05K88RT84A]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJJ45TQJZ8NF309RZ2MZ]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J8WW54RHVN7C1ZHBEFDM]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J8WW54RHVN7C1ZHBEFDM]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000000   Region:  us-east-1]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 147:  
+	Event: [Bucket  michaelzigray1  doesn't exist on list so 	creating it]
+ 2025-10-09 14:59:18:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 358:  
+	Event: [Bucket  michaelzigray1  already exists, cleaning out]
+ 2025-10-09 14:59:19:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  vLxxqEDVlBi9YE2EdSA3M5hO0iFUf2pU  of object  Object000000  from bucket  michaelzigray1]
+ 2025-10-09 14:59:19:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  ug7GJ0v90hxT9h_S_HFHnYS9LokF5Nb9  of object  Object000001  from bucket  michaelzigray1]
+ 2025-10-09 14:59:19:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  nC7Y_pkV8icH7sTidEPBghy_IVVtfsrd  of object  Object000002  from bucket  michaelzigray1]
+ 2025-10-09 14:59:19:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  8Bnj.kE6C6Gg4LgnrdabFLy4U1C.bUQz  of object  Object000003  from bucket  michaelzigray1]
+ 2025-10-09 14:59:19:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  RUa3sRDUr_TN8dmEqFYYxZOe4uRkp2Kq  of object  Object000004  from bucket  michaelzigray1]
+ 2025-10-09 14:59:20:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  Nh7B6uuwxakIK4.lSXLSffSCBu6F4bT0  of object  Object000005  from bucket  michaelzigray1]
+ 2025-10-09 14:59:20:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  906JTQzUcBPi0fYFDcU_RYPq3pshiK2p  of object  Object000006  from bucket  michaelzigray1]
+ 2025-10-09 14:59:20:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  ElyYA_TxmPZ3B9Rk6avLjNA.xEama1jO  of object  Object000007  from bucket  michaelzigray1]
+ 2025-10-09 14:59:20:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  xmuCfgsBcAXpsD0VxdCOBFSXq33WXnFM  of object  Object000008  from bucket  michaelzigray1]
+ 2025-10-09 14:59:20:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  cGezvfUVlxiUkEHNI2mogO6M9sIgepjW  of object  Object000009  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  2qapyqCWhza3lfln0ud12YZIhuoJvtR2  of object  Object000020  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  tUUKX.t2UzsTzM5msEh.V4iO_SE3N7Q1  of object  Object000021  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  JyZ8qVG.ug56jSpCu6sBZwW2JUP4Y1Mt  of object  Object000022  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  lv1kiL1oRZMUT_CydEI1UZcc.GzPaZh8  of object  Object000023  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  ZN0Veo8tc657z1Prrrpas.y4KqErbNzQ  of object  Object000024  from bucket  michaelzigray1]
+ 2025-10-09 14:59:21:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  dwwVw1V7jNZJxI2JY38OYJ30wnpNJL6j  of object  Object000025  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  xSUHbKhNLIjB9DoJbmO3GbLC6rICcYOV  of object  Object000026  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  1gZAIpF1zs46bS23REw2mxLT.s0A6x3j  of object  Object000027  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  xeMyBNlkFM4I7Wb_T_BVUx15EQYelvce  of object  Object000028  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  HxETK4KAUPpxX24eOOHuO9hoHwlP5u0L  of object  Object000029  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  4Mjsh6ykMpUmvBoCAaWeTPRkWb3U8AX2  of object  Object000040  from bucket  michaelzigray1]
+ 2025-10-09 14:59:22:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  VdVED9eQKLJiyqgzw9GiwjMZkliYIZZb  of object  Object000041  from bucket  michaelzigray1]
+ 2025-10-09 14:59:23:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  S31S_g1D5Lg7k69rsCE9i5v5e1siJ8K_  of object  Object000042  from bucket  michaelzigray1]
+ 2025-10-09 14:59:23:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  AyMP168anJqAvV1i7b0BxASIkQqDNSqk  of object  Object000043  from bucket  michaelzigray1]
+ 2025-10-09 14:59:23:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  g9EOnD2lOKkcJ4mz7LlvdDzmlH1va2fX  of object  Object000044  from bucket  michaelzigray1]
+ 2025-10-09 14:59:23:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  qbAAck54B6wvKPFFocGuv0LJiypHz210  of object  Object000045  from bucket  michaelzigray1]
+ 2025-10-09 14:59:23:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  NXqhsWDaO7ql3GQDuvjuSZ_N0nIZjLs5  of object  Object000046  from bucket  michaelzigray1]
+ 2025-10-09 14:59:24:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  IFxXxl2oFig9zYjZA7qmyUFJ7k5YTbBg  of object  Object000047  from bucket  michaelzigray1]
+ 2025-10-09 14:59:24:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  BJCYgwpSAQbjKqDfvqTcOiSY_8RHstCQ  of object  Object000048  from bucket  michaelzigray1]
+ 2025-10-09 14:59:24:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  n6YYwexaoELySJSk8WSoHEgLVfXbeF6P  of object  Object000049  from bucket  michaelzigray1]
+ 2025-10-09 14:59:24:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  .O4PWlnWa0QfbFKaxRxheYbvo8FEzHZ2  of object  Object000060  from bucket  michaelzigray1]
+ 2025-10-09 14:59:24:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 375:  
+	Event: [Bucket  michaelzigray1  Turning on versioning]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  0]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJK327N5S1YJZ8SDB48C]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J92WR735E5Y78Z0RB7FV]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J92WR735E5Y78Z0RB7FV]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000001   Region:  us-east-1]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  611]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJM21ZWFYKCWPQ2S89M0]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J99KYAV5GB79MD3GJVTQ]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J99KYAV5GB79MD3GJVTQ]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:25:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000002   Region:  us-east-1]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  1222]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJN0W1B6JM0H0QYB2WR4]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J9G8RRVKW4HVFMY83KS0]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J9G8RRVKW4HVFMY83KS0]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000003   Region:  us-east-1]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  1833]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJNXRE771ABA0YCXY7K6]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J9PJNGJRMR0D6RH5S2F6]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J9PJNGJRMR0D6RH5S2F6]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000004   Region:  us-east-1]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  2444]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJPZVNARCGK586Z95NKD]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8J9WPVZZMYQ36EKD98MWC]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8J9WPVZZMYQ36EKD98MWC]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000005   Region:  us-east-1]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  3055]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJR0QYG07NGZFGNZ6DVY]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JA3MYAX9GJ6T4N55RKAS]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JA3MYAX9GJ6T4N55RKAS]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:26:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000006   Region:  us-east-1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  3666]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJS2F541SAE5CJ9MF3FK]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JA9XJWJX9X6X4B12K9TK]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JA9XJWJX9X6X4B12K9TK]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000007   Region:  us-east-1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  4277]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJT5QR0SCSH5HESKY3F0]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JAH2ARS927Q99W08P4PH]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JAH2ARS927Q99W08P4PH]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000008   Region:  us-east-1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  4888]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJV8AN822VQ6DJVH4H9S]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JASE133GCQ53AJFTQ7W1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JASE133GCQ53AJFTQ7W1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000009   Region:  us-east-1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8J8WTKJ4PEN05K88RT84A  offset:  5499]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape00\01K6K8JAZJ041G48A1HQ6TZ0X3.blk]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape00  pack:  01K6K8JAZJ041G48A1HQ6TZ0X3]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJWTKR39MEYGRDY22BFG]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JAZPAP4NF5GAVF4JMA9W]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JAZPAP4NF5GAVF4JMA9W]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000010   Region:  us-east-1]
+ 2025-10-09 14:59:27:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 147:  
+	Event: [Bucket  michaelzigray2  doesn't exist on list so 	creating it]
+ 2025-10-09 14:59:28:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 358:  
+	Event: [Bucket  michaelzigray2  already exists, cleaning out]
+ 2025-10-09 14:59:28:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  WfRp5Ch5bY7xWGt8JYAhf6xkKRJ55Ecg  of object  Object000010  from bucket  michaelzigray2]
+ 2025-10-09 14:59:28:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  JFfVDXrBm3nclIztv9L_XwmZlLXdPjjj  of object  Object000011  from bucket  michaelzigray2]
+ 2025-10-09 14:59:28:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  I5oZhRYtdHIgipxJbgiMEWqPJi.hw_5P  of object  Object000012  from bucket  michaelzigray2]
+ 2025-10-09 14:59:28:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  goDHVUYaVO7gfdp4KAUgOpImFMAqX9Qb  of object  Object000013  from bucket  michaelzigray2]
+ 2025-10-09 14:59:29:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  ykbsnQnAOWtCenb89CTDjB5Zw1UbVTfL  of object  Object000014  from bucket  michaelzigray2]
+ 2025-10-09 14:59:29:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  SyFR8Fp8tivpPwCaMgWLAp7OzAcGdh0b  of object  Object000015  from bucket  michaelzigray2]
+ 2025-10-09 14:59:29:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  RwmwLCHdN0KlkGhbn46Pg2r7AjxNG_.L  of object  Object000016  from bucket  michaelzigray2]
+ 2025-10-09 14:59:29:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  LoDNXkGsM82dP1Oi6AF96_4daL5s464T  of object  Object000017  from bucket  michaelzigray2]
+ 2025-10-09 14:59:29:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  Ye0D093V0vYRCik5you6Ag810FAAhZ50  of object  Object000018  from bucket  michaelzigray2]
+ 2025-10-09 14:59:30:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  XyaCX8qQVqR27V99hkuvYgkh7TkvsBvw  of object  Object000019  from bucket  michaelzigray2]
+ 2025-10-09 14:59:30:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  sj0OxuQqTtJlxCHxnXw1AuqaU4_mvQmL  of object  Object000030  from bucket  michaelzigray2]
+ 2025-10-09 14:59:30:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  jYwTW5Iq6jrMpCL0Yld0kCNZE4WkUgeJ  of object  Object000031  from bucket  michaelzigray2]
+ 2025-10-09 14:59:30:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  UT84LOcxlZ4P0JW6aMM2ssqIAiO0WP0c  of object  Object000032  from bucket  michaelzigray2]
+ 2025-10-09 14:59:30:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  CNQ493OnPTl452LHpvLndJpzMDEj42tE  of object  Object000033  from bucket  michaelzigray2]
+ 2025-10-09 14:59:31:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  CtpdOLHC5xbYwob8jdPnYcR6CIa3apP1  of object  Object000034  from bucket  michaelzigray2]
+ 2025-10-09 14:59:31:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  j8myMaTQixItp_oCTHmK4LIWXMo5svWa  of object  Object000035  from bucket  michaelzigray2]
+ 2025-10-09 14:59:31:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  cbVmvUsPVWsQ92LP3wWH_JRhxWq_yDiJ  of object  Object000036  from bucket  michaelzigray2]
+ 2025-10-09 14:59:31:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  SOM7WWX_lOeOzkXj.uqpNBnv9TThWjvS  of object  Object000037  from bucket  michaelzigray2]
+ 2025-10-09 14:59:31:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  38ul71nbbcTmC_jNIYUOyvQIpCau0AUh  of object  Object000038  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  QNpINiXJ3g1O7NyPjnXBxvW30.ydzI1p  of object  Object000039  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  jJSav83sfMYZF9rf6lm9PC9ZXwfjPYHK  of object  Object000050  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  biZwkvGQ672QIQNiDdlCbMG7B3YeWM3z  of object  Object000051  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  diNhiN6.jaJdTArDTAFKIRH2mmRax9tC  of object  Object000052  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  9whMR1L9n66hL4dmpK_j0Fs.RbKY4p2K  of object  Object000053  from bucket  michaelzigray2]
+ 2025-10-09 14:59:32:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  dZ.bTDmDsjyFdhXUQAg1P_YBw4PmJCsv  of object  Object000054  from bucket  michaelzigray2]
+ 2025-10-09 14:59:33:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  TFr_FzYiifawfln6rcTVXcQon4ZSm28D  of object  Object000055  from bucket  michaelzigray2]
+ 2025-10-09 14:59:33:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  xd96MNWeVFLXQyjxjVPQQqDd.BwCFL9K  of object  Object000056  from bucket  michaelzigray2]
+ 2025-10-09 14:59:33:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  cUUivDvIyhAVeKeLBof0bCmEIKh4J.L8  of object  Object000057  from bucket  michaelzigray2]
+ 2025-10-09 14:59:33:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  9JnSEIJ5NSTzGUYkoI1HWKsWJvs7iP21  of object  Object000058  from bucket  michaelzigray2]
+ 2025-10-09 14:59:33:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 463:  
+	Event: [Deleting version  _My4gibONmG6fLb6CaDLvjXkqgl.sWwS  of object  Object000059  from bucket  michaelzigray2]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 375:  
+	Event: [Bucket  michaelzigray2  Turning on versioning]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  0]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJY5R45FEQH48VN9ENGW]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JB5XPJVJS934R1WP971R]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JB5XPJVJS934R1WP971R]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000011   Region:  us-east-1]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  611]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAJZPBFVSRJG3FBDCEHPK]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JBC5ZENGKNG8PCPC1E7A]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JBC5ZENGKNG8PCPC1E7A]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:34:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000012   Region:  us-east-1]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  1222]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK19CVNP8FP7V8J2BA1B]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JBJ6JFMZ90FXQ2148M1Q]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JBJ6JFMZ90FXQ2148M1Q]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000013   Region:  us-east-1]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  1833]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK2R6MM5CKCRJ8XSTN89]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JBR5E9E4S06Y9G3NWXJ6]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JBR5E9E4S06Y9G3NWXJ6]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000014   Region:  us-east-1]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  2444]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK48N9WKN6F0HFNBDGWG]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JBYV1V1Z36Q3E1JVAKSH]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JBYV1V1Z36Q3E1JVAKSH]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000015   Region:  us-east-1]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  3055]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK5NBP1GYX9V95631Z3J]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JC57ZVSBXW1C8KVGWJEZ]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JC57ZVSBXW1C8KVGWJEZ]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:35:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000016   Region:  us-east-1]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  3666]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK71J4KD63YM82XYDC74]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JCAD5SFBXF1SMZA7QVCJ]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JCAD5SFBXF1SMZA7QVCJ]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000017   Region:  us-east-1]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  4277]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK8EW84WD3CHY06A7HFK]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JCFJWJ3CJECCD9AGM0JG]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JCFJWJ3CJECCD9AGM0JG]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000018   Region:  us-east-1]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  4888]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAK9ZKA85W1MXQ2MKEPCS]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JCNJ1NJTDMHVSK5H0VVV]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JCNJ1NJTDMHVSK5H0VVV]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:36:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000019   Region:  us-east-1]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JAZJ041G48A1HQ6TZ0X3  offset:  5499]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 130:  
+	Event: [Dismounting and Unloading tape:  tape00  toDrive:  Drive-0]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 71:  
+	Event: [Loading and Mounting tape:  tape01  toDrive:  Drive-0]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape01\01K6K8JCVREPBBJ9TK724F40BP.blk]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape01  pack:  01K6K8JCVREPBBJ9TK724F40BP]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKBMMRGTGT28S4N3TWDB]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JCVSW8TYH4TH2ZNMEQMQ]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JCVSW8TYH4TH2ZNMEQMQ]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000020   Region:  us-east-1]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  0]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKDC7B5MWGX0MB9D0JTS]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JD1Y4VRY4WYE9HYDRDP5]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JD1Y4VRY4WYE9HYDRDP5]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000021   Region:  us-east-1]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  611]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKEHCD5J0PFQMW23NMEV]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JD83WHZ3VABXK5BT4V9Z]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JD83WHZ3VABXK5BT4V9Z]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000022   Region:  us-east-1]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  1222]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKFT6YR8MF70538X0S6W]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JDD8T9K8T4KQA41V6H4B]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JDD8T9K8T4KQA41V6H4B]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:37:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000023   Region:  us-east-1]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  1833]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKGX4FNZJWJ193VM2N7W]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JDK6GSF4DENHGVRT2J0H]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JDK6GSF4DENHGVRT2J0H]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000024   Region:  us-east-1]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  2444]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKJ4A56XV0J0XZ339XNF]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JDS3R182AN41J5ECW235]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JDS3R182AN41J5ECW235]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000025   Region:  us-east-1]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  3055]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKK9YVB4048GFPNGPED0]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JDZ8XSJ1RDEGGEEQ883Q]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JDZ8XSJ1RDEGGEEQ883Q]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000026   Region:  us-east-1]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  3666]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKMKHMR9YGBK40RCGVQV]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JE4X7R9X81VEJBX6M28E]
+ 2025-10-09 14:59:38:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JE4X7R9X81VEJBX6M28E]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000027   Region:  us-east-1]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  4277]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKNSCZVYPDZ9M2M7TVFS]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JEA8PVYSVMV80KWHBMP2]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JEA8PVYSVMV80KWHBMP2]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000028   Region:  us-east-1]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  4888]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKQ5E5JJFY9CDNXETKXK]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JEGSDABNH6J5X06HPX97]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JEGSDABNH6J5X06HPX97]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000029   Region:  us-east-1]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JCVREPBBJ9TK724F40BP  offset:  5499]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape01\01K6K8JEPKFYXSEXV3N5QFP2H0.blk]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape01  pack:  01K6K8JEPKFYXSEXV3N5QFP2H0]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKRDDXD3AF81XC883CGR]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JEPRYW54E8Y736AV7R33]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JEPRYW54E8Y736AV7R33]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:39:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000030   Region:  us-east-1]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  0]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKSQ0BW721G1H2V29SQS]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JEXT7C7P4PDR6YSW8AAB]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JEXT7C7P4PDR6YSW8AAB]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000031   Region:  us-east-1]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  611]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKTTA08CQNG7P3W1VJ0T]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JF69ZNXDA81EGAYR2P92]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JF69ZNXDA81EGAYR2P92]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000032   Region:  us-east-1]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  1222]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKVVJGYZ1WSMVB76ACZZ]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JFD5NVQVF3C9HX8EXS1Z]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JFD5NVQVF3C9HX8EXS1Z]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000033   Region:  us-east-1]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  1833]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKWSM0WZ6XE0D9CJ14XP]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JFK8E3RD4MT36A97EA6Z]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JFK8E3RD4MT36A97EA6Z]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:40:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000034   Region:  us-east-1]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  2444]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKXS817HHA05JPG75K4V]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JFSBB9NVK7NWRSAH62P9]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JFSBB9NVK7NWRSAH62P9]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000035   Region:  us-east-1]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  3055]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKYRHQ97ECBZMM5XMMTS]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JFYY1ME8NFSPK295DHTJ]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JFYY1ME8NFSPK295DHTJ]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000036   Region:  us-east-1]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  3666]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAKZNX058CESWSE69VQ9E]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JG55RBXW701RYHSS0GRS]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JG55RBXW701RYHSS0GRS]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000037   Region:  us-east-1]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  4277]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM0P5WYVW2SWNEGHP62P]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JGBEJWMPMMZRGBS50XSX]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JGBEJWMPMMZRGBS50XSX]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:41:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000038   Region:  us-east-1]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  4888]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM1WYYXNE03533W5PG9J]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JGHV74CPGDH3MTTYD907]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JGHV74CPGDH3MTTYD907]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000039   Region:  us-east-1]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JEPKFYXSEXV3N5QFP2H0  offset:  5499]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 130:  
+	Event: [Dismounting and Unloading tape:  tape01  toDrive:  Drive-0]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 71:  
+	Event: [Loading and Mounting tape:  tape02  toDrive:  Drive-0]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape02\01K6K8JGRYAWTH675MB2DS5CYV.blk]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape02  pack:  01K6K8JGRYAWTH675MB2DS5CYV]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM38EGTV2XVDY1AK2SKK]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JGS0HV68MS3Y48STXCVH]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JGS0HV68MS3Y48STXCVH]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000040   Region:  us-east-1]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  0]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM4B15VZ0K2X40ANRECQ]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JH0JAS2YEZAC9J5NCKKP]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JH0JAS2YEZAC9J5NCKKP]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:42:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000041   Region:  us-east-1]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  611]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM5E06NJ95WMXMVXM20M]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JH9EF9DRYBEJYZA56YN7]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JH9EF9DRYBEJYZA56YN7]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000042   Region:  us-east-1]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  1222]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM6HMMDS7AJW11TCSS3B]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JHFNGN5GSC5ZB9NY83G0]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JHFNGN5GSC5ZB9NY83G0]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000043   Region:  us-east-1]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  1833]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM7NTKEEF9QY9R51RD83]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JHPJS497PQY70N3F1NH8]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JHPJS497PQY70N3F1NH8]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000044   Region:  us-east-1]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  2444]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM8R5XR7Z5ZMAJBQ7RB6]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JHWZT7F50JXRWBSZBTEK]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JHWZT7F50JXRWBSZBTEK]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:43:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000045   Region:  us-east-1]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  3055]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAM9W7Y7EG7H6M4Y8Y98V]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JJ3W390ZQ3110W71WXEF]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JJ3W390ZQ3110W71WXEF]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000046   Region:  us-east-1]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  3666]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMB7SKVAN69TZ52PDY8F]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JJ9BR2D7TGG3S7NRX6FQ]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JJ9BR2D7TGG3S7NRX6FQ]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000047   Region:  us-east-1]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  4277]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMCM1KBS06TV2D2CGZ5W]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JJFCEP3YZW6RGW75GSBZ]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JJFCEP3YZW6RGW75GSBZ]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000048   Region:  us-east-1]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  4888]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAME2J7EHWFX26ZKMVCZ9]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JJMRPAKS0PJ98TZB9HP8]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JJMRPAKS0PJ98TZB9HP8]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:44:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000049   Region:  us-east-1]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JGRYAWTH675MB2DS5CYV  offset:  5499]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape02\01K6K8JJTCGP8YKXHW96A12E4Z.blk]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape02  pack:  01K6K8JJTCGP8YKXHW96A12E4Z]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMFJWPDNGEY89G2FKJGW]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JJV7H4C58GXAAAEJFFSK]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JJV7H4C58GXAAAEJFFSK]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000050   Region:  us-east-1]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  0]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMGQZZC679P0TXM2ZA77]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JK0MHSJTDJGKHNKRM0F4]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JK0MHSJTDJGKHNKRM0F4]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000051   Region:  us-east-1]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  611]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMHSTQD5JE1TD3HDF5Z8]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JK77AKQ0J6SQJ92YQXC0]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JK77AKQ0J6SQJ92YQXC0]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:45:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000052   Region:  us-east-1]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  1222]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMJRTXT89RT0PJR8KM0C]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JKDWG0TS06B0SQT1TTEG]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JKDWG0TS06B0SQT1TTEG]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000053   Region:  us-east-1]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  1833]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMMCD7RKX9BR5QWC2VGE]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JKKW1RC3DRZ8WF3ZX3VR]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JKKW1RC3DRZ8WF3ZX3VR]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000054   Region:  us-east-1]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  2444]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMNTCYDHD4MHCDMHKZED]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JKT4MSG27E30CEJHBQ67]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JKT4MSG27E30CEJHBQ67]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:46:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000055   Region:  us-east-1]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  3055]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMQ4RKM0CQX8CP1S932F]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JKZKCBBS7DPKGTT0WMC4]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JKZKCBBS7DPKGTT0WMC4]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000056   Region:  us-east-1]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  3666]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMRN6GV4SHZHFXQ03TQQ]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JM5RFN56BQTKRSRGV3GQ]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JM5RFN56BQTKRSRGV3GQ]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:47:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000057   Region:  us-east-1]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  4277]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMT3NXRWX0EQQK4552DM]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JMBTAJF3SS93QCT6GYZP]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JMBTAJF3SS93QCT6GYZP]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000058   Region:  us-east-1]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  4888]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMVM1FW7K8JBZQA0WV47]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JMJ6YDSWPET2JYGS7B6T]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JMJ6YDSWPET2JYGS7B6T]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:48:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000059   Region:  us-east-1]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JJTCGP8YKXHW96A12E4Z  offset:  5499]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 130:  
+	Event: [Dismounting and Unloading tape:  tape02  toDrive:  Drive-0]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 71:  
+	Event: [Loading and Mounting tape:  tape03  toDrive:  Drive-0]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape03\01K6K8JMQW9X58F7ASHVWV8PJZ.blk]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape03  pack:  01K6K8JMQW9X58F7ASHVWV8PJZ]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMXBN7KD4JFW9D93HW79]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JMQYVK1N4BYVN0W2M7ND]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JMQYVK1N4BYVN0W2M7ND]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000060   Region:  us-east-1]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  0]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMYHJ8F29Q6EDNHKAQ9R]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JMYDNR3VRNS1KGNA0SJE]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JMYDNR3VRNS1KGNA0SJE]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:49:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000061   Region:  us-east-1]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  611]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAMZZT5EHZ3ZJG31CN2HJ]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JN4X95KXXZK9JHRNG8SN]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JN4X95KXXZK9JHRNG8SN]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000062   Region:  us-east-1]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  1222]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN1CHDEHAW196ZD0A1BS]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JNB608XPB8HAJR4KASPN]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JNB608XPB8HAJR4KASPN]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:50:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000063   Region:  us-east-1]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  1833]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN2K72SRX357R0R59Z04]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JNHF3XT8EKQDY5Q6B98A]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JNHF3XT8EKQDY5Q6B98A]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000064   Region:  us-east-1]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  2444]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN3TWDY3K2T3JCK38PW0]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JNQSB2GC0D7JEVMP0PRX]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JNQSB2GC0D7JEVMP0PRX]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000065   Region:  us-east-1]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  3055]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN56WC78YK0MZKRB31RN]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JNXZZJ6KJHY407XFKX8P]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JNXZZJ6KJHY407XFKX8P]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000066   Region:  us-east-1]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  3666]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN6P5WHX95TZ91Z92VYW]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JP5064YM5RNAC2MSD9X4]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JP5064YM5RNAC2MSD9X4]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:51:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000067   Region:  us-east-1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  4277]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN85WCMK1J6P4ST1WMB1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JPCA6WTEHFV0X2JMWHT1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JPCA6WTEHFV0X2JMWHT1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000068   Region:  us-east-1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  4888]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAN9JDXGAETCQG36DC62J]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JPMCEF98JAMNQPQG15WY]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JPMCEF98JAMNQPQG15WY]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000069   Region:  us-east-1]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JMQW9X58F7ASHVWV8PJZ  offset:  5499]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape03\01K6K8JPTZSSSG6S6JBKPAPHBZ.blk]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape03  pack:  01K6K8JPTZSSSG6S6JBKPAPHBZ]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANATHBT3ZC2ASKFT12P4]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JPV3NK255WKHF26X7Q36]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JPV3NK255WKHF26X7Q36]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:52:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000070   Region:  us-east-1]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  0]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANC3YA25F53581D1ANPH]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQ1P1TEX74V9NSXZ5EB9]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQ1P1TEX74V9NSXZ5EB9]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000071   Region:  us-east-1]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  611]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANDV7JD2PHC8QKVQ038S]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQ7S1X85F8WB4520G6YQ]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQ7S1X85F8WB4520G6YQ]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000072   Region:  us-east-1]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  1222]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANF7WYHNNR9NTKAGF7EC]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQE386B8EXMNF4X06S34]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQE386B8EXMNF4X06S34]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000073   Region:  us-east-1]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  1833]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANGHS3TG0T9AWM2XA3HR]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQM8DBF56K71MB2VG4AS]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQM8DBF56K71MB2VG4AS]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:53:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000074   Region:  us-east-1]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  2444]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANHYHGZEZFVW85Q5XA8N]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQTE630XEKPKTXWECZBP]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQTE630XEKPKTXWECZBP]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000075   Region:  us-east-1]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  3055]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANKNDA314AFDHN0Q6XCX]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JQZXNP2DBN2S66PWKJ4F]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JQZXNP2DBN2S66PWKJ4F]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000076   Region:  us-east-1]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  3666]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANN48HV6QQ5BY4YQ3J1R]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JR5CAH3T4QH6KNFN79AZ]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JR5CAH3T4QH6KNFN79AZ]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:54:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000077   Region:  us-east-1]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  4277]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANPH8NVRTZ8AVSMT0M43]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JRBQG6SZB5HW6M5J1EPV]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JRBQG6SZB5HW6M5J1EPV]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000078   Region:  us-east-1]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  4888]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANQPPFS6YB0TEHT12QB6]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JRJ0WHY7DXMGH828Q8YD]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JRJ0WHY7DXMGH828Q8YD]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000079   Region:  us-east-1]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JPTZSSSG6S6JBKPAPHBZ  offset:  5499]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 130:  
+	Event: [Dismounting and Unloading tape:  tape03  toDrive:  Drive-0]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 71:  
+	Event: [Loading and Mounting tape:  tape04  toDrive:  Drive-0]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape04\01K6K8JRS44GQT0W9F7ZRJKJHC.blk]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape04  pack:  01K6K8JRS44GQT0W9F7ZRJKJHC]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANSCN7Y5ACA4BJ7DM85J]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JRS6YZSJY0M1EHQG8QG7]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JRS6YZSJY0M1EHQG8QG7]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:55:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000080   Region:  us-east-1]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  0]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANTT4GJWRFJB050EDQS4]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JRYNE2DETFMEGQW4FFHV]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JRYNE2DETFMEGQW4FFHV]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000081   Region:  us-east-1]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  611]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANW2A98EK0ZV4686VN64]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JS4MRTF9CXP17N4CSQT2]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JS4MRTF9CXP17N4CSQT2]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000082   Region:  us-east-1]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  1222]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANXBDZJ9K3VXXMPHB9HC]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JSANFM98RY3BZBRJT6RS]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JSANFM98RY3BZBRJT6RS]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000083   Region:  us-east-1]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  1833]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CANYQYGFCBENRY0CFHKWS]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JSGRB0AXNCAK0FZWSPFP]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JSGRB0AXNCAK0FZWSPFP]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:56:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000084   Region:  us-east-1]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  2444]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAP01RXBM7BN7Q22SGFER]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JSPVVKQE8CPBJ5NHZ08X]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JSPVVKQE8CPBJ5NHZ08X]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000085   Region:  us-east-1]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  3055]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAP1H3AFRHZER2ZMD3V2B]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JSWXXCS3DQ6FWMZA41P3]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JSWXXCS3DQ6FWMZA41P3]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000086   Region:  us-east-1]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  3666]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAP3BZAXYXK2X6YJEA9VV]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JT3A6DXG9NFM15YAXKRB]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JT3A6DXG9NFM15YAXKRB]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000087   Region:  us-east-1]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  4277]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAP70AGEQJC7XJAHX7Q3X]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JT970P4N91C5TDQJSC6S]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JT970P4N91C5TDQJSC6S]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:57:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000088   Region:  us-east-1]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  4888]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAP9RE1X71S9CK64Y7C9F]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JTEG75G7GS4FQEEZ52P1]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JTEG75G7GS4FQEEZ52P1]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray1   key:  Object000089   Region:  us-east-1]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JRS44GQT0W9F7ZRJKJHC  offset:  5499]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 88:  
+	Event: [Open Pack File:  tapehardware\tapes\tape04\01K6K8JTMBX8SG1A9G1JXE6RGM.blk]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 94:  
+	Event: [Reading Pack, drive:  Drive-0   tape:  tape04  pack:  01K6K8JTMBX8SG1A9G1JXE6RGM]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPB7FW95YV7H1HC48H41]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JTMFWBK5EKKFM5KWBEA2]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JTMFWBK5EKKFM5KWBEA2]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000090   Region:  us-east-1]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  0]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPCNZ7MJ7F9N0RTN7NJJ]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JVT3XG0Y504XP3XDXNRJ]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JVT3XG0Y504XP3XDXNRJ]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:58:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000091   Region:  us-east-1]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  611]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPECR5P7TVWHNPT70AM7]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JW0EWP3F91SMZM7CYZGP]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JW0EWP3F91SMZM7CYZGP]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000092   Region:  us-east-1]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  1222]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPG098Z0HTYV2J2DFZ0Z]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JW7JT0C41Z6NAHMB6TVS]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JW7JT0C41Z6NAHMB6TVS]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000093   Region:  us-east-1]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  1833]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPHH9V02MN2NWJ55J2Q0]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JWDYFBFXEZFGDTE187Q0]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JWDYFBFXEZFGDTE187Q0]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000094   Region:  us-east-1]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  2444]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPK01JAWK7JKDYEK2XM9]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JWM4FBBN8RFBYC0DSM93]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JWM4FBBN8RFBYC0DSM93]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 14:59:59:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000095   Region:  us-east-1]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  3055]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPMRX82K9H2ASDTEYAY7]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JWTN1RASG3ZBEVGGHN3A]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JWTN1RASG3ZBEVGGHN3A]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000096   Region:  us-east-1]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  3666]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPP9DGQ81NYBCT7V8VNT]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JX0KAW6D08QF03BQ2M4Y]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JX0KAW6D08QF03BQ2M4Y]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000097   Region:  us-east-1]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  4277]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPQQ1EWK81YY7CKJ42YM]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JX70KBVZQW6250RQ1Z1F]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JX70KBVZQW6250RQ1Z1F]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 15:00:00:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000098   Region:  us-east-1]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  4888]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 106:  
+	Event: [TLV is Block type datalength =  500]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 198:  
+	Event: [Write the block to cache:  01K75CAPS5BYXJ1DJ5FVR89E0W]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 228:  
+	Event: [Process Version:  01K6K8JXD76H0SW70875FZX0H3]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 282:  
+	Event: [versionID:  01K6K8JXD76H0SW70875FZX0H3]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 309:  
+	Event: [All blocks have been written]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/dbmanager.go Line 329:  
+	Event: [S3, Put Object, bucket:  michaelzigray2   key:  Object000099   Region:  us-east-1]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 113:  
+	Event: [Read & Wrote Block Pack: 01K6K8JTMBX8SG1A9G1JXE6RGM  offset:  5499]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/restore.go Line 130:  
+	Event: [Dismounting and Unloading tape:  tape04  toDrive:  Drive-0]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 137:  
+	Event: [******READ ALL BLOCK FILES*******]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 141:  
+	Event: [******COMPARING SIMULATED AND CUSTOMER BUCKETS*******]
+ 2025-10-09 15:00:01:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 241:  
+	Event: [Comparing versions between bucket:  michaelzigray1  and simulator bucket:  michaelzigray1simul]
+ 2025-10-09 15:00:02:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/s3.go Line 241:  
+	Event: [Comparing versions between bucket:  michaelzigray2  and simulator bucket:  michaelzigray2simul]
+ 2025-10-09 15:00:03:Func C:/Users/michaelzigray/GolandProjects/LTFS-VOF/go/src/ltfs-vof/main.go Line 144:  
+	Event: [******SIMULATION AND CUSTOMER BUCKETS ARE THE SAME*******]
