@@ -388,6 +388,7 @@ func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, 
 	versionId.Version = version
 	versionRecord.VersionID = &versionId
 	versionRecord.Packs = packEntries
+	versionRecord.Data = data
 	return &versionRecord, versionRecord.encode(logger)
 }
 
