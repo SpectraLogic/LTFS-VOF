@@ -194,9 +194,11 @@ func (p *PackEntry) AddSequentialPacks(nextPack *PackEntry) {
 }
 
 // HELPER FUNCTIONS FOR PACKREFERENCE
-func NewPackReference() *PackReference {
+func NewPackReference(start, length int64) *PackReference {
 	var pr PackReference
 	pr.PackRange = NewRange()
+	pr.PackRange.SetStart(start)
+	pr.PackRange.SetLength(length)
 	return &pr
 }
 
@@ -317,6 +319,8 @@ func NewBlock(blockId, bucket, object, version string, data []byte, logicalStart
 
 	return &block
 }
+
+// encode and write the block to the file specified
 func WriteBlock(file *os.File, b *Block, logger *Logger) {
 	encoder := value.NewEncoder()
 	encoder.Write(file, b, b.data, nil)
@@ -363,9 +367,32 @@ func (b *Block) GetLength() int {
 	return len(b.data)
 }
 
-// PACKLIST
+// Write a pack list record to a pack (i.e. .blk) file,
+// returns the starting position and length of the record written that is to be filled
+// in the pack reference in the version record
+func WritePackListRecord(file *os.File, VersionId string, packs Packs, logger *Logger) (int64, int64) {
+	// get the starting position
+	start, err := file.Seek(0, os.SEEK_CUR)
+	if err != nil {
+		logger.Fatal("Unable to record start location of file", err)
+	}
+	var pack StoredPack
+	pack.VersionID = VersionId
+	pack.Packs = packs
+	encoder := value.NewEncoder()
+	_, err = encoder.Write(file, &pack, nil)
+	if err != nil {
+		logger.Fatal("Unable to write pack list record to file", err)
+	}
+	// get the ending position
+	end, err := file.Seek(0, os.SEEK_CUR)
+	if err != nil {
+		logger.Fatal("Unable to record end location of file", err)
+	}
+	return start, end - start
+}
+
 func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
-	/** FOR SOME REASON ONLY DECODING A SINGLE PACKENTRY, NEED TO TALK JOE ABOUT WHY THIS IS **/
 	var pack StoredPack
 	decoder := value.NewDecoder()
 	_, _, err := decoder.ReadWithBytes(file, &pack)
