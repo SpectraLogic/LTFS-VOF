@@ -131,26 +131,34 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			defer fd.Close()
 
 			// create simulated objects and write to block and version files
-			// 10 objects 500 bytes, single block, in pack
-			for objects := 0; objects < 10; objects++ {
+			// 5 objects 500 bytes, single block, in pack
+			for objects := 0; objects < 5; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false)
 			}
-			// 10 objects 100 bytes, in version record
-			for objects := 0; objects < 10; objects++ {
+			// 5 objects 100 bytes, in version record
+			for objects := 0; objects < 5; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 				createSimulatedObject(objectName, 100, s3Buckets[bucket], bucket, 100, logger, fd, blockFileName, versionfd, false, false)
 			}
-			// 10 objects 1800 bytes, 500 byte blocks, in pack
-			for objects := 0; objects < 10; objects++ {
+			// 5 objects 1800 bytes, 500 byte blocks, in pack
+			for objects := 0; objects < 5; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1800, logger, fd, blockFileName, versionfd, true, false)
 			}
-			// 10 objects 1800 bytes, 500 byte blocks, in pack, written backwards in the pack file
-			for objects := 0; objects < 10; objects++ {
+			// 5 objects 1800 bytes, 500 byte blocks, in pack, 3 versions each
+			for objects := 0; objects < 5; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				for versions := 0; versions < 3; versions++ {
+					createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1800, logger, fd, blockFileName, versionfd, true, false)
+				}
+			}
+			// 5 objects 1800 bytes, 500 byte blocks, in pack, written backwards in the pack file
+			for objects := 0; objects < 5; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1800, logger, fd, blockFileName, versionfd, true, true)
