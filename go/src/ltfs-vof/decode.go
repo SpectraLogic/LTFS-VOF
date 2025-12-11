@@ -194,8 +194,9 @@ func (p *PackEntry) AddSequentialPacks(nextPack *PackEntry) {
 }
 
 // HELPER FUNCTIONS FOR PACKREFERENCE
-func NewPackReference(start, length int64) *PackReference {
+func NewPackReference(packName string, start, length int64) *PackReference {
 	var pr PackReference
+	pr.Pack = packName
 	pr.PackRange = NewRange()
 	pr.PackRange.SetStart(start)
 	pr.PackRange.SetLength(length)
@@ -367,18 +368,38 @@ func (b *Block) GetLength() int {
 	return len(b.data)
 }
 
+func NewPackListRecord(VersioniId string, packs Packs, logger *Logger) *StoredPack {
+	var pack StoredPack
+	pack.VersionID = VersioniId
+	pack.Packs = packs
+	return &pack
+}
+
+func (pack *StoredPack) GetPackListEncoded(logger *Logger) []byte {
+	encoder := value.NewEncoder()
+	buffer, _, err := encoder.Encode(pack, nil)
+	if err != nil {
+		logger.Fatal("Unable to encode pack list record", err)
+	}
+	defer buffer.Release()
+
+	// make a copy of the buffer to return
+	// this way the encoder buffer can be released
+	bufferCopy := make([]byte, buffer.Len())
+	copy(bufferCopy, buffer.Bytes())
+	return bufferCopy
+}
+
 // Write a pack list record to a pack (i.e. .blk) file,
 // returns the starting position and length of the record written that is to be filled
 // in the pack reference in the version record
-func WritePackListRecord(file *os.File, VersionId string, packs Packs, logger *Logger) (int64, int64) {
+func (pack *StoredPack) WritePackListRecord(file *os.File, logger *Logger) (int64, int64) {
 	// get the starting position
 	start, err := file.Seek(0, os.SEEK_CUR)
 	if err != nil {
 		logger.Fatal("Unable to record start location of file", err)
 	}
-	var pack StoredPack
-	pack.VersionID = VersionId
-	pack.Packs = packs
+
 	encoder := value.NewEncoder()
 	_, err = encoder.Write(file, &pack, nil)
 	if err != nil {
@@ -403,10 +424,14 @@ func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 	return pack.Packs
 }
 
+//TODO make NewPackListRecord to match version record format. We will need to create a new type for this (probably). Then use this to create pack list records in simulator.
+
+//TODO make non versioned bucket with deleted flag, then versioned bucket with delete marker and deleted flag, see how different they are
+
 // VERSION - Creates a MetaReference for a version record
 // if there are no packentries then the data is stored in the version record
 // returns the version record (i.e. metareference) and the encoded byte stream
-func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, data []byte, logger *Logger) (*MetaReference, []byte) {
+func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, data []byte, packReference *PackReference, deleted, deleteMarker bool, logger *Logger) (*MetaReference, []byte) {
 
 	var versionRecord MetaReference
 	versionId := VersionID{}
@@ -416,6 +441,9 @@ func NewVersionRecord(bucket, object, version string, packEntries []*PackEntry, 
 	versionRecord.VersionID = &versionId
 	versionRecord.Packs = packEntries
 	versionRecord.Data = data
+	versionRecord.Reference = packReference
+	versionRecord.Deleted = deleted
+	versionRecord.DeleteMarker = deleteMarker
 	return &versionRecord, versionRecord.encode(logger)
 }
 

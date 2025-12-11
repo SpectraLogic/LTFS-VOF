@@ -590,6 +590,7 @@ func (dbm *DBManager) insertBlocksTable(entry *PackEntry) string {
 	}
 	sql := "INSERT INTO blocks (blockid, state, blockinfo) VALUES (?,?,?)"
 	_, err = dbm.db.Exec(sql, blockid, STATE_READY, blockinfo)
+	dbm.logger.Event("Inserted into blocks table, blockid: ", blockid)
 	if err != nil {
 		dbm.logger.Fatal("Could not insert into blocks table: ", err)
 	}
@@ -632,7 +633,7 @@ func (dbm *DBManager) getBlockRecord(blockid string) (blockState, *PackEntry) {
 	sql := "SELECT state,blockinfo FROM blocks WHERE blockid = ?"
 	err = dbm.db.QueryRow(sql, blockid).Scan(&state, &blockinfo)
 	if err != nil {
-		dbm.logger.Fatal("Could not read block", err)
+		dbm.logger.Fatal("Could not read block with id:", blockid, err)
 	}
 	// decode json
 	var entry PackEntry
