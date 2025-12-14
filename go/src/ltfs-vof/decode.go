@@ -39,7 +39,7 @@ type PackEntry struct {
 	SourceLens  []int32 `codec:"N,omitempty" json:"sln,omitempty"` // Amount source data varies from BlockLength (except the last one)
 }
 
-// StoredPack holds pack list information stored in a pack.
+// StkredPack holds pack list information stored in a pack.
 type StoredPack struct {
 	VersionID string `codec:"I,omitempty"` // Version this pack list references
 	Upload    string `codec:"U,omitempty"` // Upload used to load the data (empty if a single PUT was used)
