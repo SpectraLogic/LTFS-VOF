@@ -426,8 +426,8 @@ func ReadPackListRecord(file *os.File, length uint64, logger *Logger) Packs {
 
 //TODO make NewPackListRecord to match version record format. We will need to create a new type for this (probably). Then use this to create pack list records in simulator.
 
-//TODO make non versioned bucket with deleted flag, then versioned bucket with delete marker and deleted flag, see how different they are
-
+// TODO make non versioned bucket with deleted flag, then versioned bucket with delete marker and deleted flag, see how different they are
+// TODO just do deleted for now, not delete marker.
 // VERSION - Creates a MetaReference for a version record
 // if there are no packentries then the data is stored in the version record
 // returns the version record (i.e. metareference) and the encoded byte stream
