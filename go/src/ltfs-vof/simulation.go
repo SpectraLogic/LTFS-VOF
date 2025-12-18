@@ -56,6 +56,7 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 				currBlockRange = blockRanges[blockCount-blockIter-1]
 			}
 
+			startRange, err = packFile.Seek(0, io.SeekCurrent)
 			if err != nil {
 				logger.Fatal("Unable to get start range")
 			}
@@ -79,27 +80,24 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 				packEntries[0].AddSequentialPacks(packEntry)
 			}
 		}
-		randomData = nil
-		if usesPackList {
-			startRange, err = packFile.Seek(0, io.SeekCurrent)
-			if err != nil {
-				logger.Fatal("Unable to get start range for packlist")
-			}
-			//packEncoder := value.NewEncoder()
-			//buff, _, _ := packEncoder.Encode(packEntries, nil)
-			packListRecord := NewPackListRecord(versionName, packEntries, logger)
-			WriteTLV(packFile, PACKLIST, packListRecord.GetPackListEncoded(logger), logger)
-			packListRecord.WritePackListRecord(packFile, logger)
-			//startPackRange, lenPackRange := packListRecord.WritePackListRecord(packFile, logger)
-			endRange, err := packFile.Seek(0, io.SeekCurrent)
-			if err != nil {
-				logger.Fatal("Unable to get end range for packlist")
-			}
-			packReference = NewPackReference(packName, startRange, endRange-startRange)
-
-			packEntries = nil
-		}
 	} else {
+		packEntries = nil
+	}
+	randomData = nil
+	if usesPackList {
+		startRange, err = packFile.Seek(0, io.SeekCurrent)
+		if err != nil {
+			logger.Fatal("Unable to get start range for packlist")
+		}
+		packListRecord := NewPackListRecord(versionName, packEntries, logger)
+		WriteTLV(packFile, PACKLIST, packListRecord.GetPackListEncoded(logger), logger)
+		packListRecord.WritePackListRecord(packFile, logger)
+		endRange, err := packFile.Seek(0, io.SeekCurrent)
+		if err != nil {
+			logger.Fatal("Unable to get end range for packlist")
+		}
+		packReference = NewPackReference(packName, startRange, endRange-startRange)
+
 		packEntries = nil
 	}
 
@@ -152,11 +150,11 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 
 			// create simulated objects and write to block and version files
 			// 2 objects 500 bytes, single block, in pack
-			for objects := 0; objects < 2; objects++ {
-				objectName := fmt.Sprintf("Object%06d", objectCount)
-				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false)
-			}
+			// for objects := 0; objects < 2; objects++ {
+			//	objectName := fmt.Sprintf("Object%06d", objectCount)
+			//	objectCount++
+			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false)
+			//}
 			//// 2 objects 100 bytes, in version record
 			//for objects := 0; objects < 2; objects++ {
 			//	objectName := fmt.Sprintf("Object%06d", objectCount)
@@ -184,10 +182,10 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1802, logger, fd, blockFileName, versionfd, true, true, false)
 			//}
 			// 2 objects 1803 bytes, 500 byte blocks, in pack, with pack list
-			for objects := 0; objects < 2; objects++ {
+			for objects := 0; objects < 3; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1803, logger, fd, blockFileName, versionfd, true, false, true)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1805, logger, fd, blockFileName, versionfd, true, false, true)
 			}
 		}
 	}

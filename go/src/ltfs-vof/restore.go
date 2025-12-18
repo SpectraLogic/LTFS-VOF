@@ -83,7 +83,7 @@ func (db *Database) RestoreAll() {
 
 			// now read each pack from oldest to newest
 			for _, pack := range packsOrder[tape.Name()] {
-				fmt.Println("Processing Pack: ", packFilePaths[pack])
+				fmt.Println("Tape Name: ", tape.Name(), "Pack: ", pack, " Processing Pack: ", packFilePaths[pack])
 				// open the pack file
 				db.logger.Event("Open Pack File: ", packFilePaths[pack])
 
