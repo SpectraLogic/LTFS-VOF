@@ -66,12 +66,14 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 
 			WriteTLV(packFile, BLOCK, currBlockData, logger)
 			WriteBlock(packFile, currBlock, logger)
+			logger.Event("Wrote Block to Pack File: ", packName, " Object: ", name, " Version: ", versionName, " Block Range: ", currBlockRange)
 
 			endRange, err := packFile.Seek(0, io.SeekCurrent)
 			if err != nil {
 				logger.Fatal("Unable to get end range")
 			}
 			packEntry := NewPackEntry(packName, int64(currBlockRange[0]), int64(currBlockRange[1]))
+			logger.Event("Confirming Block Range:", currBlockRange, "matches Logical Range:", packEntry.GetLogicalStart(), packEntry.GetLogicalStart()+packEntry.GetLogicalLength())
 			packEntry.SetPhysicalLocation(packName, startRange, endRange)
 			// add to pack entries if backwards or first block, else append it to the first pack entry (only pack entry needed for sequential blocks)
 			if backwards || blockIter == 0 {
@@ -80,10 +82,10 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 				packEntries[0].AddSequentialPacks(packEntry)
 			}
 		}
+		randomData = nil
 	} else {
 		packEntries = nil
 	}
-	randomData = nil
 	if usesPackList {
 		startRange, err = packFile.Seek(0, io.SeekCurrent)
 		if err != nil {
@@ -92,6 +94,10 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 		packListRecord := NewPackListRecord(versionName, packEntries, logger)
 		WriteTLV(packFile, PACKLIST, packListRecord.GetPackListEncoded(logger), logger)
 		packListRecord.WritePackListRecord(packFile, logger)
+		logger.Event("Wrote PackList to Pack File: ", packName, " Object: ", name, " Version: ", versionName, " Pack Entries: ")
+		for packEntry := range packEntries {
+			logger.Event("Pack Entry: ", packEntries[packEntry].PackRange.GetStart(), packEntries[packEntry].PackRange.GetLength())
+		}
 		endRange, err := packFile.Seek(0, io.SeekCurrent)
 		if err != nil {
 			logger.Fatal("Unable to get end range for packlist")
@@ -105,7 +111,7 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 
 	WriteTLV(versionFile, VERSION, vrEncoded, logger)
 	vr.WriteVersionRecord(versionFile, logger)
-
+	logger.Event("Wrote Version Record to Version File Object: ", name, " Version: ", versionName)
 }
 
 func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning bool, inDB, packList bool, logger *Logger) {
@@ -149,43 +155,49 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			defer fd.Close()
 
 			// create simulated objects and write to block and version files
-			// 2 objects 500 bytes, single block, in pack
-			// for objects := 0; objects < 2; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false)
-			//}
-			//// 2 objects 100 bytes, in version record
-			//for objects := 0; objects < 2; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	createSimulatedObject(objectName, 100, s3Buckets[bucket], bucket, 100, logger, fd, blockFileName, versionfd, false, false, false)
-			//}
-			//// 2 objects 1800 bytes, 500 byte blocks, in pack
-			//for objects := 0; objects < 2; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1800, logger, fd, blockFileName, versionfd, true, false, false)
-			//}
-			//// 2 objects 1801 bytes, 500 byte blocks, in pack, 3 versions each
-			//for objects := 0; objects < 2; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	for versions := 0; versions < 3; versions++ {
-			//		createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false)
-			//	}
-			//}
-			//// 2 objects 1802 bytes, 500 byte blocks, in pack, written backwards in the pack file
-			//for objects := 0; objects < 2; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1802, logger, fd, blockFileName, versionfd, true, true, false)
-			//}
-			// 2 objects 1803 bytes, 500 byte blocks, in pack, with pack list
-			for objects := 0; objects < 3; objects++ {
+			// 1 object(s) 500 bytes, single block, in pack
+			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1805, logger, fd, blockFileName, versionfd, true, false, true)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false)
+			}
+			// 1 object(s) 100 bytes, in version record
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 100, s3Buckets[bucket], bucket, 100, logger, fd, blockFileName, versionfd, false, false, false)
+			}
+			// 1 object(s) 1800 bytes, 500 byte blocks, in pack
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1800, logger, fd, blockFileName, versionfd, true, false, false)
+			}
+			//// 1 object(s) 1801 bytes, 500 byte blocks, in pack, 3 versions each
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				for versions := 0; versions < 3; versions++ {
+					createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false)
+				}
+			}
+			// 1 object(s) 1802 bytes, 500 byte blocks, in pack, written backwards in the pack file
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1802, logger, fd, blockFileName, versionfd, true, true, false)
+			}
+			// 1 object(s) 1803 bytes, 500 byte blocks, in pack, with pack list
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1803, logger, fd, blockFileName, versionfd, true, false, true)
+			}
+			// 1 object(s) 1900 bytes, 500 byte blocks, in pack, with pack list, backwards
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1900, logger, fd, blockFileName, versionfd, true, true, true)
 			}
 		}
 	}

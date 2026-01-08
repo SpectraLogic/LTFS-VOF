@@ -167,7 +167,9 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 		// to the cache and create a block record and return
 
 		// create a pack list entry that only knows the pack and the start location
-		entry := NewPackEntry(pack, blockStartLocation, blockEndLocation)
+		entry := NewPackEntry(pack, 0, int64(len(block.data)))
+		entry.SetPhysicalStart(blockStartLocation)
+		entry.SetPhysicalLength(blockEndLocation - blockStartLocation)
 
 		// insert the pack list entry into the block table, and change its state to cached
 		blockID := dbm.insertBlocksTable(entry)
@@ -254,21 +256,44 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 		// if no pack map for this packname or no entry for this block create a block
 		if packMapEntry == nil {
 			blockID = dbm.insertBlocksTable(listentry)
+
+			// STEP 3 if listentry spans only a single block need to insert the block entry
+			dbm.insertPackTable(listentry.GetPackName(), listentry.GetPhysicalStart(), versionID, blockID)
+			blockIDs = append(blockIDs, blockID)
 		} else {
-			entry, ok := packMapEntry[listentry.GetPhysicalStart()]
-			// if no entry then create a block
-			if !ok {
-				blockID = dbm.insertBlocksTable(listentry)
-			} else {
-				// entry exists update the entry
-				blockID = entry.BlockID
-				dbm.updateBlocksTable(blockID, listentry)
+			var iter int64 = 0
+			var logicalIter int64 = 0
+			for iter < listentry.GetPhysicalLength() {
+				entry, ok := packMapEntry[listentry.GetPhysicalStart()+iter]
+				var currEntry *PackEntry
+				// if no entry then create a block
+				// In the case where this listentry spans multiple blocks, this will create a
+				// single block entry in the DB. This may not be correct.
+				if !ok {
+					blockID = dbm.insertBlocksTable(listentry)
+					currEntry = listentry
+				} else {
+					// entry exists update the entry
+					blockID = entry.BlockID
+					_, blockEntry := dbm.getBlockRecord(blockID)
+					blockEntry.SetLogicalStart(listentry.GetLogicalStart() + logicalIter)
+					dbm.updateBlocksTable(blockID, blockEntry)
+					currEntry = blockEntry
+				}
+
+				iter += currEntry.GetPhysicalLength()
+				//println("iter:", iter, " physical length:", currEntry.GetPhysicalLength(), " logical length:", currEntry.GetLogicalLength(), " physical start:", currEntry.GetPhysicalStart(), " logical start:", currEntry.GetLogicalStart())
+
+				// STEP 3 if listentry spans multiple blocks need to insert each block entry
+				dbm.insertPackTable(currEntry.GetPackName(), currEntry.GetPhysicalStart(), versionID, blockID)
+				blockIDs = append(blockIDs, blockID)
 			}
 		}
 
 		// Step 3: update the pack table with the location of the blocks in the packlist
-		dbm.insertPackTable(listentry.GetPackName(), listentry.GetPhysicalStart(), versionID, blockID)
-		blockIDs = append(blockIDs, blockID)
+		// STEP 3 WAS COMBINED WITH STEP 2 DUE TO NESTED LOOP
+		//dbm.insertPackTable(listentry.GetPackName(), listentry.GetPhysicalStart(), versionID, blockID)
+		//blockIDs = append(blockIDs, blockID)
 	}
 	// step 4: update the version table with the location of the blocks
 	dbm.updateVersionBlockIDs(versionID, blockIDs)
@@ -309,7 +334,7 @@ func (dbm *DBManager) processVersion(versionID string) {
 		dbm.logger.Event("All blocks have been written")
 		versions := dbm.getVersionsNotCompleted(bucketkey)
 		if versions == nil {
-			dbm.logger.Event("Verson completed")
+			dbm.logger.Event("Version completed")
 			return
 		}
 
@@ -326,7 +351,7 @@ func (dbm *DBManager) processVersion(versionID string) {
 
 			// if s3 enabled write version to S3
 			if dbm.s3Enabled {
-				dbm.logger.Event("S3, Put Object, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
+				dbm.logger.Event("S3, Put Object, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region, " Block count: ", len(blockids))
 				dbm.s3Customer.Put(bucket, key, blockids)
 			}
 
