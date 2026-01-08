@@ -251,6 +251,7 @@ func (s *S3Customer) Compare() bool {
 		var keyFailure bool
 		if len(sourceVersions) != len(resultVersions) {
 			keyFailure = true
+			s.logger.Event("Version count mismatch source:", len(sourceVersions), " result:", len(resultVersions))
 		}
 		for key, sourceVersion := range sourceVersions {
 			if _, ok := resultVersions[key]; !ok {
@@ -266,14 +267,17 @@ func (s *S3Customer) Compare() bool {
 				// check key
 				if *version.Key != *resultVersions[key][i].Key {
 					keyFailure = true
+					s.logger.Event("Version key mismatch for key:", key)
 				}
 				// check etag (MD5)
 				if *version.ETag != *resultVersions[key][i].ETag {
 					keyFailure = true
+					s.logger.Event("Version Etag mismatch for key:", key)
 				}
 				// check latest version
 				if *version.IsLatest != *resultVersions[key][i].IsLatest {
 					keyFailure = true
+					s.logger.Event("Version IsLatest mismatch for key:", key)
 				}
 			}
 		}
