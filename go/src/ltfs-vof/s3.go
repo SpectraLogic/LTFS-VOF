@@ -390,7 +390,7 @@ func createBucket(region, bucketName string, versioning bool, logger *Logger) {
 		}
 	}
 }
-func deleteObject(bucket, key, region string, sleep bool, logger *Logger) {
+func deleteObject(region, bucket, key string, sleep bool, logger *Logger) {
 
 	logger.Event("Deleting object ", key, " from bucket ", bucket)
 	client := getClient(region, logger)

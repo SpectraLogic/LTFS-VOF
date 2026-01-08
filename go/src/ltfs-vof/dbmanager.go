@@ -139,8 +139,6 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 
 func (dbm *DBManager) DeleteVersion(version string) {
 
-	dbm.lock()
-
 	// get the blocklist from the version table
 	_, _, _, _, blockids := dbm.getVersionInfo(version)
 
@@ -152,7 +150,6 @@ func (dbm *DBManager) DeleteVersion(version string) {
 
 	// delete the version from the version table
 	dbm.deleteVersionsTable(version)
-	dbm.unlock()
 }
 
 // encountered a data block
@@ -277,6 +274,7 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 					blockID = entry.BlockID
 					_, blockEntry := dbm.getBlockRecord(blockID)
 					blockEntry.SetLogicalStart(listentry.GetLogicalStart() + logicalIter)
+					logicalIter += blockEntry.GetLogicalLength()
 					dbm.updateBlocksTable(blockID, blockEntry)
 					currEntry = blockEntry
 				}
