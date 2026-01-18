@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	. "ltfs-vof/tapehardware"
 	. "ltfs-vof/utils"
+	"net/http"
 	"strings"
 )
 
@@ -47,7 +48,11 @@ func main() {
 	simPacks := flag.Bool("simpacks", false, "Put Pack List Into Database")
 	var simBuckets stringSlice
 	flag.Var(&simBuckets, "simbucket", "simbucket may be repeated to create multiple simulation buckets")
+	healthPort := flag.String("healthport", "8080", "Port for health check endpoint")
 	flag.Parse()
+
+	// Start health check server in background
+	go startHealthCheckServer(*healthPort)
 
 	// create the customer logger
 	logger := NewLogger(*logFile, *clean)
@@ -164,4 +169,24 @@ func (s *stringSlice) Set(value string) error {
 }
 func (s *stringSlice) Slice() []string {
 	return []string(*s)
+}
+
+// startHealthCheckServer starts an HTTP server for health checks
+// This is used by MinIO Sidekick for load balancer health monitoring
+func startHealthCheckServer(port string) {
+	http.HandleFunc("/health", healthCheckHandler)
+	http.HandleFunc("/healthz", healthCheckHandler)
+	http.HandleFunc("/", healthCheckHandler)
+	
+	addr := ":" + port
+	fmt.Printf("Starting health check server on %s\n", addr)
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		fmt.Printf("Health check server error: %v\n", err)
+	}
+}
+
+// healthCheckHandler responds with 200 OK for health checks
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
