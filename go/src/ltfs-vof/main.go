@@ -188,5 +188,5 @@ func startHealthCheckServer(port string) {
 // healthCheckHandler responds with 200 OK for health checks
 func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("OK"))
+	_, _ = w.Write([]byte("OK"))
 }
