@@ -186,22 +186,22 @@ func (p *PackEntry) SetPhysicalStart(start int64) {
 func (p *PackEntry) SetPhysicalLength(length int64) {
 	p.PackRange.SetLength(length)
 }
-func (p *PackEntry) GetSourceLens() []int32 {
-	return p.SourceLens
+func (p *PackEntry) GetBlockLens() []int32 {
+	return p.BlockLens
 }
-func (p *PackEntry) AppendToSourceLens(length int32) {
-	p.SourceLens = append(p.SourceLens, length)
+func (p *PackEntry) AppendToBlockLens(length int32) {
+	p.BlockLens = append(p.BlockLens, length)
 }
 
 // helper functions for making two sequential pack entries into one
-// needs to calculate the length of the last source length of p to append it to the source lens
+// needs to calculate the length of the last block length of p to append it to the block lens
 func (p *PackEntry) AddSequentialPacks(nextPack *PackEntry) {
-	sourceLens := p.GetSourceLens()
-	currLen := p.GetLogicalLength()
-	for _, sourceLen := range sourceLens {
-		currLen -= int64(sourceLen)
+	blockLens := p.GetBlockLens()
+	currLen := p.GetPhysicalLength()
+	for _, blockLen := range blockLens {
+		currLen -= int64(blockLen)
 	}
-	p.AppendToSourceLens(int32(currLen))
+	p.AppendToBlockLens(int32(currLen))
 	p.SourceRange.Add(nextPack.SourceRange)
 	p.PackRange.Add(nextPack.PackRange)
 }
