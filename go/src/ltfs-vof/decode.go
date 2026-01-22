@@ -186,9 +186,22 @@ func (p *PackEntry) SetPhysicalStart(start int64) {
 func (p *PackEntry) SetPhysicalLength(length int64) {
 	p.PackRange.SetLength(length)
 }
+func (p *PackEntry) GetSourceLens() []int32 {
+	return p.SourceLens
+}
+func (p *PackEntry) AppendToSourceLens(length int32) {
+	p.SourceLens = append(p.SourceLens, length)
+}
 
 // helper functions for making two sequential pack entries into one
+// needs to calculate the length of the last source length of p to append it to the source lens
 func (p *PackEntry) AddSequentialPacks(nextPack *PackEntry) {
+	sourceLens := p.GetSourceLens()
+	currLen := p.GetLogicalLength()
+	for _, sourceLen := range sourceLens {
+		currLen -= int64(sourceLen)
+	}
+	p.AppendToSourceLens(int32(currLen))
 	p.SourceRange.Add(nextPack.SourceRange)
 	p.PackRange.Add(nextPack.PackRange)
 }
