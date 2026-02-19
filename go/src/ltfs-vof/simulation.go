@@ -27,6 +27,43 @@ func getBlockRanges(objectSize int, blockSize int) [][2]int {
 	return blockRanges
 }
 
+func writeSimBlock(packFile *os.File, packName string, blockData []byte, bucket string, objectName string, versionName string, blockRange [2]int, logger *Logger) *PackEntry {
+	startRange, err := packFile.Seek(0, io.SeekCurrent)
+	if err != nil {
+		logger.Fatal("Unable to get start range for packFile: ", packFile.Name())
+	}
+	currBlock := NewBlock("", bucket, objectName, versionName, blockData, int64(blockRange[0]), int64(blockRange[1]))
+	WriteTLV(packFile, BLOCK, blockData, logger)
+	WriteBlock(packFile, currBlock, logger)
+	logger.Event("Wrote Block to Pack File: ", packFile.Name(), " Object: ", objectName, " Version: ", versionName, " Block Range: ", blockRange)
+	endRange, err := packFile.Seek(0, io.SeekCurrent)
+	if err != nil {
+		logger.Fatal("Unable to get end range for packFile: ", packFile.Name())
+	}
+
+	packEntry := NewPackEntry(packName, int64(blockRange[0]), int64(blockRange[1]))
+	packEntry.SetPhysicalLocation(packName, startRange, endRange)
+	return packEntry
+}
+
+func writeSimPackList(packFile *os.File, packName string, packEntries Packs, objectName string, versionName string, logger *Logger) *PackReference {
+	startRange, err := packFile.Seek(0, io.SeekCurrent)
+	if err != nil {
+		logger.Fatal("Unable to get start range for packlist")
+	}
+	packListRecord := NewPackListRecord(versionName, packEntries, logger)
+	WriteTLV(packFile, PACKLIST, packListRecord.GetPackListEncoded(logger), logger)
+	packListRecord.WritePackListRecord(packFile, logger)
+	logger.Event("Wrote PackList to Pack File: ", packName, " Object: ", objectName, " Version: ", versionName)
+	endRange, err := packFile.Seek(0, io.SeekCurrent)
+	if err != nil {
+		logger.Fatal("Unable to get end range for packlist")
+	}
+	packReference := NewPackReference(packName, startRange, endRange-startRange)
+
+	return packReference
+}
+
 // create a simulated object of specified size, spanning blocksPerObject blocks, add it to s3 bucket if enabled
 func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucket string, objectSize int, logger *Logger, packFile *os.File, packName string, versionFile *os.File, packing bool, backwards bool, usesPackList bool, deleted bool) {
 	var randomData []byte
@@ -50,7 +87,7 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 
 	var packEntries Packs
 	var packReference *PackReference = nil
-	var startRange int64
+	//var startRange int64
 
 	if packing {
 		for blockIter := 0; blockIter < blockCount; blockIter++ {
@@ -59,51 +96,22 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 				currBlockRange = blockRanges[blockCount-blockIter-1]
 			}
 
-			startRange, err = packFile.Seek(0, io.SeekCurrent)
-			if err != nil {
-				logger.Fatal("Unable to get start range")
-			}
-
 			currBlockData := randomData[currBlockRange[0]:currBlockRange[1]]
-			currBlock := NewBlock("", bucket, name, versionName, currBlockData, int64(currBlockRange[0]), int64(currBlockRange[1]))
+			packEntry := writeSimBlock(packFile, packName, currBlockData, bucket, name, versionName, currBlockRange, logger)
 
-			WriteTLV(packFile, BLOCK, currBlockData, logger)
-			WriteBlock(packFile, currBlock, logger)
-			logger.Event("Wrote Block to Pack File: ", packName, " Object: ", name, " Version: ", versionName, " Block Range: ", currBlockRange)
-
-			endRange, err := packFile.Seek(0, io.SeekCurrent)
-			if err != nil {
-				logger.Fatal("Unable to get end range")
-			}
-			packEntry := NewPackEntry(packName, int64(currBlockRange[0]), int64(currBlockRange[1]))
-			//logger.Event("Confirming Block Range:", currBlockRange, "matches Logical Range:", packEntry.GetLogicalStart(), packEntry.GetLogicalStart()+packEntry.GetLogicalLength())
-			packEntry.SetPhysicalLocation(packName, startRange, endRange)
-			// add to pack entries if backwards or first block, else append it to the first pack entry (only pack entry needed for sequential blocks)
 			if backwards || blockIter == 0 {
 				packEntries = append(packEntries, packEntry)
 			} else {
 				packEntries[0].AddSequentialPacks(packEntry)
 			}
 		}
-		randomData = nil
-	} else {
-		packEntries = nil
-	}
-	if usesPackList {
-		startRange, err = packFile.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get start range for packlist")
-		}
-		packListRecord := NewPackListRecord(versionName, packEntries, logger)
-		WriteTLV(packFile, PACKLIST, packListRecord.GetPackListEncoded(logger), logger)
-		packListRecord.WritePackListRecord(packFile, logger)
-		logger.Event("Wrote PackList to Pack File: ", packName, " Object: ", name, " Version: ", versionName)
-		endRange, err := packFile.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get end range for packlist")
-		}
-		packReference = NewPackReference(packName, startRange, endRange-startRange)
+		randomData = nil // if the data is packed then it won't be in the version record
 
+		if usesPackList {
+			packReference = writeSimPackList(packFile, packName, packEntries, name, versionName, logger)
+			packEntries = nil // if the packlist is referenced in the version record then the individual pack entries won't be
+		}
+	} else {
 		packEntries = nil
 	}
 
@@ -127,7 +135,7 @@ block2_1, block2_2, packlist1
 When reading either .blk file first, we will get a case of reading blocks before the packlist that references them,
 and we will also get a case of reading a packlist that references blocks in a different .blk file that has not been read yet.
 */
-func createSimulatedObjectWithPacklistSeparate(object1Name, object2Name string, blockSize int, s3sim *S3Simulator, bucket string, objectSize int, packName1, packName2 string, packFile1, packFile2, versionFile *os.File, logger *Logger) {
+func createSimulatedObjectWithPacklistSeparate(objectName1, objectName2 string, blockSize int, s3sim *S3Simulator, bucket string, objectSize int, packName1, packName2 string, packFile1, packFile2, versionFile *os.File, logger *Logger) {
 	var randomData [2][]byte
 	randomData[0] = make([]byte, objectSize)
 	randomData[1] = make([]byte, objectSize)
@@ -145,8 +153,8 @@ func createSimulatedObjectWithPacklistSeparate(object1Name, object2Name string, 
 	}
 
 	if s3sim != nil {
-		s3sim.Put(object1Name, randomData[0])
-		s3sim.Put(object2Name, randomData[1])
+		s3sim.Put(objectName1, randomData[0])
+		s3sim.Put(objectName2, randomData[1])
 	}
 
 	blockRanges := getBlockRanges(objectSize, blockSize)
@@ -157,43 +165,11 @@ func createSimulatedObjectWithPacklistSeparate(object1Name, object2Name string, 
 	for blockIter := 0; blockIter < len(blockRanges); blockIter++ {
 		currBlockRange := blockRanges[blockIter]
 
-		startRange1, err := packFile1.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get start range for packfile:", packFile1.Name())
-		}
-		startRange2, err := packFile2.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get start range for packfile:", packFile2.Name())
-		}
-
 		currBlockData1 := randomData[0][currBlockRange[0]:currBlockRange[1]]
-		currBlock1 := NewBlock("", bucket, object1Name, versionName1, currBlockData1, int64(currBlockRange[0]), int64(currBlockRange[1]))
 		currBlockData2 := randomData[1][currBlockRange[0]:currBlockRange[1]]
-		currBlock2 := NewBlock("", bucket, object2Name, versionName2, currBlockData2, int64(currBlockRange[0]), int64(currBlockRange[1]))
 
-		// Write block for object1 to packfile1
-		WriteTLV(packFile1, BLOCK, currBlockData1, logger)
-		WriteBlock(packFile1, currBlock1, logger)
-		logger.Event("Wrote Block to Pack File: ", packFile1.Name(), " Object: ", object1Name, " Block Range: ", currBlockRange)
-		// Write block for object2 to packfile2
-		WriteTLV(packFile2, BLOCK, currBlockData2, logger)
-		WriteBlock(packFile2, currBlock2, logger)
-		logger.Event("Wrote Block to Pack File: ", packFile2.Name(), " Object: ", object2Name, " Block Range: ", currBlockRange)
-
-		endRange1, err := packFile1.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get end range for block 1")
-		}
-		endRange2, err := packFile1.Seek(0, io.SeekCurrent)
-		if err != nil {
-			logger.Fatal("Unable to get end range for block 2")
-		}
-
-		packEntry1 := NewPackEntry(packName1, int64(currBlockRange[0]), int64(currBlockRange[1]))
-		packEntry1.SetPhysicalLocation(packName1, startRange1, endRange1)
-
-		packEntry2 := NewPackEntry(packName2, int64(currBlockRange[0]), int64(currBlockRange[1]))
-		packEntry2.SetPhysicalLocation(packName2, startRange2, endRange2)
+		packEntry1 := writeSimBlock(packFile1, packName1, currBlockData1, bucket, objectName1, versionName1, currBlockRange, logger)
+		packEntry2 := writeSimBlock(packFile2, packName2, currBlockData2, bucket, objectName2, versionName2, currBlockRange, logger)
 
 		if blockIter == 0 {
 			packEntries1 = append(packEntries1, packEntry1)
@@ -203,48 +179,19 @@ func createSimulatedObjectWithPacklistSeparate(object1Name, object2Name string, 
 			packEntries2[0].AddSequentialPacks(packEntry2)
 		}
 	}
-	startRange1, err := packFile1.Seek(0, io.SeekCurrent)
-	if err != nil {
-		logger.Fatal("Unable to get start range for packlist:", packFile1.Name())
-	}
-	startRange2, err := packFile2.Seek(0, io.SeekCurrent)
-	if err != nil {
-		logger.Fatal("Unable to get start range for packlist:", packFile2.Name())
-	}
 
-	packListRecord1 := NewPackListRecord(versionName1, packEntries1, logger)
-	packListRecord2 := NewPackListRecord(versionName2, packEntries2, logger)
+	packReference1 := writeSimPackList(packFile2, packName2, packEntries1, objectName1, versionName1, logger)
+	packReference2 := writeSimPackList(packFile1, packName1, packEntries2, objectName2, versionName2, logger)
 
-	// Object1 packlist goes in packfile2 and Object2 packlist goes in packfile1 to create cross reference of packlists and blocks in different packfiles
-	WriteTLV(packFile2, PACKLIST, packListRecord1.GetPackListEncoded(logger), logger)
-	packListRecord1.WritePackListRecord(packFile2, logger)
-	logger.Event("Wrote PackList to Pack File: ", packFile2.Name(), " Object: ", object1Name, " Version: ", versionName1)
-
-	WriteTLV(packFile1, PACKLIST, packListRecord2.GetPackListEncoded(logger), logger)
-	packListRecord2.WritePackListRecord(packFile1, logger)
-	logger.Event("Wrote PackList to Pack File: ", packFile1.Name(), " Object: ", object2Name, " Version: ", versionName2)
-
-	endRange1, err := packFile1.Seek(0, io.SeekCurrent)
-	if err != nil {
-		logger.Fatal("Unable to get end range for packlist:", packFile1.Name())
-	}
-	endRange2, err := packFile2.Seek(0, io.SeekCurrent)
-	if err != nil {
-		logger.Fatal("Unable to get end range for packlist:", packFile2.Name())
-	}
-
-	packReference1 := NewPackReference(packName2, startRange2, endRange2-startRange2)
-	packReference2 := NewPackReference(packName1, startRange1, endRange1-startRange1)
-
-	vr1, vrEncoded1 := NewVersionRecord(bucket, object1Name, versionName1, nil, nil, packReference1, false, false, logger)
-	vr2, vrEncoded2 := NewVersionRecord(bucket, object2Name, versionName2, nil, nil, packReference2, false, false, logger)
+	vr1, vrEncoded1 := NewVersionRecord(bucket, objectName1, versionName1, nil, nil, packReference1, false, false, logger)
+	vr2, vrEncoded2 := NewVersionRecord(bucket, objectName2, versionName2, nil, nil, packReference2, false, false, logger)
 
 	WriteTLV(versionFile, VERSION, vrEncoded1, logger)
 	vr1.WriteVersionRecord(versionFile, logger)
-	logger.Event("Wrote Version Record to Version File Object: ", object1Name, " Version: ", versionName1)
+	logger.Event("Wrote Version Record to Version File Object: ", objectName1, " Version: ", versionName1)
 	WriteTLV(versionFile, VERSION, vrEncoded2, logger)
 	vr2.WriteVersionRecord(versionFile, logger)
-	logger.Event("Wrote Version Record to Version File Object: ", object2Name, " Version: ", versionName2)
+	logger.Event("Wrote Version Record to Version File Object: ", objectName2, " Version: ", versionName2)
 }
 
 func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning bool, inDB, packList bool, logger *Logger) {
