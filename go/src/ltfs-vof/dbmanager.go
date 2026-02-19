@@ -120,10 +120,33 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 		dbm.addVersionBlockID(mr.GetVersion(), blockid)
 	} else if packs != nil {
 		// if the packs are in the version record then add them to the pack table
-		for i, pEntry := range packs {
-			// if there are packs then add the pack list to the version table
-			blockIDs = append(blockIDs, dbm.insertBlocksTable(pEntry))
-			dbm.insertPackTable(pEntry.GetPackName(), pEntry.GetPhysicalStart(), mr.GetVersion(), blockIDs[i])
+		blockIDIter := 0
+		for _, pEntry := range packs {
+			physIter := pEntry.GetPhysicalStart()
+			remainingLength := pEntry.GetPhysicalLength()
+			logicalIter := pEntry.GetLogicalStart()
+			//remainingLogicalLength := pEntry.GetLogicalLength()
+			for j := range len(pEntry.BlockLens) + 1 {
+				// if there are packs then add the pack list to the version table
+				var currEntry *PackEntry
+				if j < len(pEntry.BlockLens) {
+					currLength := int64(pEntry.GetBlockLens()[j])
+					currEntry = NewPackEntry(pEntry.GetPackName(), logicalIter, logicalIter+1)
+					logicalIter++
+					currEntry.SetPhysicalStart(physIter)
+					currEntry.SetPhysicalLength(currLength)
+					physIter += currLength
+					remainingLength -= currLength
+				} else {
+					// last entry take the remaining length
+					currEntry = NewPackEntry(pEntry.GetPackName(), logicalIter, logicalIter+1)
+					currEntry.SetPhysicalStart(physIter)
+					currEntry.SetPhysicalLength(remainingLength)
+				}
+				blockIDs = append(blockIDs, dbm.insertBlocksTable(currEntry))
+				dbm.insertPackTable(currEntry.GetPackName(), currEntry.GetPhysicalStart(), mr.GetVersion(), blockIDs[blockIDIter])
+				blockIDIter++
+			}
 		}
 		dbm.insertVersionTable(bucketObject, mr.GetVersion(), false, false, false, blockIDs)
 	} else if mr.GetIsPackList() {
@@ -204,6 +227,7 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 	// check to see if this if this packlist entry extends across multiple blocks
 	// if so create a new block entry, update the pack list to point to it and
 	// include in the version record
+	//TODO GET RID OF THIS, WE SHOULD ONLY EVER HAVE SINGLE BLOCK ENTRIES, WE NEED TO BREAK APART THE PACK LISTS WHEN WE PROCESS VERSIONS AND PACKLIST ENTIRES
 	if entry.GetPhysicalEnd() > blockEndLocation && entry.GetPackName() == pack {
 		// Physical end and logical end stays the same but physical start is the end of the last block
 
