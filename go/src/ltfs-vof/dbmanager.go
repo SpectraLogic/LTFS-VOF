@@ -386,6 +386,7 @@ func (dbm *DBManager) processVersion(versionID string) {
 			// delete marker
 			if dbm.s3Enabled {
 				dbm.logger.Event("S3, Delete Marker, bucket: ", bucket, "  key: ", key, "  Region: ", dbm.region)
+				dbm.s3Customer.Delete(bucket, key)
 				// DeleteMarker(bucket, key, dbm.region)
 			}
 		}

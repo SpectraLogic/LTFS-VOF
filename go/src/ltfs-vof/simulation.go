@@ -9,6 +9,7 @@ import (
 	. "ltfs-vof/utils"
 	"math"
 	"os"
+	"time"
 )
 
 const SIMULATION_FILES string = "tapehardware/tapes/"
@@ -194,6 +195,32 @@ func createSimulatedObjectWithPacklistSeparate(objectName1, objectName2 string, 
 	logger.Event("Wrote Version Record to Version File Object: ", objectName2, " Version: ", versionName2)
 }
 
+func createSimulatedDeleteMarker(objectName string, s3sim *S3Simulator, bucket string, versionFile *os.File, logger *Logger) {
+	versionName := ulid.Make().String()
+
+	if s3sim != nil {
+		s3sim.Delete(objectName)
+	}
+
+	vr, vrEncoded := NewVersionRecord(bucket, objectName, versionName, nil, nil, nil, false, true, logger)
+
+	WriteTLV(versionFile, VERSION, vrEncoded, logger)
+	vr.WriteVersionRecord(versionFile, logger)
+	logger.Event("Wrote Delete Version Record to Version File Object: ", objectName, " Version: ", versionName)
+}
+
+func createDeleteVersion(objectName string, versionID string, s3sim *S3Simulator, bucket string, versionFile *os.File, logger *Logger) {
+	if s3sim != nil {
+		s3sim.Delete(objectName)
+	}
+
+	vr, vrEncoded := NewVersionRecord(bucket, objectName, versionID, nil, nil, nil, true, false, logger)
+
+	WriteTLV(versionFile, DELETEVERSION, vrEncoded, logger)
+	vr.WriteVersionRecord(versionFile, logger)
+	logger.Event("Wrote Delete Version Record to Version File Object: ", objectName, " Version: ", versionID)
+}
+
 func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, blocksPerObject int, versioning bool, inDB, packList bool, logger *Logger) {
 	objectCount := 0
 	// remove all the tapes first
@@ -279,12 +306,23 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 				objectCount++
 				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1900, logger, fd, blockFileName, versionfd, true, true, true, false)
 			}
-			//// 1 object(s) 1601 bytes, 500 byte blocks, in pack, deleted
-			//for objects := 0; objects < 1; objects++ {
-			//	objectName := fmt.Sprintf("Object%06d", objectCount)
-			//	objectCount++
-			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, true)
-			//}
+			// 1 object(s) 1601 bytes, 500 byte blocks, in pack, deleted
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, false)
+				time.Sleep(1 * time.Second) // ensure delete marker has a later timestamp than the version record
+				createSimulatedDeleteMarker(objectName, s3Buckets[bucket], bucket, versionfd, logger)
+			}
+			// 1 object(s) 1201 bytes, 500 byte blocks, in pack, 1 version before delete marker, 1 version after delete marker
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false)
+				time.Sleep(1 * time.Second) // ensure delete marker has a later timestamp than the version record
+				createSimulatedDeleteMarker(objectName, s3Buckets[bucket], bucket, versionfd, logger)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false)
+			}
 
 			// create 2 objects (2100 bytes, 500 byte blocksize) with object data in separate block files from the packlists that reference them to test reading blocks before packlist and visa versa
 			blockFileName1 := ulid.Make().String()
