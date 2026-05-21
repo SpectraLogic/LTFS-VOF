@@ -66,7 +66,7 @@ func writeSimPackList(packFile *os.File, packName string, packEntries Packs, obj
 }
 
 // create a simulated object of specified size, spanning blocksPerObject blocks, add it to s3 bucket if enabled
-func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucket string, objectSize int, logger *Logger, packFile *os.File, packName string, versionFile *os.File, packing bool, backwards bool, usesPackList bool, deleted bool) {
+func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucket string, objectSize int, logger *Logger, packFile *os.File, packName string, versionFile *os.File, packing, backwards, usesPackList, deleted, outputVersion bool, versionNameOutput *string) {
 	var randomData []byte
 	randomData = make([]byte, objectSize)
 	_, err := rand.Read(randomData)
@@ -83,6 +83,9 @@ func createSimulatedObject(name string, blockSize int, s3sim *S3Simulator, bucke
 
 	blockCount := int(math.Ceil(float64(objectSize) / float64(blockSize)))
 	versionName := ulid.Make().String()
+	if outputVersion {
+		*versionNameOutput = versionName
+	}
 
 	blockRanges := getBlockRanges(objectSize, blockSize)
 
@@ -266,51 +269,51 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 500, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 			}
 			// 1 object(s) 100 bytes, in version record
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 100, s3Buckets[bucket], bucket, 100, logger, fd, blockFileName, versionfd, false, false, false, false)
+				createSimulatedObject(objectName, 100, s3Buckets[bucket], bucket, 100, logger, fd, blockFileName, versionfd, false, false, false, false, false, nil)
 			}
 			// 1 object(s) 1809 bytes, 500 byte blocks, in pack
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1809, logger, fd, blockFileName, versionfd, true, false, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1809, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 			}
 			// 1 object(s) 1801 bytes, 500 byte blocks, in pack, 3 versions each
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
 				for versions := 0; versions < 3; versions++ {
-					createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, false)
+					createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 				}
 			}
 			// 1 object(s) 1802 bytes, 500 byte blocks, in pack, written backwards in the pack file
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1802, logger, fd, blockFileName, versionfd, true, true, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1802, logger, fd, blockFileName, versionfd, true, true, false, false, false, nil)
 			}
 			// 1 object(s) 1803 bytes, 500 byte blocks, in pack, with pack list
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1803, logger, fd, blockFileName, versionfd, true, false, true, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1803, logger, fd, blockFileName, versionfd, true, false, true, false, false, nil)
 			}
 			// 1 object(s) 1900 bytes, 500 byte blocks, in pack, with pack list, backwards
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1900, logger, fd, blockFileName, versionfd, true, true, true, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1900, logger, fd, blockFileName, versionfd, true, true, true, false, false, nil)
 			}
 			// 1 object(s) 1601 bytes, 500 byte blocks, in pack, deleted
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1801, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 				time.Sleep(1 * time.Second) // ensure delete marker has a later timestamp than the version record
 				createSimulatedDeleteMarker(objectName, s3Buckets[bucket], bucket, versionfd, logger)
 			}
@@ -318,10 +321,10 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			for objects := 0; objects < 1; objects++ {
 				objectName := fmt.Sprintf("Object%06d", objectCount)
 				objectCount++
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 				time.Sleep(1 * time.Second) // ensure delete marker has a later timestamp than the version record
 				createSimulatedDeleteMarker(objectName, s3Buckets[bucket], bucket, versionfd, logger)
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false)
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 1201, logger, fd, blockFileName, versionfd, true, false, false, false, false, nil)
 			}
 
 			// create 2 objects (2100 bytes, 500 byte blocksize) with object data in separate block files from the packlists that reference them to test reading blocks before packlist and visa versa
@@ -342,6 +345,15 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			objectName2 := fmt.Sprintf("Object%06d", objectCount)
 			objectCount++
 			createSimulatedObjectWithPacklistSeparate(objectName1, objectName2, 500, s3Buckets[bucket], bucket, 2100, blockFileName1, blockFileName2, fd1, fd2, versionfd, logger)
+			// create 1 object(s) 2300 bytes, 500 byte blocks, in pack, then delete it
+			for objects := 0; objects < 1; objects++ {
+				objectName := fmt.Sprintf("Object%06d", objectCount)
+				objectCount++
+				var versionToDelete string
+				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 2300, logger, fd, blockFileName, versionfd, true, false, false, false, true, &versionToDelete)
+				//time.Sleep(30 * time.Second) // gives time to see object created in the s3 bucket before it gets deleted
+				createDeleteVersion(objectName, versionToDelete, s3Buckets[bucket], bucket, versionfd, logger)
+			}
 		}
 	}
 }
