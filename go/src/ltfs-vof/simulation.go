@@ -345,15 +345,16 @@ func createSimulatedTapes(numberOfTapes int, s3Enabled bool, buckets []string, b
 			objectName2 := fmt.Sprintf("Object%06d", objectCount)
 			objectCount++
 			createSimulatedObjectWithPacklistSeparate(objectName1, objectName2, 500, s3Buckets[bucket], bucket, 2100, blockFileName1, blockFileName2, fd1, fd2, versionfd, logger)
-			// create 1 object(s) 2300 bytes, 500 byte blocks, in pack, then delete it
-			for objects := 0; objects < 1; objects++ {
-				objectName := fmt.Sprintf("Object%06d", objectCount)
-				objectCount++
-				var versionToDelete string
-				createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 2300, logger, fd, blockFileName, versionfd, true, false, false, false, true, &versionToDelete)
-				//time.Sleep(30 * time.Second) // gives time to see object created in the s3 bucket before it gets deleted
-				createDeleteVersion(objectName, versionToDelete, s3Buckets[bucket], bucket, versionfd, logger)
-			}
+			//// Only use for unversioned buckets
+			//// create 1 object(s) 2300 bytes, 500 byte blocks, in pack, then delete it
+			//for objects := 0; objects < 1; objects++ {
+			//	objectName := fmt.Sprintf("Object%06d", objectCount)
+			//	objectCount++
+			//	var versionToDelete string
+			//	createSimulatedObject(objectName, 500, s3Buckets[bucket], bucket, 2300, logger, fd, blockFileName, versionfd, true, false, false, false, true, &versionToDelete)
+			//	//time.Sleep(30 * time.Second) // gives time to see object created in the s3 bucket before it gets deleted
+			//	createDeleteVersion(objectName, versionToDelete, s3Buckets[bucket], bucket, versionfd, logger)
+			//}
 		}
 	}
 }
