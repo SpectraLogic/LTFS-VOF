@@ -105,6 +105,10 @@ func (db *Database) RestoreAll() {
 					case BLOCK:
 						db.logger.Event("TLV is Block type datalength = ", tlv.DataLength())
 						block := ReadBlock(file, tlv.DataLength(), db.logger)
+
+						if block == nil {
+							db.logger.Fatal("unable to read block from pack file: ", packFilePaths[pack])
+						}
 						// see if there is a version record associated with this block
 						// if  there  is then cache the block and
 						if db.dbManager.doesVersionRecordExist(block.GetVersion()) {
