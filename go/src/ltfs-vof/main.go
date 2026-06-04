@@ -45,9 +45,28 @@ func main() {
 	simBlocks := flag.Int("simblocks", 1, "Number of blocks per object")
 	simDB := flag.Bool("simdb", false, "Put Block data into Database")
 	simPacks := flag.Bool("simpacks", false, "Put Pack List Into Database")
+	fullRestore := flag.Bool("fullrestore", false, "Read version files to build database, then read block files to restore data to S3 buckets")
 	var simBuckets stringSlice
 	flag.Var(&simBuckets, "simbucket", "simbucket may be repeated to create multiple simulation buckets")
 	flag.Parse()
+
+	// if full restore, change appropriate flags
+	if *fullRestore {
+		*version = true
+		*database = true
+		*read = true
+		*compare = true
+		*s3 = true
+		if *simulate {
+			*simS3 = true
+			if *simTapes == 0 {
+				*simTapes = 5
+			}
+			*clean = true
+		} else {
+			*verify = true
+		}
+	}
 
 	// create the customer logger
 	logger := NewLogger(*logFile, *clean)
@@ -57,7 +76,6 @@ func main() {
 		// the source bucket for the simulator will be prefixed with source
 		logger.Event("****CREATING SIMULATED TAPES AND BUCKETS **** ")
 		createSimulatedTapes(*simTapes, *simS3, simBuckets.Slice(), *simBlocks, *versioned, *simDB, *simPacks, logger)
-		return
 	}
 
 	// read the config file

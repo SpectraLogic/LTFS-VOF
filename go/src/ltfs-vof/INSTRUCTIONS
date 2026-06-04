@@ -56,6 +56,9 @@ $./ltfs-vof -simulate -read -compare -s3
 
 At this point there are four buckets in AWS that can be browsed.
 
+Alternatively, to run this in one command:
+$./ltfs-vof -fullrestore -simulate -simbucket=<bucketname1> -simbucket=<bucketname2>
+
 
 Physical Equipment Setup
 -----------------------
