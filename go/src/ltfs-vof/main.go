@@ -71,11 +71,16 @@ func main() {
 	// create the customer logger
 	logger := NewLogger(*logFile, *clean)
 
-	// if create simulated tapes then do it and exit
+	// log arguments
+	logger.Event("**** RUN PARMS ****")
+	logger.Event("\n\tSIMULATE: ", *simulate, "\n\tCLEAN: ", *clean, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *simS3, "\n\tVERSIONED: ", *versioned, "\n\tCOMPARE: ", *compare)
+
+	// create simulated tapes and buckets if specified
 	if *simTapes != 0 {
 		// the source bucket for the simulator will be prefixed with source
-		logger.Event("****CREATING SIMULATED TAPES AND BUCKETS **** ")
+		logger.Event("**** CREATING SIMULATED TAPES AND BUCKETS **** ")
 		createSimulatedTapes(*simTapes, *simS3, simBuckets.Slice(), *simBlocks, *versioned, *simDB, *simPacks, logger)
+		logger.Event("**** SIMULATED TAPES AND BUCKETS CREATED **** ")
 	}
 
 	// read the config file
@@ -123,10 +128,6 @@ func main() {
 		}
 	}
 
-	// log arguments
-	logger.Event("****RUN PARMS **** ")
-	logger.Event("\n\tSIMULATE: ", *simulate, "\n\tVERSION: ", *version, "\n\tDATABASE: ", *database, "\n\tREAD: ", *read, "\n\tS3: ", *simS3)
-
 	// select the library type used
 	var library TapeLibrary
 	if *simulate {
@@ -138,31 +139,31 @@ func main() {
 	db := NewDatabase(DEFAULT_VERSION_CACHE, dbManager, library, logger)
 	// if version is enabled create the database manager and get the version files
 	if *version {
-		logger.Event("*****COPYING VERSION FILES******")
+		logger.Event("***** COPYING VERSION FILES ******")
 		db.GetVersionFiles()
-		logger.Event("****VERSION FILES COPIED******")
+		logger.Event("**** VERSION FILES COPIED ******")
 	}
 	if *database {
-		logger.Event("******BUILDING DATABASE*******")
+		logger.Event("****** BUILDING DATABASE *******")
 		db.CreateDatabase()
-		logger.Event("******ENDING BUILDING DATABASE*******")
+		logger.Event("****** ENDING BUILDING DATABASE *******")
 	}
 
 	// restore all the content if specified
 	if *read {
-		logger.Event("******READING BLOCK FILES*******")
+		logger.Event("****** READING BLOCK FILES *******")
 		db.RestoreAll()
-		logger.Event("******READ ALL BLOCK FILES*******")
+		logger.Event("****** READ ALL BLOCK FILES *******")
 	}
 	// if compare set then compare the simulated and customer buckets
 	if *compare {
-		logger.Event("******COMPARING SIMULATED AND CUSTOMER BUCKETS*******")
+		logger.Event("****** COMPARING SIMULATED AND CUSTOMER BUCKETS *******")
 		if dbManager.Compare() {
-			fmt.Println("******SIMULATION AND CUSTOMER BUCKETS ARE THE SAME*******")
-			logger.Event("******SIMULATION AND CUSTOMER BUCKETS ARE THE SAME*******")
+			fmt.Println("****** SIMULATION AND CUSTOMER BUCKETS ARE THE SAME *******")
+			logger.Event("****** SIMULATION AND CUSTOMER BUCKETS ARE THE SAME *******")
 		} else {
-			fmt.Println("******SIMULATION AND CUSTOMER BUCKETS ARE Not THE SAME*******")
-			logger.Fatal("******SIMULATION AND CUSTOMER BUCKETS DIFFER*******")
+			fmt.Println("****** SIMULATION AND CUSTOMER BUCKETS ARE Not THE SAME *******")
+			logger.Fatal("****** SIMULATION AND CUSTOMER BUCKETS DIFFER *******")
 		}
 	}
 }
