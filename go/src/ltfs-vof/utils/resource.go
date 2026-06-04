@@ -53,7 +53,7 @@ func (r *Resource) manager() {
 				// reduce the number of resources in use
 				r.inUse[unit] = false
 
-				// receive a reseve request
+				// receive a reserve request
 			case callback := <-r.reserveChan:
 				var allInUse bool = true
 				for i, inuse := range r.inUse {
@@ -68,7 +68,7 @@ func (r *Resource) manager() {
 					log.Fatal("SNO: All resources in use")
 				}
 
-			// receive signal to exit maanger
+			// receive signal to exit the manager
 			case <-r.signalChan:
 				return
 			}

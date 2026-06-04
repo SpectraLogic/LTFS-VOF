@@ -36,7 +36,7 @@ func NewDBManager(dbName, cacheDir, region string, clean, s3Enabled, versioned, 
 		logger.Fatal("Could not open db", err)
 	}
 
-	// remove and setup the db
+	// remove and set up the db
 	if clean {
 		os.RemoveAll(cacheDir)
 		os.Mkdir(cacheDir, 0777)
@@ -94,7 +94,7 @@ func (dbm *DBManager) AddVersion(mr *MetaReference) {
 		dbm.unlock()
 		return
 	}
-	// if version is deleted then remove it from the block table and verison table
+	// if version is deleted then remove it from the block table and version table
 	if mr.GetIsDeleted() {
 		dbm.DeleteVersion(mr.GetVersion())
 		dbm.unlock()
@@ -227,7 +227,7 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 	// check to see if this if this packlist entry extends across multiple blocks
 	// if so create a new block entry, update the pack list to point to it and
 	// include in the version record
-	//TODO GET RID OF THIS, WE SHOULD ONLY EVER HAVE SINGLE BLOCK ENTRIES, WE NEED TO BREAK APART THE PACK LISTS WHEN WE PROCESS VERSIONS AND PACKLIST ENTIRES
+	//TODO GET RID OF THIS, WE SHOULD ONLY EVER HAVE SINGLE BLOCK ENTRIES, WE NEED TO BREAK APART THE PACK LISTS WHEN WE PROCESS VERSIONS AND PACKLIST ENTRIES
 	if entry.GetPhysicalEnd() > blockEndLocation && entry.GetPackName() == pack {
 		// Physical end and logical end stays the same but physical start is the end of the last block
 
@@ -254,7 +254,7 @@ func (dbm *DBManager) WriteBlock(pack string, blockStartLocation, blockEndLocati
 }
 
 // Encountered a pack list need, to create or update the blocks associated with the list,
-// upate the pack map entries and update the versio to point to all blocks in pack map
+// update the pack map entries and update the version to point to all blocks in pack map
 func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []*PackEntry) {
 
 	// lock the database
@@ -267,7 +267,7 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 	}
 	versionID := packEntry.VersionID
 	// step 2: for block entries that don't exist create them, if they have already
-	// been seen then there will a map to them and they need to be updated with
+	// been seen then there will a map to them, and they need to be updated with
 	// logical locations specified in pack map
 	var blockIDs []string
 	var blockID string
@@ -320,7 +320,7 @@ func (dbm *DBManager) ProcessPackList(packName string, offset int64, packlist []
 	// step 4: update the version table with the location of the blocks
 	dbm.updateVersionBlockIDs(versionID, blockIDs)
 
-	// step 5: process the version in case all blocks are cahced
+	// step 5: process the version in case all blocks are cached
 	dbm.processVersion(versionID)
 	dbm.unlock()
 }
@@ -347,12 +347,12 @@ func (dbm *DBManager) processVersion(versionID string) {
 			for _, blockid := range blockids {
 				state, _ := dbm.getBlockRecord(blockid)
 				if state != STATE_CACHED {
-					dbm.logger.Event("Not all blocks assosciated with verison are in cache bucketkey: ", bucketkey)
+					dbm.logger.Event("Not all blocks associated with version are in cache bucketkey: ", bucketkey)
 					return
 				}
 			}
 		}
-		// all blocks have been written or this is delete marker
+		// all blocks have been written or this is a delete marker
 		dbm.logger.Event("All blocks have been written")
 		versions := dbm.getVersionsNotCompleted(bucketkey)
 		if versions == nil {
@@ -423,7 +423,7 @@ func (dbm *DBManager) GetTapePackOrder() ([]string, map[string][]string) {
 	}
 	var orderedList []string
 
-	// now sort the from oldest to newest for each tape
+	// now sort them from oldest to newest for each tape
 	for tape, packids := range tapepacks {
 		// convert the slice to a time based slide
 		packtimes := make([]uint64, 0)
@@ -559,7 +559,7 @@ func (dbm *DBManager) getVersionsInRecord() []string {
 	return versions
 }
 
-// get the versions associated with a bucket and key, that are not comlpleted
+// get the versions associated with a bucket and key, that are not completed
 func (dbm *DBManager) getVersionsNotCompleted(bucketkey string) []string {
 	var versions []string
 	var err error
@@ -689,7 +689,7 @@ func (dbm *DBManager) getBlockRecord(blockid string) (blockState, *PackEntry) {
 	return blockState(state), &entry
 }
 
-// delete a blcok record
+// delete a block record
 func (dbm *DBManager) deleteBlockRecord(blockid string) {
 
 	sql := "DELETE FROM blocks WHERE blockid = ?"
@@ -750,13 +750,13 @@ func (dbm *DBManager) getPackMap(packID string) (packMap PackMapType) {
 	}
 	err = json.Unmarshal(packinfo, &packMap)
 	if err != nil {
-		dbm.logger.Fatal("Could not unmarshal pack mapd", err)
+		dbm.logger.Fatal("Could not unmarshal pack map", err)
 	}
 	return packMap
 }
 
 func (dbm *DBManager) insertTapePacksTable(packid, tapeid string) {
-	// getht the blocklist, ignore errors because it may not exist
+	// get the blocklist, ignore errors because it may not exist
 	var blockinfo []byte
 	var err error
 
